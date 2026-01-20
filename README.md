@@ -13,7 +13,7 @@
 
 ### Forks
 
-- <span style="color: #d045f7;">🖿</span> [**arthurjustinuswalther**/10C1_25](https://github.com/arthurjustinuswalther/10C1_25)
-- <span style="color: #d045f7;">🖿</span> [**helmo2019**/10C1_25](https://github.com/helmo2019/10C1_25)
-- <span style="color: #d045f7;">🖿</span> [**Icephoenix0344**/10C1_25](https://github.com/Icephoenix0344/10C1_25)
-- <span style="color: #d045f7;">🖿</span> [**wuyichen-jpg**/10C1_25](https://github.com/wuyichen-jpg/10C1_25)
+- $\color{#d045f7}\text{🖿}$ [**arthurjustinuswalther**/10C1_25](https://github.com/arthurjustinuswalther/10C1_25)
+- $\color{#d045f7}\text{🖿}$ [**helmo2019**/10C1_25](https://github.com/helmo2019/10C1_25)
+- $\color{#d045f7}\text{🖿}$ [**Icephoenix0344**/10C1_25](https://github.com/Icephoenix0344/10C1_25)
+- $\color{#d045f7}\text{🖿}$ [**wuyichen-jpg**/10C1_25](https://github.com/wuyichen-jpg/10C1_25)
