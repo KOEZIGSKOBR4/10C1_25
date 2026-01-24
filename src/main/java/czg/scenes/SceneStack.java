@@ -61,6 +61,48 @@ public class SceneStack extends JPanel {
     }
 
     /**
+     * Fügt {@code szene} in den Stapel ein, sodass {@code scenes.get(i) == scene}.
+     * Alle Szenen ab der, die vorher an der Stelle war, an welcher die neue Szene
+     * eingefügt wird, werden um eine Stelle nach hinten/oben geschoben.
+     * @param scene Einzufügende Szene
+     * @param index Stelle, an welcher die Szene eingefügt werden soll. Zwischen {@code 0} und {@code scenes.size()}, jeweils inklusiv.
+     */
+    public void insert(BaseScene scene, int index) {
+        // Ganz oben einfügen: An push() weitergeben
+        if(index >= scenes.size()) {
+            push(scene);
+            return;
+        }
+
+        // Irgendwo innerhalb des Stapels einfügen
+        if(index >= 0) {
+            scenes.add(index, scene);
+            return;
+        }
+
+        System.err.printf("Kann keine Szene an Stelle %d einfügen%n", index);
+    }
+
+    /**
+     * Findet die erste Szene {@code s} im Stapel, für die {@code s == toBeReplaced} gilt,
+     * und ersetzt diese durch {@code replacement}
+     * @param toBeReplaced Zu ersetzende Szene
+     * @param replacement Szene, die an die Stelle der zu ersetzenden Szene tritt
+     */
+    public void replace(BaseScene toBeReplaced, BaseScene replacement) {
+        for (int i = 0; i < scenes.size(); i++) {
+            // toBeReplaced suchen...
+            if(scenes.get(i) == toBeReplaced) {
+                // ... und ersetzen
+                scenes.set(i, replacement);
+                return;
+            }
+        }
+
+        System.err.printf("Es wurde versucht, %s im Szenen-Stapel zu ersetzten, obwohl diese Szene nicht darin vorkommt%n", toBeReplaced);
+    }
+
+    /**
      * @return Szene oben auf dem Stapel
      */
     private BaseScene getTop() {
