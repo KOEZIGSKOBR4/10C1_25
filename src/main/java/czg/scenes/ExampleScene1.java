@@ -2,10 +2,16 @@ package czg.scenes;
 
 import czg.MainWindow;
 import czg.objects.BackdropObject;
+import czg.objects.ButtonObject;
 import czg.objects.ExampleDoorObject;
+import czg.scenes.minigame_scenes.InformaticsLevelScene;
+import czg.scenes.minigame_scenes.MinigameScene;
 import czg.util.Draw;
+import czg.util.Images;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static czg.MainWindow.HEIGHT;
 import static czg.MainWindow.WIDTH;
@@ -19,6 +25,15 @@ public class ExampleScene1 extends BaseScene {
         door.x = WIDTH - Math.round(door.width * 1.5f);
         door.y = HEIGHT / 2 - door.height / 2;
         objects.add(door);
+
+        MinigameScene informaticsTest = new MinigameScene(
+            new InformaticsLevelScene(null, new ArrayList<String>(Arrays.asList("and_gate", "or_gate", "nand_gate", "not_gate"))),
+            new InformaticsLevelScene(null, new ArrayList<String>(Arrays.asList("or_gate", "not_gate", "xnor_gate", "not_gate"))),
+            new InformaticsLevelScene(null, new ArrayList<String>(Arrays.asList("nand_gate", "xor_gate", "nand_gate", "not_gate")))
+        );
+
+        ButtonObject startMinigameTest = new ButtonObject(Images.get("/assets/minigames/informatics/button.png"), 10, 10, informaticsTest::startMinigame);
+        objects.add(startMinigameTest);
     }
 
     @Override
