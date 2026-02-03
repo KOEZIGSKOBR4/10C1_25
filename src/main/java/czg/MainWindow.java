@@ -1,7 +1,15 @@
 package czg;
 
 import czg.objects.ExamplePlayerObject;
-import czg.scenes.ExampleScene1;
+import czg.scenes.BiogangScene;
+import czg.scenes.GangTestScene;
+import czg.scenes.PhysikgangScene;
+import czg.scenes.MathegangScene;
+import czg.scenes.InfogangScene;
+import czg.scenes.ChemiegangScene;
+import czg.scenes.GangHausmeisterScene;
+import czg.scenes.GangObenScene;
+import czg.scenes.ExampleScene2;
 import czg.scenes.SceneStack;
 import czg.util.Input;
 
@@ -13,17 +21,17 @@ public class MainWindow extends JFrame implements Runnable {
     /**
      * Wie viele Bildschirm-Pixel ein Textur-Pixel beansprucht
      */
-    public static final int PIXEL_SCALE = 6;
+    public static final int PIXEL_SCALE = 4;
 
     /**
      * Wie viele Bildschirm-Pixel das Fenster breit ist
      */
-    public static final int WIDTH = 140 * PIXEL_SCALE;
+    public static final int WIDTH = 240 * PIXEL_SCALE;
 
     /**
      * Wie viele Bildschirm-Pixel das Fenster hoch ist
      */
-    public static final int HEIGHT = 105 * PIXEL_SCALE;
+    public static final int HEIGHT = 135 * PIXEL_SCALE;
 
     /**
      * Einzelbilder pro Sekunde
@@ -68,10 +76,15 @@ public class MainWindow extends JFrame implements Runnable {
         // Haupt-Schleife in einem neuen Thread starten
         new Thread(INSTANCE).start();
 
-        // BEISPIEL-SZENE (nur zur Referenz, später entfernen!)
-        ExampleScene1 s1 = new ExampleScene1();
-        s1.objects.add(ExamplePlayerObject.INSTANCE);
-        SceneStack.INSTANCE.push(s1);
+        //WICHTIG!!!!!!
+        BiogangScene start = new BiogangScene();
+        SceneStack.INSTANCE.push(start);
+        
+        /*
+        PhysikgangScene physik = new PhysikgangScene();
+        start.objects.add(ExamplePlayerObject.INSTANCE);
+        INSTANCE.SCENE_STACK.push(physik);
+        */
     }
 
     /**

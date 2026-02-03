@@ -19,7 +19,7 @@ public class ExamplePlayerObject extends BaseObject {
     public static final ExamplePlayerObject INSTANCE = new ExamplePlayerObject();
 
     private ExamplePlayerObject() {
-        super(Images.get("/assets/characters/example.png"));
+        super(Images.get("/assets/characters/bre.png"));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ExamplePlayerObject extends BaseObject {
             x += 10;
         }
     }
-
+/*
     @Override
     public void draw(Graphics2D g) {
         super.draw(g);
@@ -52,4 +52,5 @@ public class ExamplePlayerObject extends BaseObject {
         g.setColor(Color.RED);
         g.drawRect(x, y, width, height);
     }
+*/
 }
