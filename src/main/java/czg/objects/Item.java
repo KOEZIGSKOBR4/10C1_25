@@ -18,11 +18,12 @@ public class Item extends BaseObject{
     public final int level;
     public final String name;
     
-    private Item(Image sprite, int x, int y, int level, String name) {
+    private Item(Image sprite, int x, int y, int level, String name, int ID) {
         super(sprite, x, y);
         
         this.level = level;
         this.name = name;
+        this.ID = ID;
     }
     
     @Override
