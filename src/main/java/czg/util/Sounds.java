@@ -1,4 +1,4 @@
-package czg.sound;
+package czg.util;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -7,6 +7,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Statische Methoden und Konstanten für Sounds
+ */
 public class Sounds {
 
     /**
@@ -36,7 +39,5 @@ public class Sounds {
             throw new RuntimeException(e);
         }
     }
-
-
 
 }

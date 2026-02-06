@@ -1,13 +1,11 @@
 package czg.util;
 
-import czg.sound.Sounds;
-
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
-import static czg.sound.Sounds.TARGET_AUDIO_FORMAT;
+import static czg.util.Sounds.TARGET_AUDIO_FORMAT;
 
 public class SoundTest {
 

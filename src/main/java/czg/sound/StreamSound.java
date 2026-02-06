@@ -1,5 +1,7 @@
 package czg.sound;
 
+import czg.util.Sounds;
+
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static czg.sound.Sounds.TARGET_AUDIO_FORMAT;
+import static czg.util.Sounds.TARGET_AUDIO_FORMAT;
 
 /**
  * {@link BaseSound}-Implementierung mithilfe von {@link SourceDataLine} und {@link AudioInputStream}
