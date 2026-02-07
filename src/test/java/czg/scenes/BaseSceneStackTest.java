@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class BaseSceneStackTest {
 
-    public static SceneStack sceneStack;
     public static BaseScene backgroundScene;
     public static BaseScene fullScreenScene;
     public static BaseScene partiallyCoveringScene;
@@ -57,17 +56,15 @@ public class BaseSceneStackTest {
         backgroundScene = new TestScene(coverSettings);
 
         fullScreenScene = new TestScene(coverSettings);
-        fullScreenScene.tags.add(fullscreenTag);
+        fullScreenScene.tags.get().add(fullscreenTag);
 
         partiallyCoveringScene = new TestScene(coverSettings);
-        partiallyCoveringScene.tags.add(partiallyCoveringTag);
-
-        sceneStack = new SceneStack();
+        partiallyCoveringScene.tags.get().add(partiallyCoveringTag);
     }
 
     @BeforeEach
     public void beforeEach() {
-        sceneStack.clear();
+        SceneStack.INSTANCE.clear();
         hasUpdated.clear();
         hasDrawn.clear();
         hasUnloaded.clear();

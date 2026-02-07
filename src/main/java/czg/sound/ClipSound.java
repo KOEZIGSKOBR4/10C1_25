@@ -2,10 +2,7 @@ package czg.sound;
 
 import czg.util.Sounds;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.*;
 import java.io.IOException;
 
 /**
@@ -24,22 +21,23 @@ public class ClipSound extends BaseSound {
     private final String audioFilePath;
 
     /**
-     * Wiedergabezustand
-     */
-    private boolean isPlaying;
-
-    /**
      * Lädt die angegebene Datei
      * @param audioPath Pfad zur Audio-Datei
      * @throws RuntimeException Wenn ein Fehler auftritt
      */
-    public ClipSound(String audioPath) {
+    public ClipSound(String audioPath, boolean autoPlay, EndOfFileBehaviour endOfFileBehaviour) {
+        audioFilePath = audioPath;
         try {
             clip = AudioSystem.getClip();
-            clip.open(Sounds.getInputStream(audioFilePath = audioPath));
-        } catch (IOException | LineUnavailableException e) {
+            clip.addLineListener(this::lineListener);
+        } catch (LineUnavailableException e) {
             throw new RuntimeException(e);
         }
+
+        if(autoPlay)
+            setPlaying(true);
+
+        setEndOfFileBehaviour(endOfFileBehaviour);
     }
 
     @Override
@@ -49,7 +47,15 @@ public class ClipSound extends BaseSound {
 
     @Override
     protected void setPlayingActual(boolean playing) {
-        if(isPlaying()) {
+        if(playing) {
+            // Daten laden, wenn noch nicht geschehen
+            try {
+                if (!clip.isOpen())
+                    clip.open(Sounds.getInputStream(audioFilePath));
+            } catch (IOException | LineUnavailableException e) {
+                throw new RuntimeException(e);
+            }
+
             clip.start();
         } else {
             clip.stop();
@@ -58,12 +64,38 @@ public class ClipSound extends BaseSound {
 
     @Override
     protected boolean isPlayingActual() {
-        return isPlaying;
+        return clip.isActive();
     }
 
     @Override
     protected void seekActual(float position) {
         clip.setMicrosecondPosition((long) (clip.getMicrosecondLength() * position));
+    }
+
+    @Override
+    public void setEndOfFileBehaviour(EndOfFileBehaviour behaviour) {
+        // loop()-Methode verwenden
+        if(behaviour == EndOfFileBehaviour.LOOP) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            endOfFileBehaviour = null;
+            return;
+        }
+
+        // Eingebaute loop()-Methode deaktivieren
+        clip.loop(0);
+
+        // Variable setzen & damit an lineListener() übergeben
+        endOfFileBehaviour = behaviour;
+    }
+
+    /**
+     * {@link LineListener}, der verwendet wird, wenn {@link #endOfFileBehaviour} nicht {@link EndOfFileBehaviour#LOOP} ist.
+     * @param event {@link LineEvent}
+     */
+    private void lineListener(LineEvent event) {
+        if(endOfFileBehaviour != null && event.getType() == LineEvent.Type.STOP) {
+            endOfFileBehaviour.function.accept(this);
+        }
     }
 
     @Override

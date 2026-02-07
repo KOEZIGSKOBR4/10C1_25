@@ -33,23 +33,23 @@ public class SceneStackCoveringTest extends BaseSceneStackTest {
 
     @Test
     public void testOverlyingTags() {
-        sceneStack.push(backgroundScene);
-        sceneStack.push(fullScreenScene);
-        sceneStack.push(partiallyCoveringScene);
+        SceneStack.INSTANCE.push(backgroundScene);
+        SceneStack.INSTANCE.push(fullScreenScene);
+        SceneStack.INSTANCE.push(partiallyCoveringScene);
 
-        assertEquals(new LinkedHashSet<>(List.of(fullscreenTag, partiallyCoveringTag)), sceneStack.getOverlyingTags(0));
-        assertEquals(new LinkedHashSet<>(List.of(partiallyCoveringTag)), sceneStack.getOverlyingTags(1));
-        assertEquals(new LinkedHashSet<>(), sceneStack.getOverlyingTags(2));
+        assertEquals(new LinkedHashSet<>(List.of(fullscreenTag, partiallyCoveringTag)), SceneStack.INSTANCE.getOverlyingTags(0));
+        assertEquals(new LinkedHashSet<>(List.of(partiallyCoveringTag)), SceneStack.INSTANCE.getOverlyingTags(1));
+        assertEquals(new LinkedHashSet<>(), SceneStack.INSTANCE.getOverlyingTags(2));
     }
 
     @Test
     public void testEffectiveRules() {
-        sceneStack.push(backgroundScene);
-        sceneStack.push(fullScreenScene);
-        sceneStack.push(partiallyCoveringScene);
+        SceneStack.INSTANCE.push(backgroundScene);
+        SceneStack.INSTANCE.push(fullScreenScene);
+        SceneStack.INSTANCE.push(partiallyCoveringScene);
 
-        sceneStack.draw(null);
-        sceneStack.update();
+        SceneStack.INSTANCE.draw(null);
+        SceneStack.INSTANCE.update();
 
         assertFalse(hasDrawn.getOrDefault(backgroundScene, false));
         assertTrue(hasDrawn.getOrDefault(fullScreenScene, false));

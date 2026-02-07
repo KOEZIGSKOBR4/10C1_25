@@ -76,14 +76,14 @@ public class StreamSound extends BaseSound {
     /**
      * Ob der Sound weiter spielen soll oder angehalten ist
      */
-    private final AtomicBoolean isPlaying = new AtomicBoolean(true);
+    private final AtomicBoolean isPlaying;
 
     /**
      * Öffnet den internen {@link AudioInputStream} für die angegebene Datei
      * @param audioPath Pfad zur Audio-Datei
      * @throws RuntimeException Wenn ein Fehler auftritt
      */
-    public StreamSound(String audioPath) {
+    public StreamSound(String audioPath, boolean autoPlay, EndOfFileBehaviour endOfFileBehaviour) {
         // Dateipfad speichern
         audioFilePath = audioPath;
 
@@ -100,6 +100,12 @@ public class StreamSound extends BaseSound {
 
         // Zum Set von StreamSounds hinzufügen
         playbackInstances.add(this);
+
+        // Wiedergabezustand setzen
+        isPlaying = new AtomicBoolean(autoPlay);
+
+        // EndOfFileBehaviour
+        setEndOfFileBehaviour(endOfFileBehaviour);
 
         // Ggf. den Wiedergabe-Thread starten bzw. aufwecken
         if(! playbackThread.isAlive()) {
@@ -129,6 +135,23 @@ public class StreamSound extends BaseSound {
     @Override
     public void seekActual(float position) {
         seekTo.set(Float.floatToIntBits(position));
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        if(isStopped())
+            return;
+
+        if(inStream != null) {
+            try {
+                inStream.close();
+                inStream = null;
+            } catch (IOException e) {
+                System.err.println("Konnte AudioInputStream nicht schließen: "+this);
+            }
+        }
+        playbackInstances.remove(this);
     }
 
     @Override
@@ -207,14 +230,14 @@ public class StreamSound extends BaseSound {
 
                         // Stream-Ende erreicht:
                         if (bytesRead == -1) {
-                            // Wiedergabe stoppen
-                            sound.setPlaying(false);
+                            // Entsprechende Aktion ausführen
+                            //      LOOP    -> Seek-Logik wird beim nächsten Durchlauf ausgeführt, isPlaying bleibt true
+                            //      RESTART_AND_PAUSE   -> -''-, isPlaying wird false
+                            //      STOP    -> stop() wird aufgerufen, wird aus der Liste entfernt (, isPlaying wird false)
+                            sound.endOfFileBehaviour.function.accept(sound);
 
-                            // bytesRead-Zähler wird *noch nicht* zurückgesetzt
-
-                            // Stream schließen & aus dem StreamSound-Objekt entfernen
-                            sound.inStream.close();
-                            sound.inStream = null;
+                            // bytesRead-Zähler wird *noch nicht* zurückgesetzt, damit
+                            // die Vor-/Zurückspul-Logik (oben) funktioniert
                         } else {
                             // Zähler erhöhen
                             sound.bytesRead += bytesRead;

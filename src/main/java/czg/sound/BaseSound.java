@@ -8,17 +8,21 @@ import javax.sound.sampled.*;
 public abstract class BaseSound {
 
     /**
-     * Ob beim Entladen der Szene (Entfernen vom Szenen-Stapel)
-     * automatisch {@link #stop()} aufgerufen werden soll. Nützlich
-     * für kleine Sound-Effekte; sollte für Musik, die über mehrere
-     * Szenen spielt eher {@code false} sein.
+     * Wenn {@code true}, wird der Sound beim Entladen der Szene,
+     * in der er sich befindet <b>ggf.</b> an die als nächstes geladene
+     * Szene übergeben.
      */
-    public boolean autoStopOnUnload = true;
+    public boolean persistentAcrossSceneChange = false;
 
     /**
      * Ob der Sound gestoppt wurde
      */
     protected boolean isStopped = false;
+
+    /**
+     * Regelt, was passieren soll, wenn die Datei fertig abgespielt ist
+     */
+    protected EndOfFileBehaviour endOfFileBehaviour = EndOfFileBehaviour.RESTART_AND_PAUSE;
 
     /**
      * Zugriff auf die verwendete {@link DataLine}, z.B. ein {@link Clip}
@@ -93,8 +97,10 @@ public abstract class BaseSound {
     public void stop() {
         if(isStopped) {
             System.err.println("Sound bereits gestoppt: "+this);
+            return;
         }
 
+        setPlaying(false);
         isStopped = true;
         getLine().close();
     }
@@ -105,6 +111,15 @@ public abstract class BaseSound {
      */
     public boolean isStopped() {
         return isStopped;
+    }
+
+    /**
+     * Ändert, was passieren soll, wenn das Ende der Sound-Datei erreicht ist.
+     * @implNote Die {@link EndOfFileBehaviour#function} der Enum-Konstante muss nicht unbedingt verwendet werden!
+     * @param behaviour Enum-Konstante
+     */
+    public void setEndOfFileBehaviour(EndOfFileBehaviour behaviour) {
+        endOfFileBehaviour = behaviour;
     }
 
     /**

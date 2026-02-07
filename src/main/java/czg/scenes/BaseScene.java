@@ -2,6 +2,9 @@ package czg.scenes;
 
 import czg.objects.BaseObject;
 import czg.scenes.cover_settings.CoverSettings;
+import czg.sound.BaseSound;
+import czg.sound.SoundGroup;
+import czg.util.Lazy;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -23,15 +26,28 @@ public class BaseScene {
     public final List<BaseObject> objects = new ArrayList<>();
 
     /**
+     * Sounds in dieser Szene
+     */
+    public final Lazy<SoundGroup> sounds = new Lazy<>(SoundGroup::new);
+
+
+    /**
      * Liste der Tags, die diese Szene hat. <b>Sollte nur beim Erstellen der Szene
      * (d.h. im Konstruktor) festgelegt werden.</b>
      */
-    public final SequencedSet<String> tags = new LinkedHashSet<>();
+    public final Lazy<SequencedSet<String>> tags = new Lazy<>(LinkedHashSet::new);
 
     /**
-     * Ob die Szene verdeckt ist
+     * Ob im Szenen-Stapel eine andere Szene über dieser liegt
      */
-    public boolean isCovered = false;
+    protected boolean isCovered = false;
+
+    /**
+     * <b>Wird vom {@link SceneStack} gesetzt, nicht selbst anfassen!!</b>
+     * An welcher Position im Szenen-Stapel sich diese Szene befindet. Wird
+     * auf {@code -1} gesetzt, wenn gar nicht.
+     */
+    public int sceneStackPosition = -1;
 
     /**
      * Einstellungen, wenn die Szene von anderen verdeckt ist
@@ -79,9 +95,41 @@ public class BaseScene {
     }
 
     /**
+     * Die Szene verdecken bzw. nicht mehr verdecken
+     * @param covered Ob die Szene ab jetzt als verdeckt gilt oder nicht
+     */
+    public void setCovered(boolean covered) {
+        if(covered == isCovered)
+            return;
+
+        if((isCovered = covered) && coverSettings.getEffectiveRules(SceneStack.INSTANCE.getOverlyingTags(sceneStackPosition)).coverPausesAudio().toBoolean()) {
+            // Bedecken
+            sounds.ifPresent(SoundGroup::pause);
+        } else {
+            // Nicht mehr bedecken
+            sounds.ifPresent(SoundGroup::resume);
+        }
+    }
+
+    /**
+     * Abfragen, ob im Szenen-Stapel eine andere Szene auf dieser liegt
+     * @return Ob die Szene verdeckt ist
+     */
+    public boolean isCovered() {
+        return isCovered;
+    }
+
+    /**
      * Wird aufgerufen, wenn die Szene aus dem Szenen-Stapel entfernt wird
      */
-    public void unload() {}
+    public void unload() {
+        // Position im Szenen-Stapel vergessen
+        sceneStackPosition = -1;
+        // Ggf. Sounds stoppen
+        sounds.ifPresent(sounds -> sounds.stop().stream()
+                .filter(sound -> ! sound.isStopped())
+                .forEach(BaseSound::stop));
+    }
 
     /**
      * Ruft {@link BaseObject#update(BaseScene)} für jedes Objekt in der {@link #objects}-Liste auf.

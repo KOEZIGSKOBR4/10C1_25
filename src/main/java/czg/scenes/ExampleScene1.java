@@ -6,6 +6,9 @@ import czg.objects.ButtonObject;
 import czg.objects.ExampleDoorObject;
 import czg.scenes.minigame_scenes.InformaticsLevelScene;
 import czg.scenes.minigame_scenes.MinigameScene;
+import czg.sound.BaseSound;
+import czg.sound.EndOfFileBehaviour;
+import czg.sound.StreamSound;
 import czg.util.Draw;
 import czg.util.Images;
 
@@ -18,18 +21,32 @@ import static czg.MainWindow.WIDTH;
 
 public class ExampleScene1 extends BaseScene {
 
+    private static boolean musicCreated = false;
+
     public ExampleScene1() {
         objects.add(new BackdropObject(new Color(130, 149, 163)));
 
-        ExampleDoorObject door = new ExampleDoorObject(0, 0, ExampleScene2::new);
+        if(! musicCreated) {
+            BaseSound music = new StreamSound("/assets/sound/hallway.ogg", true, EndOfFileBehaviour.LOOP);
+            music.persistentAcrossSceneChange = true;
+            sounds.get().addSound(music);
+            musicCreated = true;
+        }
+
+        ExampleDoorObject door = new ExampleDoorObject(0, 0, () -> {
+            ExampleScene2 newScene = new ExampleScene2();
+            newScene.sounds.get().addAllSounds(sounds.get().stop());
+            return newScene;
+        });
+
         door.x = WIDTH - Math.round(door.width * 1.5f);
         door.y = HEIGHT / 2 - door.height / 2;
         objects.add(door);
 
         MinigameScene informaticsTest = new MinigameScene(
-            new InformaticsLevelScene(null, new ArrayList<String>(Arrays.asList("and_gate", "or_gate", "nand_gate", "not_gate"))),
-            new InformaticsLevelScene(null, new ArrayList<String>(Arrays.asList("or_gate", "not_gate", "xnor_gate", "not_gate"))),
-            new InformaticsLevelScene(null, new ArrayList<String>(Arrays.asList("nand_gate", "xor_gate", "nand_gate", "not_gate")))
+            new InformaticsLevelScene(null, new ArrayList<>(Arrays.asList("and_gate", "or_gate", "nand_gate", "not_gate"))),
+            new InformaticsLevelScene(null, new ArrayList<>(Arrays.asList("or_gate", "not_gate", "xnor_gate", "not_gate"))),
+            new InformaticsLevelScene(null, new ArrayList<>(Arrays.asList("nand_gate", "xor_gate", "nand_gate", "not_gate")))
         );
 
         ButtonObject startMinigameTest = new ButtonObject(Images.get("/assets/minigames/informatics/button.png"), 10, 10, informaticsTest::startMinigame);

@@ -2,20 +2,26 @@ package czg.scenes;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SceneStackOperationsTest extends BaseSceneStackTest {
 
-    @Test
-    public void testUnloadingWhenRemoving() {
-        sceneStack.push(backgroundScene);
-        sceneStack.push(partiallyCoveringScene);
+    public void commonSetup() {
+        SceneStack.INSTANCE.push(backgroundScene);
+        SceneStack.INSTANCE.push(partiallyCoveringScene);
 
         assertFalse(hasUnloaded.getOrDefault(backgroundScene, false));
         assertFalse(hasUnloaded.getOrDefault(partiallyCoveringScene, false));
 
-        sceneStack.remove(backgroundScene);
+        assertEquals(0, backgroundScene.sceneStackPosition);
+        assertEquals(1, partiallyCoveringScene.sceneStackPosition);
+    }
+
+    @Test
+    public void testUnloadingAndPositionWhenRemoving() {
+        commonSetup();
+
+        SceneStack.INSTANCE.remove(backgroundScene);
 
         assertTrue(hasUnloaded.getOrDefault(backgroundScene, false));
         assertFalse(hasUnloaded.getOrDefault(partiallyCoveringScene, false));
@@ -24,13 +30,9 @@ public class SceneStackOperationsTest extends BaseSceneStackTest {
 
     @Test
     public void testUnloadingWhenReplacing() {
-        sceneStack.push(backgroundScene);
-        sceneStack.push(partiallyCoveringScene);
+        commonSetup();
 
-        assertFalse(hasUnloaded.getOrDefault(backgroundScene, false));
-        assertFalse(hasUnloaded.getOrDefault(partiallyCoveringScene, false));
-
-        sceneStack.replace(partiallyCoveringScene, fullScreenScene);
+        SceneStack.INSTANCE.replace(partiallyCoveringScene, fullScreenScene);
 
         assertFalse(hasUnloaded.getOrDefault(backgroundScene, false));
         assertTrue(hasUnloaded.getOrDefault(partiallyCoveringScene, false));
@@ -38,13 +40,9 @@ public class SceneStackOperationsTest extends BaseSceneStackTest {
 
     @Test
     public void testUnloadingWhenPopping() {
-        sceneStack.push(backgroundScene);
-        sceneStack.push(partiallyCoveringScene);
+        commonSetup();
 
-        assertFalse(hasUnloaded.getOrDefault(backgroundScene, false));
-        assertFalse(hasUnloaded.getOrDefault(partiallyCoveringScene, false));
-
-        sceneStack.pop();
+        SceneStack.INSTANCE.pop();
 
         assertFalse(hasUnloaded.getOrDefault(backgroundScene, false));
         assertTrue(hasUnloaded.getOrDefault(partiallyCoveringScene, false));
@@ -52,21 +50,21 @@ public class SceneStackOperationsTest extends BaseSceneStackTest {
 
     @Test
     public void testCoveringStatus() {
-        sceneStack.push(backgroundScene);
-        assertFalse(backgroundScene.isCovered);
+        SceneStack.INSTANCE.push(backgroundScene);
+        assertFalse(backgroundScene.isCovered());
 
-        sceneStack.push(fullScreenScene);
-        assertTrue(backgroundScene.isCovered);
-        assertFalse(fullScreenScene.isCovered);
+        SceneStack.INSTANCE.push(fullScreenScene);
+        assertTrue(backgroundScene.isCovered());
+        assertFalse(fullScreenScene.isCovered());
 
-        sceneStack.push(partiallyCoveringScene);
-        assertTrue(backgroundScene.isCovered);
-        assertTrue(fullScreenScene.isCovered);
-        assertFalse(partiallyCoveringScene.isCovered);
+        SceneStack.INSTANCE.push(partiallyCoveringScene);
+        assertTrue(backgroundScene.isCovered());
+        assertTrue(fullScreenScene.isCovered());
+        assertFalse(partiallyCoveringScene.isCovered());
 
-        sceneStack.pop();
-        assertTrue(backgroundScene.isCovered);
-        assertFalse(fullScreenScene.isCovered);
+        SceneStack.INSTANCE.pop();
+        assertTrue(backgroundScene.isCovered());
+        assertFalse(fullScreenScene.isCovered());
     }
 
 }
