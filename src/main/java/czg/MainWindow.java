@@ -11,11 +11,17 @@ import czg.scenes.GangHausmeisterScene;
 import czg.scenes.GangObenScene;
 import czg.scenes.ExampleScene2;
 import czg.scenes.SceneStack;
+import czg.sound.EndOfFileBehaviour;
+import czg.sound.SoundGroup;
+import czg.sound.StreamSound;
 import czg.util.Input;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Das Haupt-Fenster. Hier wird die Grafik ausgegeben.
+ */
 public class MainWindow extends JFrame implements Runnable {
 
     /**
@@ -36,11 +42,14 @@ public class MainWindow extends JFrame implements Runnable {
     /**
      * Einzelbilder pro Sekunde
      */
-    public static final int FPS = 30;
+    public static final int FPS = 60;
 
     public static final MainWindow INSTANCE = new MainWindow();
 
 
+    /**
+     * Soll nicht von außerhalb instanziiert werden
+     */
     private MainWindow() {
         super("CZGame");
 
@@ -58,11 +67,18 @@ public class MainWindow extends JFrame implements Runnable {
         // Tastatur- und Maus-Eingaben empfangen
         addKeyListener(Input.INSTANCE);
         addMouseListener(Input.INSTANCE);
+        addFocusListener(Input.INSTANCE);
 
         // Gesamtes Programm wird beendet, wenn das Fenster geschlossen wird
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+
+    /**
+     * Die tatsächliche Main-Methode. Zeigt das Fenster, startet
+     * die Haupt-Schleife und fügt die erste Szene hinzu.
+     * @param args Unbenutzt
+     */
     public static void main(String[] args) {
         // OpenGL-Grafikschnittstelle und damit (hoffentlich) die Grafikkarte verwenden
         System.setProperty("sun.java2d.opengl","true");
@@ -85,6 +101,19 @@ public class MainWindow extends JFrame implements Runnable {
         start.objects.add(ExamplePlayerObject.INSTANCE);
         INSTANCE.SCENE_STACK.push(physik);
         */
+
+        // BEISPIEL-SZENE (nur zur Referenz, später entfernen!)
+        SoundGroup.GLOBAL_SOUNDS.addSound(
+                new StreamSound("/assets/sound/hallway.ogg", true, EndOfFileBehaviour.LOOP)
+        );
+
+        ExampleScene1 s1 = new ExampleScene1();
+        s1.objects.add(ExamplePlayerObject.INSTANCE);
+        SceneStack.INSTANCE.push(s1);
+
+        // Haupt-Schleife in einem neuen Thread starten
+        new Thread(INSTANCE).start();
+
     }
 
     /**
@@ -104,6 +133,7 @@ public class MainWindow extends JFrame implements Runnable {
 
         System.out.println("Haupt-Schleife beginnt");
 
+        //noinspection InfiniteLoopStatement
         while(true) {
             // Aktuelle Zeit messen
             currentTime = System.nanoTime();

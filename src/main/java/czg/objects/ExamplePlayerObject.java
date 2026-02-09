@@ -1,6 +1,9 @@
 package czg.objects;
 
 import czg.scenes.BaseScene;
+import czg.sound.BaseSound;
+import czg.sound.ClipSound;
+import czg.sound.EndOfFileBehaviour;
 import czg.util.Images;
 import czg.util.Input;
 
@@ -18,6 +21,11 @@ public class ExamplePlayerObject extends BaseObject {
      */
     public static final ExamplePlayerObject INSTANCE = new ExamplePlayerObject();
 
+    private final BaseSound sound = new ClipSound("/assets/sound/oink.ogg", false, EndOfFileBehaviour.RESTART_AND_PAUSE);
+    {
+        sound.setEndOfFileBehaviour(EndOfFileBehaviour.RESTART_AND_PAUSE);
+    }
+
     private ExamplePlayerObject() {
         super(Images.get("/assets/characters/bre.png"));
     }
@@ -25,7 +33,8 @@ public class ExamplePlayerObject extends BaseObject {
     @Override
     public void update(BaseScene scene) {
         if(isClicked())
-            System.out.println("KLICK!");
+            sound.setPlaying(true);
+
 
         if(Input.INSTANCE.getKeyState(KeyEvent.VK_UP).isDown()) {
             y -= 10;
