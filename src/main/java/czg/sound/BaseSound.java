@@ -120,7 +120,7 @@ public abstract class BaseSound {
      * @return Lautstärkesteuerung
      */
     public FloatControl getVolumeControl() {
-        return (FloatControl) getLine().getControl(FloatControl.Type.VOLUME);
+        return (FloatControl) getLine().getControl(FloatControl.Type.MASTER_GAIN);
     }
 
     /**
