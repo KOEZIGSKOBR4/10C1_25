@@ -150,8 +150,15 @@ public class MainWindow extends JFrame implements Runnable {
                 // Code für Szenen und Objekte ausführen
                 SceneStack.INSTANCE.update();
 
-                if(Input.INSTANCE.getKeyState(KeyEvent.VK_P).isDown())
+                // Spezielle Tasten
+                if(Input.INSTANCE.getKeyState(KeyEvent.VK_P) == Input.KeyState.PRESSED)
                     CharacterCreator.INSTANCE.get().setVisible(true);
+                if(Input.INSTANCE.getKeyState(KeyEvent.VK_M) == Input.KeyState.PRESSED) {
+                    if(SoundGroup.GLOBAL_SOUNDS.isPlaying())
+                        SoundGroup.GLOBAL_SOUNDS.pause();
+                    else
+                        SoundGroup.GLOBAL_SOUNDS.resume();
+                }
 
                 // Grafik
                 SceneStack.INSTANCE.repaint();

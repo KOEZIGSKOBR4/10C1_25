@@ -103,6 +103,14 @@ public class SoundGroup {
     }
 
     /**
+     * Abfragen, ob die Sound-Gruppe pausiert ist
+     * @return Ob die Sound-Gruppe pausiert ist
+     */
+    public boolean isPlaying() {
+        return ! paused;
+    }
+
+    /**
      * Entfernt alle Sound-Objekte aus der Gruppe die {@link BaseSound#isStopped()} sind.
      */
     private void clean() {
