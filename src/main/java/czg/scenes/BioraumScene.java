@@ -22,16 +22,16 @@ public class BioraumScene extends BaseScene{
         ButtonObject unten = new ButtonObject(
                 Images.get("/assets/background/PfeilUnten.png"),
                 () -> {
-                    BiogangScene hausm = new BiogangScene();
+                    BiogangScene bio = new BiogangScene();
                     /*
                     this.objects.remove(ExamplePlayerObject.INSTANCE);
                     tr1.objects.add(ExamplePlayerObject.INSTANCE);
                     */
-                    SceneStack.INSTANCE.replace(this, hausm);
+                    SceneStack.INSTANCE.replace(this, bio);
                 });
 
         unten.x = (WIDTH/2) - (unten.width/2);
-        unten.y = 440;
+        unten.y = 452;
         objects.add(unten);
 
     }

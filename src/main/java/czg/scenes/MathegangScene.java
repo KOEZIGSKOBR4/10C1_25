@@ -4,11 +4,13 @@
  */
 package czg.scenes;
 
+import czg.MainWindow;
 import czg.objects.BackdropObject;
 import czg.objects.ButtonObject;
 import czg.util.Images;
 
 import static czg.MainWindow.HEIGHT;
+import czg.objects.InvisibleDoorObject;
 
 /**
  *
@@ -18,6 +20,10 @@ public class MathegangScene extends BaseScene{
     public MathegangScene(){
         //Einfügen des Hintergrunds
         objects.add(new  BackdropObject(Images.get("/assets/background/Mathegang.png")));
+        
+        //Einfügen des unsichtbaren Tür-Objektes auf Position der Tür
+        MatheraumScene mathe = new MatheraumScene();
+        objects.add(new InvisibleDoorObject(MainWindow.PIXEL_SCALE * 177, MainWindow.PIXEL_SCALE * 45,this, mathe));
         
         //Buttons zum Klicken in andere Gangszenen
         ButtonObject rechts = new ButtonObject(

@@ -47,7 +47,7 @@ public class TreppeLinks3Scene extends BaseScene{
                 });
 
         unten.x = (WIDTH/2) - (unten.width/2);
-        unten.y = 440;
+        unten.y = 452;
         objects.add(unten);
     }    
 }
