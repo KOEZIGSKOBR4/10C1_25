@@ -1,6 +1,6 @@
 package czg.objects;
 
-public enum DepartmentObject {
+public enum Department {
     COMPUTER_SCIENCE,
     PHYSICS,
     MATHEMATICS,

@@ -6,13 +6,13 @@ import java.awt.*;
 import java.util.Random;
 
 public enum LogicGateObject {
-    AND("/assets/minigames/informatics/and_gate.png"),
-    OR("/assets/minigames/informatics/or_gate.png"),
-    NOT("/assets/minigames/informatics/not_gate.png"),
-    NAND("/assets/minigames/informatics/nand_gate.png"),
-    NOR("/assets/minigames/informatics/nor_gate.png"),
-    XOR("/assets/minigames/informatics/xor_gate.png"),
-    XNOR("/assets/minigames/informatics/xnor_gate.png");
+    AND("/assets/minigames/computer_science/and_gate.png"),
+    OR("/assets/minigames/computer_science/or_gate.png"),
+    NOT("/assets/minigames/computer_science/not_gate.png"),
+    NAND("/assets/minigames/computer_science/nand_gate.png"),
+    NOR("/assets/minigames/computer_science/nor_gate.png"),
+    XOR("/assets/minigames/computer_science/xor_gate.png"),
+    XNOR("/assets/minigames/computer_science/xnor_gate.png");
 
     public final Image sprite;
 

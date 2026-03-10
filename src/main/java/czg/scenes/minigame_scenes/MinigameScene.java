@@ -5,7 +5,7 @@
 package czg.scenes.minigame_scenes;
 
 import czg.objects.ButtonObject;
-import czg.objects.DepartmentObject;
+import czg.objects.Department;
 import czg.scenes.BaseScene;
 import czg.scenes.SceneStack;
 
@@ -44,7 +44,7 @@ public class MinigameScene extends BaseScene {
      * Ein Minigame generieren.
      * @param department Die Fachschaft des Minigames
      */
-    public static MinigameScene generateMinigame(DepartmentObject department) {
+    public static MinigameScene generateMinigame(Department department) {
         switch(department) {
             case COMPUTER_SCIENCE -> {
                 return new MinigameScene(
@@ -64,7 +64,7 @@ public class MinigameScene extends BaseScene {
         }
     }
 
-    public static void resetMinigame(DepartmentObject department, BaseScene scene) {
+    public static void resetMinigame(Department department, BaseScene scene) {
         MinigameScene newMinigame = MinigameScene.generateMinigame(department);
 
         if (scene.objects.getLast() instanceof ButtonObject) {
@@ -72,7 +72,7 @@ public class MinigameScene extends BaseScene {
         }
     }
 
-    protected static void resetAndStartMinigame(DepartmentObject department, BaseScene scene, int level) {
+    protected static void resetAndStartMinigame(Department department, BaseScene scene, int level) {
         MinigameScene newMinigame = MinigameScene.generateMinigame(department);
 
         if (scene.objects.getLast() instanceof ButtonObject) {

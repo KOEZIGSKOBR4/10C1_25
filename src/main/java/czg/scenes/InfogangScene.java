@@ -4,12 +4,13 @@
  */
 package czg.scenes;
 
-import static czg.MainWindow.HEIGHT;
 import czg.objects.BackdropObject;
 import czg.objects.ButtonObject;
-import czg.objects.DepartmentObject;
+import czg.objects.Department;
 import czg.scenes.minigame_scenes.MinigameScene;
 import czg.util.Images;
+
+import static czg.MainWindow.HEIGHT;
 
 /**
  *
@@ -36,7 +37,7 @@ public class InfogangScene extends BaseScene{
         links.y = (HEIGHT/2) - (links.height/2);
         objects.add(links);
 
-        MinigameScene informaticsTest = MinigameScene.generateMinigame(DepartmentObject.COMPUTER_SCIENCE);
+        MinigameScene informaticsTest = MinigameScene.generateMinigame(Department.COMPUTER_SCIENCE);
 
         objects.add(new ButtonObject(Images.get("/assets/minigames/general/button_menu.png"), informaticsTest::startMinigame));
     }

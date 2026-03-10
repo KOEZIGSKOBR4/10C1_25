@@ -2,21 +2,21 @@ package czg.objects.minigame_objects;
 
 import czg.util.Images;
 
-import java.awt.Image;
+import java.awt.*;
 import java.util.Random;
 
 public enum ComputerSciencePuzzleObject {
-    P_00("/assets/minigames/informatics/puzzle_1_1.png", LogicGateObject.AND, 4),
-    P_01("/assets/minigames/informatics/puzzle_1_2.png", LogicGateObject.OR, 4),
-    P_02("/assets/minigames/informatics/puzzle_1_3.png", LogicGateObject.NAND, 4),
+    P_00("/assets/minigames/computer_science/puzzle_1_1.png", LogicGateObject.AND, 4),
+    P_01("/assets/minigames/computer_science/puzzle_1_2.png", LogicGateObject.OR, 4),
+    P_02("/assets/minigames/computer_science/puzzle_1_3.png", LogicGateObject.NAND, 4),
 
-    P_10("/assets/minigames/informatics/puzzle_2_1.png", LogicGateObject.AND, 5),
-    P_11("/assets/minigames/informatics/puzzle_2_2.png", LogicGateObject.OR, 5),
-    P_12("/assets/minigames/informatics/puzzle_2_3.png", LogicGateObject.NAND, 5),
+    P_10("/assets/minigames/computer_science/puzzle_2_1.png", LogicGateObject.AND, 5),
+    P_11("/assets/minigames/computer_science/puzzle_2_2.png", LogicGateObject.OR, 5),
+    P_12("/assets/minigames/computer_science/puzzle_2_3.png", LogicGateObject.NAND, 5),
 
-    P_20("/assets/minigames/informatics/puzzle_3_1.png", LogicGateObject.AND, 6),
-    P_21("/assets/minigames/informatics/puzzle_3_2.png", LogicGateObject.OR, 6),
-    P_22("/assets/minigames/informatics/puzzle_3_3.png", LogicGateObject.NAND, 6);
+    P_20("/assets/minigames/computer_science/puzzle_3_1.png", LogicGateObject.AND, 6),
+    P_21("/assets/minigames/computer_science/puzzle_3_2.png", LogicGateObject.OR, 6),
+    P_22("/assets/minigames/computer_science/puzzle_3_3.png", LogicGateObject.NAND, 6);
 
     public static final ComputerSciencePuzzleObject[][] PUZZLES = {
         {

@@ -3,12 +3,12 @@ package czg.scenes.minigame_scenes;
 import czg.MainWindow;
 import czg.objects.BaseObject;
 import czg.objects.ButtonObject;
+import czg.objects.Department;
 import czg.objects.minigame_objects.ComputerSciencePuzzleObject;
-import czg.objects.DepartmentObject;
 
 public class ComputerScienceLevelScene extends LevelScene {
     public ComputerScienceLevelScene(int level) {
-        super(DepartmentObject.COMPUTER_SCIENCE, level);
+        super(Department.COMPUTER_SCIENCE, level);
 
         ComputerSciencePuzzleObject puzzle = ComputerSciencePuzzleObject.getPuzzle(level);
 

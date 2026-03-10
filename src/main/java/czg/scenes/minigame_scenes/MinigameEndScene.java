@@ -1,17 +1,13 @@
 package czg.scenes.minigame_scenes;
 
 import czg.MainWindow;
-import czg.objects.BackdropObject;
-import czg.objects.BaseObject;
-import czg.objects.ButtonObject;
-import czg.objects.ItemObject;
-import czg.objects.DepartmentObject;
+import czg.objects.*;
 import czg.scenes.BaseScene;
 import czg.scenes.SceneStack;
 import czg.util.Images;
 
 public class MinigameEndScene extends BaseScene {
-    public MinigameEndScene(DepartmentObject department, boolean won, int level, ItemObject reward) {
+    public MinigameEndScene(Department department, boolean won, int level, ItemObject reward) {
         objects.add(new BackdropObject(Images.get("/assets/minigames/general/background_overlay.png")));
 
         if(won) {

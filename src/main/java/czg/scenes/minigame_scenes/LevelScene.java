@@ -2,18 +2,17 @@ package czg.scenes.minigame_scenes;
 
 import czg.MainWindow;
 import czg.objects.*;
-import czg.objects.DepartmentObject;
 import czg.scenes.BaseScene;
 import czg.scenes.SceneStack;
 import czg.scenes.cover_settings.CoverSettings;
 import czg.util.Images;
 
 public abstract class LevelScene extends BaseScene {
-    final DepartmentObject DEPARTMENT;
+    final Department DEPARTMENT;
     final int LEVEL;
     final ItemObject REWARD;
 
-    public LevelScene(DepartmentObject department, int level) {
+    public LevelScene(Department department, int level) {
         super(new CoverSettings(false, true, false));
 
         this.DEPARTMENT = department;

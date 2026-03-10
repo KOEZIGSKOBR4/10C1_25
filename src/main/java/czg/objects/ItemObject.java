@@ -59,7 +59,7 @@ public enum ItemObject{
      * @param minigame Das Minispiel, welches beendet wurde
      * @param level Das Level, welches beendet wurde
      */
-    public static ItemObject getMinigameReward(DepartmentObject minigame, int level) {
+    public static ItemObject getMinigameReward(Department minigame, int level) {
         switch(minigame) {
             case COMPUTER_SCIENCE -> {
                 switch(level) {
