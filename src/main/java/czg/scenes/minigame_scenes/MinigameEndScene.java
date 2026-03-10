@@ -23,7 +23,7 @@ public class MinigameEndScene extends BaseScene {
 
             objects.add(rewardContainer);
 
-            BaseObject rewardItem = new BaseObject(reward.sprite);
+            BaseObject rewardItem = new BaseObject(reward.SPRITE);
             rewardItem.x = (MainWindow.WIDTH - rewardContainer.width + rewardContainer.width-rewardItem.width) / 2;
             rewardItem.y = (int)((MainWindow.HEIGHT - rewardContainer.height) * 0.9) + (rewardContainer.height-rewardItem.height) / 2;
 

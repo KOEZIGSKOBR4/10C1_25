@@ -44,14 +44,14 @@ public enum ItemObject{
     ZETTEL("Zettel", "/assets/items/zettel.png", 2),
     ZIRKEL("Zirkel", "/assets/items/zirkel.png", 0);
         
-    public final String name;
-    public final Image sprite;
-    public final int level;
+    public final String NAME;
+    public final Image SPRITE;
+    public final int LEVEL;
     
     ItemObject(String name, String imagePath, int level) {
-        this.name = name;
-        this.sprite = Images.get(imagePath);
-        this.level = level;
+        this.NAME = name;
+        this.SPRITE = Images.get(imagePath);
+        this.LEVEL = level;
     }
 
     /**

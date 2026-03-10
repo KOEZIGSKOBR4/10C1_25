@@ -10,10 +10,8 @@ import czg.util.character_creator.SaveFile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import static czg.MainWindow.PIXEL_SCALE;
@@ -67,6 +65,7 @@ public class PlayerObject extends BaseObject{
      */
     public static PlayerObject INSTANCE = new PlayerObject();
 
+
     /**
      * Privater Konstruktor, der nur für {@link #INSTANCE} verwendet wird
      */
@@ -84,6 +83,20 @@ public class PlayerObject extends BaseObject{
         // Farben anwenden
         updateSprite();
     }
+
+    /*
+    Bitti bitti nicht noch mal löschen...
+    */
+    public void angriff() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welches Item?");
+        String ausgewaehlt = scanner.nextLine();
+        int level = ItemObject.valueOf(ausgewaehlt).LEVEL;
+        List<ItemObject> testitems = Arrays.asList(ItemObject.NEWTONSAPFEL, ItemObject.ATOM, ItemObject.CHROME, ItemObject.BSOD);
+        LehrerObject lehrer = new LehrerObject(Images.get("/assets/characters/bre.png"), 10, 20, "Physik", 10, 2, testitems);
+        lehrer.verteidigung(level);
+    }
+
 
     /**
      * Farben {@link #haare}, {@link #haut}, {@link #hoodie} und {@link #hose} anwenden

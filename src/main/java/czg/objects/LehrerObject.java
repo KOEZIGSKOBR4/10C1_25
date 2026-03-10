@@ -3,6 +3,8 @@ package czg.objects;
 import czg.scenes.BaseScene;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class LehrerObject extends BaseObject{
@@ -10,9 +12,9 @@ public class LehrerObject extends BaseObject{
     public final int LEVEL;
     public int hp;
     public final String FACHSCHAFT;
-    public int[] lehrer_items;
+    public List<ItemObject> lehrer_items;
 
-    public LehrerObject(Image sprite, int x, int y, String FACHSCHAFT, int hp, int LEVEL, int[] lehrer_items) {
+    public LehrerObject(Image sprite, int x, int y, String FACHSCHAFT, int hp, int LEVEL, List<ItemObject> lehrer_items) {
         super(sprite, x, y);
         this.LEVEL = LEVEL;
         this.hp = hp;
@@ -25,22 +27,22 @@ public class LehrerObject extends BaseObject{
         Random rand = new Random();
         int move = rand.nextInt(5);
         int schaden;
-        int item_lehrer;
+        ItemObject item_lehrer;
 
         if (move == 0) {
             schaden = level;
-            item_lehrer = -1;
+            item_lehrer = null;
         }
         else {
-            item_lehrer = lehrer_items[move - 1];
-//            schaden = level - Integer.parseInt(Itemobject.testitemliste[item_lehrer][1]);
-//            if (schaden <= 0) {
-//                schaden = 0;
-//            }
-//
+            item_lehrer = lehrer_items.get(move - 1);
+            schaden = level - item_lehrer.LEVEL;
+            if (schaden <= 0) {
+                schaden = 0;
+            }
+
         }
-//
-//        hp -= schaden;
+
+        hp -= schaden;
 
     }
 
