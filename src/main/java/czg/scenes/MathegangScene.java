@@ -7,7 +7,9 @@ package czg.scenes;
 import czg.MainWindow;
 import czg.objects.BackdropObject;
 import czg.objects.ButtonObject;
+import czg.objects.Department;
 import czg.objects.InvisibleDoorObject;
+import czg.scenes.minigame_scenes.MinigameScene;
 import czg.util.Images;
 
 import static czg.MainWindow.HEIGHT;
@@ -55,6 +57,9 @@ public class MathegangScene extends BaseScene{
         links.x = 9;
         links.y = (HEIGHT/2) - (links.height/2);
         objects.add(links);
-        
+
+        MinigameScene mathematicsTest = MinigameScene.generateMinigame(Department.MATHEMATICS);
+
+        objects.add(new ButtonObject(Images.get("/assets/minigames/general/button_menu.png"), mathematicsTest::startMinigame));
     }
 }
