@@ -4,17 +4,18 @@ import czg.scenes.BaseScene;
 import czg.util.Input;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 /**
  * Ein Drag-Objekt, bestehend aus einer Position und einem Bild,
  * welches mit der Maus gezogen werden kann.
  */
 public class DragObject extends BaseObject {
+
     /**
-     * Variablen für die Logik des Ziehens.
+     * Ob das Objekt gerade gezogen wird
      */
     private boolean isDragged = false;
-    private Point lastMousePos;
 
     /**
      * Einen neues Drag-Objekt erstellen und in die Mitte des Bildschirms platzieren.
@@ -50,23 +51,24 @@ public class DragObject extends BaseObject {
 
     @Override
     public void update(BaseScene scene) {
-        if(isClicked()) {
-            if (isDragged) {
-                isDragged = false;
-            } else {
-                System.out.println("clicked");
-                lastMousePos = Input.INSTANCE.getMousePosition();
-                isDragged = true;
-            }
+        // Aktuelle und vorherige Maus-Position abfragen
+        Point mousePos = Input.INSTANCE.getMousePosition();
+        Point lastMousePos = Input.INSTANCE.getLastMousePosition();
+        // Diese *können* (technisch gesehen) null sein
+        if(mousePos == null || lastMousePos == null)
+            return;
+
+        if(! isDragged && isClicked()) {
+            // Wenn das Objekt angeklickt wird, beginnen wir, es zu ziehen
+            isDragged = true;
+        } else if (! Input.INSTANCE.getMouseState(MouseEvent.BUTTON1).isDown()) {
+            // Wenn die linke Maustaste losgelassen wird, wird das Objekt nicht mehr gezogen
+            isDragged = false;
         }
 
         if (isDragged) {
-            Point currentMousePos = Input.INSTANCE.getMousePosition();
-            Point mouseDiff = new Point(currentMousePos.x - lastMousePos.x, currentMousePos.y - lastMousePos.y);
-            this.x += mouseDiff.x;
-            this.y += mouseDiff.y;
-
-            lastMousePos = currentMousePos;
+            this.x += mousePos.x - lastMousePos.x;
+            this.y += mousePos.y - lastMousePos.y;
         }
     }
 }
