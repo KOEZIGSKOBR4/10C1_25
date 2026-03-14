@@ -99,14 +99,14 @@ public class StreamSound extends BaseSound {
             throw new RuntimeException(e);
         }
 
-        // Zum Set von StreamSounds hinzufügen
-        playbackInstances.add(this);
-
         // Wiedergabezustand setzen
         isPlaying = new AtomicBoolean(autoPlay);
 
         // EndOfFileBehaviour
         setEndOfFileBehaviour(endOfFileBehaviour);
+
+        // Zum Set von StreamSounds hinzufügen
+        playbackInstances.add(this);
 
         // Ggf. den Wiedergabe-Thread starten bzw. aufwecken
         if (!playbackThread.isAlive()) {
@@ -125,23 +125,22 @@ public class StreamSound extends BaseSound {
     }
 
     @Override
-    public void setPlayingActual(boolean playing) {
+    protected void setPlayingActual(boolean playing) {
         isPlaying.set(playing);
     }
 
     @Override
-    public boolean isPlayingActual() {
+    protected boolean isPlayingActual() {
         return isPlaying.get();
     }
 
     @Override
-    public void seekActual(float position) {
+    protected void seekActual(float position) {
         seekTo.set(Float.floatToIntBits(position));
     }
 
     @Override
     public void stop() {
-        super.stop();
         if (isStopped())
             return;
 
@@ -154,6 +153,8 @@ public class StreamSound extends BaseSound {
             }
         }
         playbackInstances.remove(this);
+
+        super.stop();
     }
 
     @Override
