@@ -112,6 +112,14 @@ public class BaseObject {
      */
     public void update(BaseScene scene) {}
 
+    /**
+     * Wird aufgerufen, wenn die Szenen vom Szenen-Stapel
+     * entfernt wird
+     * @param scene Die Szene, in welcher sich das Objekt befindet
+     * @see BaseScene#unload()
+     */
+    public void unload(BaseScene scene) {}
+
     @Override
     public String toString() {
         return getClass().getName() + "{" +
