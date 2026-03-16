@@ -58,7 +58,7 @@ public class DragObject extends BaseObject {
         if(mousePos == null || lastMousePos == null)
             return;
 
-        if(! isDragged && isClicked()) {
+        if(! isDragged && isClicked(true)) {
             // Wenn das Objekt angeklickt wird, beginnen wir, es zu ziehen
             isDragged = true;
         } else if (! Input.INSTANCE.getMouseState(MouseEvent.BUTTON1).isDown()) {
