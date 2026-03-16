@@ -12,6 +12,7 @@ import java.awt.geom.Rectangle2D;
 
 import static czg.MainWindow.*;
 import czg.util.Images;
+import java.awt.image.BufferedImage;
 
 /**
  * Ein minimales Spiel-Objekt, bestehend aus einer Position und einem Bild.
@@ -83,15 +84,31 @@ public class BaseObject {
 
     /**
      * Ein Objekt gilt als angeklickt, wenn sich der Mauszeiger über diesem befindet
-     * und die linke Maustaste geklickt wurde ({@link KeyState#PRESSED}).
+     * und die linke Maustaste geklickt wurde ({@link KeyState#PRESSED}). Transparenz wird mit zur Hitbox gezählt.
      * @return Ob das Objekt angeklickt wurde
      */
     public boolean isClicked() {
+        return isClicked(false);
+    }
+    
+    /**
+     * Ein Objekt gilt als angeklickt, wenn sich der Mauszeiger über diesem befindet
+     * und die linke Maustaste geklickt wurde ({@link KeyState#PRESSED}).
+     * @param includeTransparency Ob Transparenz zur Hitbox gezählt werden soll (False ist äquivallent zum Aufruf ohne Parameter)
+     * @return Ob das Objekt angeklickt wurde
+     */
+    public boolean isClicked(boolean includeTransparency) {
         Point mousePos = Input.INSTANCE.getMousePosition();
         if(mousePos == null)
             return false;
-
-        return getHitbox().contains(mousePos) && Input.INSTANCE.getMouseState(MouseEvent.BUTTON1) == Input.KeyState.PRESSED;
+           
+        if(!includeTransparency) {
+            return getHitbox().contains(mousePos) && Input.INSTANCE.getMouseState(MouseEvent.BUTTON1) == Input.KeyState.PRESSED;
+        } else {
+            BufferedImage bufferedSprite = (BufferedImage) this.sprite;
+            //boolean isTransparent = bufferedSprite.getRGB(mousePos.x - this.x, mousePos.y - this.y).a == 0;
+            return getHitbox().contains(mousePos) && Input.INSTANCE.getMouseState(MouseEvent.BUTTON1) == Input.KeyState.PRESSED;
+        }
     }
     
     /**
