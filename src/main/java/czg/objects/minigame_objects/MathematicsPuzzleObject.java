@@ -1,23 +1,112 @@
 package czg.objects.minigame_objects;
 
-import czg.MainWindow;
 import czg.util.Images;
 
 import java.awt.*;
 import java.util.Random;
 
 public enum MathematicsPuzzleObject {
-    P_00("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
-    P_01("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
-    P_02("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
+    P_00("/assets/minigames/mathematics/puzzle_1_1.png", 2, new double[][][] {
+        {
+            {0.33, 0.4, 0.0},
+            {0.0, 0.0, 180.0},
+            {0.33, 0.0, 90.0},
+            {0.5, 0.0, 0.0},
+            {0.33, 0.4, 180.0},
+            {0.5, 0.2, 90.0},
+            {0.33, 0.6, 0.0}
+        }
+    }),
+    P_01("/assets/minigames/mathematics/puzzle_1_1.png", 2, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    }),
+    P_02("/assets/minigames/mathematics/puzzle_1_1.png", 2, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    }),
 
-    P_10("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
-    P_11("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
-    P_12("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
+    P_10("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    }),
+    P_11("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    }),
+    P_12("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    }),
 
-    P_20("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
-    P_21("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}}),
-    P_22("/assets/minigames/mathematics/puzzle_1_1.png", 0, new int[][][] {{{}}});
+    P_20("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    }),
+    P_21("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    }),
+    P_22("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+            {
+                    {0.33, 0.4, 0.0},
+                    {0.0, 0.0, 180.0},
+                    {0.33, 0.0, 90.0},
+                    {0.5, 0.0, 0.0},
+                    {0.33, 0.4, 180.0},
+                    {0.5, 0.2, 90.0},
+                    {0.33, 0.6, 0.0}
+            }
+    });
 
     public static final MathematicsPuzzleObject[][] PUZZLES = {
         {
@@ -35,13 +124,13 @@ public enum MathematicsPuzzleObject {
         }
     };
     
-    public static final int marginOfError = 10;
+    public static final int MARGIN_OF_ERROR = 20;
 
     public final Image sprite;
     public final int amountOfGivenPieces;
-    public final int[][][] solutions;
+    public final double[][][] solutions;
 
-    MathematicsPuzzleObject(String path, int amountOfGivenPieces, int[][][] solutions) {
+    MathematicsPuzzleObject(String path, int amountOfGivenPieces, double[][][] solutions) {
         this.sprite = Images.get(path);
         this.amountOfGivenPieces = amountOfGivenPieces;
         this.solutions = solutions;
@@ -53,19 +142,20 @@ public enum MathematicsPuzzleObject {
         return PUZZLES[level][r];
     }
     
-    public boolean isSolutionValid(int x, int y, int scale) {
-        TangramPieceObject[] pieces = TangramPieceObject.PIECES;
-        
-        for(int[][] solution : this.solutions) {
+    public boolean isSolutionValid(TangramPieceObject[] pieces, int x, int y, int width, int height) {
+        for(double[][] solution : solutions) {
             boolean isValid = true;
             
             for(int i = 0; i < pieces.length; i++) {
                 TangramPieceObject currentPiece = pieces[i];
-                if(
-                    currentPiece.x < x + solution[i][0]*scale - marginOfError || currentPiece.x > x + solution[i][0]*scale + marginOfError || // Überprüfung der X-Koordinate
-                    currentPiece.y < y + solution[i][1]*scale - marginOfError || currentPiece.y > y + solution[i][1]*scale + marginOfError || // Überprüfung der Y-Koordinate
-                    currentPiece.rotation == solution[i][2] // Überprüfung der Rotation
-                ) isValid = false;
+                if (
+                    currentPiece.x < x + solution[i][0]*width - MARGIN_OF_ERROR || currentPiece.x > x + solution[i][0]*width + MARGIN_OF_ERROR || // Überprüfung der X-Koordinate
+                    currentPiece.y < y + solution[i][1]*height - MARGIN_OF_ERROR || currentPiece.y > y + solution[i][1]*height + MARGIN_OF_ERROR || // Überprüfung der Y-Koordinate
+                    currentPiece.rotation != solution[i][2] // Überprüfung der Rotation
+                ) {
+                    isValid = false;
+                    break;
+                }
             }
             
             if(isValid) return true;
@@ -74,17 +164,21 @@ public enum MathematicsPuzzleObject {
         return false;
     }
     
-    public void setGivenPieces() {
-        int[] idx = new int[this.amountOfGivenPieces];
+    public void setGivenPieces(TangramPieceObject[] pieces, int x, int y, int scale) {
+        int[] idx = new int[amountOfGivenPieces];
+        for(int i = 0; i < amountOfGivenPieces; i++) {
+            idx[i] = -1;
+        }
         
-        for(int i = 0; i < this.amountOfGivenPieces; i++) {
+        for(int i = 0; i < amountOfGivenPieces; i++) {
             int rIdx;
             while(true) {
-                rIdx = (int) (this.amountOfGivenPieces * new Random().nextDouble());
+                rIdx = (int) (amountOfGivenPieces * new Random().nextDouble());
                 boolean validIdx = true;
-                for(int j = 0; j < this.amountOfGivenPieces; j++) {
-                    if(idx[j] == rIdx) {
+                for(int j = 0; j < amountOfGivenPieces; j++) {
+                    if (idx[j] == rIdx) {
                         validIdx = false;
+                        break;
                     }
                 }
                 if(validIdx) break;
@@ -92,19 +186,17 @@ public enum MathematicsPuzzleObject {
             idx[i] = rIdx;
         }
         
-        int rSolution = (int) (this.solutions.length * new Random().nextDouble());
+        int rSolution = (int) (solutions.length * new Random().nextDouble());
         for(int i : idx) {
-            TangramPieceObject.PIECES[i].x = this.solutions[rSolution][i][0];
-            TangramPieceObject.PIECES[i].y = this.solutions[rSolution][i][1];
-            TangramPieceObject.PIECES[i].rotation = this.solutions[rSolution][i][2];
+            // TEMPORÄR IMMER i = 0 UNBEDINGT NOCH ÄNDERN
+            pieces[0].x = (int) (x + solutions[rSolution][0][0]*scale);
+            pieces[0].y = (int) (y + solutions[rSolution][0][1]*scale);
+            pieces[0].setRotation(solutions[rSolution][0][2]);
         }
     }
     
-    public void reset() {
-        int size = MainWindow.HEIGHT / 2;
-        double scale = Images.get("/assets/minigames/mathematics/tangram_packed.png").getWidth(null) / (double) size;
-        
-        TangramPieceObject.generatePacked((MainWindow.HEIGHT - size) / 2, (MainWindow.HEIGHT - size) / 2, size, size);
-        this.setGivenPieces();
+    public void reset(TangramPieceObject[] pieces, int x, int y, int size) {
+        TangramPieceObject.generatePacked(pieces, x, y, size, size);
+        setGivenPieces(pieces, x, y, size);
     }
 }

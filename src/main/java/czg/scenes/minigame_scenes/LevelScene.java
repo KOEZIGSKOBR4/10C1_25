@@ -21,11 +21,11 @@ public abstract class LevelScene extends BaseScene {
 
         objects.add(new BackdropObject(Images.get(String.format("/assets/minigames/%s/background.png", department.name().toLowerCase()))));
 
-        ButtonObject exitButton = new ButtonObject(Images.get("/assets/minigames/general/button_exit.png"), () -> {SceneStack.INSTANCE.pop(); SceneStack.INSTANCE.pop();}
-        );
+        ButtonObject exitButton = new ButtonObject(Images.get("/assets/minigames/general/button_exit.png"), () -> {SceneStack.INSTANCE.pop(); SceneStack.INSTANCE.pop();});
+
         exitButton.width /= 2;
         exitButton.height /= 2;
-        exitButton.x = (int) (MainWindow.WIDTH - exitButton.width * 2);
+        exitButton.x = MainWindow.WIDTH - exitButton.width * 2;
         exitButton.y = (int) (exitButton.height * 0.3);
 
         objects.add(exitButton);
@@ -33,7 +33,7 @@ public abstract class LevelScene extends BaseScene {
         ButtonObject menuButton = new ButtonObject(Images.get("/assets/minigames/general/button_menu.png"), SceneStack.INSTANCE::pop);
         menuButton.width /= 2;
         menuButton.height /= 2;
-        menuButton.x = (int) (MainWindow.WIDTH - menuButton.width * 4);
+        menuButton.x = MainWindow.WIDTH - menuButton.width * 4;
         menuButton.y = (int) (menuButton.height * 0.3);
 
         objects.add(menuButton);
