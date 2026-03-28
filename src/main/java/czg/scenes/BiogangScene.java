@@ -5,13 +5,10 @@
 package czg.scenes;
 
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
 import czg.objects.InvisibleDoorObject;
-import czg.util.Images;
-
-import static czg.MainWindow.HEIGHT;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
+import czg.util.Images;
 
 /**
  *
@@ -26,8 +23,8 @@ public class BiogangScene extends BaseScene{
         objects.add(new InvisibleDoorObject(656, 180,this, BioraumScene::new));
         
         //Pfeilobjekte für den Wechsel in nebenliegende Szenen
-        objects.add(new PfeilObject(this, ErstesOGScene::new, 1));
-        objects.add(new PfeilObject(this, TreppeLinks2Scene::new, 2));
+        objects.add(new PfeilObject(this, ErstesOGScene::new, PfeilObject.RECHTS));
+        objects.add(new PfeilObject(this, TreppeLinks2Scene::new, PfeilObject.LINKS));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

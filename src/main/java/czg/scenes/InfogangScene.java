@@ -6,15 +6,10 @@ package czg.scenes;
 
 import czg.MainWindow;
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
-import czg.objects.Department;
-import czg.scenes.minigame_scenes.MinigameScene;
-import czg.util.Images;
-
-import static czg.MainWindow.HEIGHT;
 import czg.objects.InvisibleDoorObject;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
+import czg.util.Images;
 
 /**
  *
@@ -29,7 +24,7 @@ public class InfogangScene extends BaseScene{
         objects.add(new InvisibleDoorObject(MainWindow.PIXEL_SCALE * 36, MainWindow.PIXEL_SCALE * 45,this, InforaumScene::new));
   
         //Pfeilobjekt für den Wechsel in die nebenliegende Szene
-        objects.add(new PfeilObject(this, TreppeRechts2Scene::new, 2));
+        objects.add(new PfeilObject(this, TreppeRechts2Scene::new, PfeilObject.LINKS));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

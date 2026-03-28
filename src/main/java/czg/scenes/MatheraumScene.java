@@ -5,7 +5,8 @@
 package czg.scenes;
 
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
+import czg.objects.PfeilObject;
+import czg.objects.PlayerObject;
 import czg.objects.music_loop_object.MusicLoopObject;
 import czg.objects.music_loop_object.SegmentChangeMarker;
 import czg.sound.BaseSound;
@@ -13,10 +14,6 @@ import czg.sound.EndOfFileBehaviour;
 import czg.sound.SoundGroup;
 import czg.sound.StreamSound;
 import czg.util.Images;
-
-import static czg.MainWindow.WIDTH;
-import czg.objects.PfeilObject;
-import czg.objects.PlayerObject;
 /**
  *
  * @author guest-rwl69f
@@ -27,7 +24,7 @@ public class MatheraumScene extends BaseScene{
         objects.add(new BackdropObject(Images.get("/assets/background/Matheraum.png")));
         
         //Pfeilobjekt für den Wechsel in die Gangszene
-        objects.add(new PfeilObject(this, MathegangScene::new, 4));
+        objects.add(new PfeilObject(this, MathegangScene::new, PfeilObject.UNTEN));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

@@ -5,9 +5,7 @@
 package czg.scenes;
 
 import czg.MainWindow;
-import static czg.MainWindow.HEIGHT;
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
 import czg.objects.InvisibleDoorObject;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
@@ -26,8 +24,8 @@ public class ChemiegangScene extends BaseScene{
         objects.add(new InvisibleDoorObject(MainWindow.PIXEL_SCALE * 144, MainWindow.PIXEL_SCALE * 45,this, ChemieraumScene::new));
         
         //Pfeilobjekte für den Wechsel in nebenliegende Szenen
-        objects.add(new PfeilObject(this, ZweitesOGScene::new, 1));
-        objects.add(new PfeilObject(this, TreppeLinks3Scene::new, 2));
+        objects.add(new PfeilObject(this, ZweitesOGScene::new, PfeilObject.RECHTS));
+        objects.add(new PfeilObject(this, TreppeLinks3Scene::new, PfeilObject.LINKS));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

@@ -5,13 +5,9 @@
 package czg.scenes;
 
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
-import czg.util.Images;
-
-import static czg.MainWindow.HEIGHT;
-import static czg.MainWindow.WIDTH;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
+import czg.util.Images;
 
 /**
  *
@@ -23,9 +19,9 @@ public class FoyerScene extends BaseScene{
         objects.add(new BackdropObject(Images.get("/assets/background/Foyer.png")));
         
         //Pfeilobjekte für den Wechsel in nebenliegende Szenen
-        objects.add(new PfeilObject(this, GangHausmeisterScene::new, 1));
-        objects.add(new PfeilObject(this, PhysikgangScene::new, 2));
-        objects.add(new PfeilObject(this, ErstesOGScene::new, 3));
+        objects.add(new PfeilObject(this, GangHausmeisterScene::new, PfeilObject.RECHTS));
+        objects.add(new PfeilObject(this, PhysikgangScene::new, PfeilObject.LINKS));
+        objects.add(new PfeilObject(this, ErstesOGScene::new, PfeilObject.OBEN));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

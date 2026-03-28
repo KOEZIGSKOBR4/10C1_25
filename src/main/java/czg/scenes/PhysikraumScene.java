@@ -5,13 +5,9 @@
 package czg.scenes;
 
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
-import czg.util.Images;
-
-import static czg.MainWindow.HEIGHT;
-import static czg.MainWindow.WIDTH;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
+import czg.util.Images;
 
 /**
  *
@@ -23,7 +19,7 @@ public class PhysikraumScene extends BaseScene{
         objects.add(new BackdropObject(Images.get("/assets/background/Physik-Raum.png")));
         
         //Pfeilobjekt für den Wechsel in die Gangszene
-        objects.add(new PfeilObject(this, PhysikgangScene::new, 4));
+        objects.add(new PfeilObject(this, PhysikgangScene::new, PfeilObject.UNTEN));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

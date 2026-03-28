@@ -4,9 +4,7 @@
  */
 package czg.scenes;
 
-import static czg.MainWindow.HEIGHT;
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
 import czg.util.Images;
@@ -21,8 +19,8 @@ public class GangObenScene extends BaseScene{
         objects.add(new  BackdropObject(Images.get("/assets/background/GangOben.png")));
         
         //Pfeilobjekte für den Wechsel in nebenliegende Szenen
-        objects.add(new PfeilObject(this, TreppeRechts3Scene::new, 1));
-        objects.add(new PfeilObject(this, ZweitesOGScene::new, 2));
+        objects.add(new PfeilObject(this, TreppeRechts3Scene::new, PfeilObject.RECHTS));
+        objects.add(new PfeilObject(this, ZweitesOGScene::new, PfeilObject.LINKS));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

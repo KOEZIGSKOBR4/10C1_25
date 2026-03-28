@@ -4,10 +4,7 @@
  */
 package czg.scenes;
 
-import static czg.MainWindow.HEIGHT;
-import static czg.MainWindow.WIDTH;
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
 import czg.util.Images;
@@ -27,8 +24,8 @@ public class TreppeLinks1Scene extends BaseScene{
         PlayerObject.INSTANCE.y = 295;
         
         //Pfeilobjekte für den Wechsel in nebenliegende Szenen
-        objects.add(new PfeilObject(this, PhysikgangScene::new, 1));
-        objects.add(new PfeilObject(this, TreppeLinks2Scene::new, 3));
+        objects.add(new PfeilObject(this, PhysikgangScene::new, PfeilObject.RECHTS));
+        objects.add(new PfeilObject(this, TreppeLinks2Scene::new, PfeilObject.OBEN));
         
     }    
 }

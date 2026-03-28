@@ -5,16 +5,9 @@
 package czg.scenes;
 
 import czg.MainWindow;
-import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
-import czg.objects.Department;
-import czg.objects.InvisibleDoorObject;
+import czg.objects.*;
 import czg.scenes.minigame_scenes.MinigameScene;
 import czg.util.Images;
-
-import static czg.MainWindow.HEIGHT;
-import czg.objects.PfeilObject;
-import czg.objects.PlayerObject;
 
 /**
  *
@@ -29,8 +22,8 @@ public class MathegangScene extends BaseScene{
         objects.add(new InvisibleDoorObject(MainWindow.PIXEL_SCALE * 177, MainWindow.PIXEL_SCALE * 45,this, MatheraumScene::new));
         
         //Pfeilobjekte für den Wechsel in nebenliegende Szenen
-        objects.add(new PfeilObject(this, TreppeRechts2Scene::new, 1));
-        objects.add(new PfeilObject(this, ErstesOGScene::new, 2));
+        objects.add(new PfeilObject(this, TreppeRechts2Scene::new, PfeilObject.RECHTS));
+        objects.add(new PfeilObject(this, ErstesOGScene::new, PfeilObject.LINKS));
         
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

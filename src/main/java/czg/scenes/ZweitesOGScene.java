@@ -5,13 +5,9 @@
 package czg.scenes;
 
 import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
-import czg.util.Images;
-
-import static czg.MainWindow.HEIGHT;
-import static czg.MainWindow.WIDTH;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
+import czg.util.Images;
 
 /**
  *
@@ -28,9 +24,9 @@ public class ZweitesOGScene extends BaseScene{
         PlayerObject.INSTANCE.y = 295;
         
         //Pfeilobjekte für den Wechsel in nebenliegende Szenen
-        objects.add(new PfeilObject(this, GangObenScene::new, 1));
-        objects.add(new PfeilObject(this, ChemiegangScene::new, 2));
-        objects.add(new PfeilObject(this, ErstesOGScene::new, 4));
+        objects.add(new PfeilObject(this, GangObenScene::new, PfeilObject.RECHTS));
+        objects.add(new PfeilObject(this, ChemiegangScene::new, PfeilObject.LINKS));
+        objects.add(new PfeilObject(this, ErstesOGScene::new, PfeilObject.UNTEN));
         
     }
 }
