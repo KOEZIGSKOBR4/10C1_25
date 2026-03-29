@@ -4,6 +4,8 @@ import czg.scenes.minigame.ComputerScienceLevelScene;
 import czg.util.Images;
 
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -40,29 +42,41 @@ public enum LogicGate {
      * Gibt einen Array von zufälligen Enum-Konstanten zurück.
      * Dabei kommt jeder Wert im Array nur ein Mal vor.
      * @param length Wie viele Elemente?
-     * @param excludedGates Diese Elemente wird nicht im Ergebnis enthalten sein
+     * @param includedGates Diese Elemente werden definitiv im Ergebnis enthalten sein
      * @return Array mit Enum-Konstanten
      */
-    public static LogicGate[] getRandomArray(int length, LogicGate[] excludedGates) {
+    public static LogicGate[] getRandomArray(int length, LogicGate[] includedGates) {
         LogicGate[] tmp = new LogicGate[length];
         LogicGate[] usedGates = new LogicGate[length];
+        List<Integer> includedGatesIdx = new ArrayList<>();
+
+        for (int i = 0; i < includedGates.length; i++) {
+            int r = new Random().nextInt(length);
+
+            while (includedGatesIdx.contains(r)) {
+                r = new Random().nextInt(length);
+            }
+
+            includedGatesIdx.add(r);
+        }
 
         for (int i = 0; i < length; i++) {
-            boolean valid = false;
-            LogicGate rGate = null;
-            while (!valid) {
-                rGate = getRandom();
-
-                if (Arrays.asList(excludedGates).contains(rGate)) {
-                    continue;
+            boolean included = false;
+            for (int j = 0; j < includedGatesIdx.size(); j++) {
+                if (i == includedGatesIdx.get(j)) {
+                    tmp[i] = includedGates[j];
+                    included = true;
+                    break;
                 }
-                for (int j = 0; j < length; j++) {
-                    if (usedGates[j] == rGate) {
-                        break;
-                    }
-                }
-                valid = true;
             }
+
+            if (included) continue;
+
+            LogicGate rGate = getRandom();
+            while (Arrays.asList(includedGates).contains(rGate) || Arrays.asList(usedGates).contains(rGate)) {
+                rGate = getRandom();
+            }
+
             tmp[i] = rGate;
             usedGates[i] = rGate;
         }

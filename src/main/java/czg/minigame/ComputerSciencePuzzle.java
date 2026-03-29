@@ -3,8 +3,6 @@ package czg.minigame;
 import czg.util.Images;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public enum ComputerSciencePuzzle {
@@ -45,19 +43,6 @@ public enum ComputerSciencePuzzle {
         this.sprite = Images.get(path);
         this.solution = solution;
         this.answers = LogicGate.getRandomArray(amountOfAnswers, solution);
-
-        List<Integer> usedIdx = new ArrayList<>();
-        for(LogicGate logicGate : solution) {
-            while(true) {
-                int r = new Random().nextInt(amountOfAnswers);
-
-                if(usedIdx.contains(r)) continue;
-
-                this.answers[r] = logicGate;
-                usedIdx.add(r);
-                break;
-            }
-        }
     }
 
     public static ComputerSciencePuzzle getPuzzle(int level) {

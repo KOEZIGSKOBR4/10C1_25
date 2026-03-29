@@ -80,11 +80,12 @@ public class ComputerScienceLevelScene extends LevelScene {
             return;
         }
 
-        if(Arrays.asList(ACTIVE_ANSWERS).contains(gate))
+        if(Arrays.asList(ACTIVE_ANSWERS).contains(gate)) {
             for(int i = 0; i < ACTIVE_ANSWERS.length; i++) {
-            if(ACTIVE_ANSWERS[i] == gate) {
-                ACTIVE_ANSWERS[i] = null;
-                objects.remove(ANSWER_FRAMES[i]);
+                if(ACTIVE_ANSWERS[i] == gate) {
+                    ACTIVE_ANSWERS[i] = null;
+                    objects.remove(ANSWER_FRAMES[i]);
+                }
             }
         } else {
             for(int i = 0; i < ACTIVE_ANSWERS.length; i++) {
@@ -93,6 +94,7 @@ public class ComputerScienceLevelScene extends LevelScene {
                     ANSWER_FRAMES[i].x = x;
                     ANSWER_FRAMES[i].y = y;
                     objects.add(ANSWER_FRAMES[i]);
+                    break;
                 }
             }
         }
