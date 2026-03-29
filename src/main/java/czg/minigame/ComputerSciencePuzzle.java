@@ -3,21 +3,23 @@ package czg.minigame;
 import czg.util.Images;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public enum ComputerSciencePuzzle {
 
-    P_00("/assets/minigames/computer_science/puzzle_1_1.png", LogicGate.AND, 4),
-    P_01("/assets/minigames/computer_science/puzzle_1_2.png", LogicGate.OR, 4),
-    P_02("/assets/minigames/computer_science/puzzle_1_3.png", LogicGate.NAND, 4),
+    P_00("/assets/minigames/computer_science/puzzle_1_1.png", new LogicGate[]{LogicGate.AND}, 4),
+    P_01("/assets/minigames/computer_science/puzzle_1_2.png", new LogicGate[]{LogicGate.OR}, 4),
+    P_02("/assets/minigames/computer_science/puzzle_1_3.png", new LogicGate[]{LogicGate.NAND}, 4),
 
-    P_10("/assets/minigames/computer_science/puzzle_2_1.png", LogicGate.AND, 5),
-    P_11("/assets/minigames/computer_science/puzzle_2_2.png", LogicGate.OR, 5),
-    P_12("/assets/minigames/computer_science/puzzle_2_3.png", LogicGate.NAND, 5),
+    P_10("/assets/minigames/computer_science/puzzle_2_1.png", new LogicGate[]{LogicGate.AND, LogicGate.OR}, 5),
+    P_11("/assets/minigames/computer_science/puzzle_2_2.png", new LogicGate[]{LogicGate.AND, LogicGate.OR}, 5),
+    P_12("/assets/minigames/computer_science/puzzle_2_3.png", new LogicGate[]{LogicGate.AND, LogicGate.OR}, 5),
 
-    P_20("/assets/minigames/computer_science/puzzle_3_1.png", LogicGate.AND, 6),
-    P_21("/assets/minigames/computer_science/puzzle_3_2.png", LogicGate.OR, 6),
-    P_22("/assets/minigames/computer_science/puzzle_3_3.png", LogicGate.NAND, 6);
+    P_20("/assets/minigames/computer_science/puzzle_3_1.png", new LogicGate[]{LogicGate.AND, LogicGate.OR, LogicGate.NAND}, 6),
+    P_21("/assets/minigames/computer_science/puzzle_3_2.png", new LogicGate[]{LogicGate.AND, LogicGate.OR, LogicGate.NAND}, 6),
+    P_22("/assets/minigames/computer_science/puzzle_3_3.png", new LogicGate[]{LogicGate.AND, LogicGate.OR, LogicGate.NAND}, 6);
 
     public static final ComputerSciencePuzzle[][] PUZZLES = {
         {
@@ -36,17 +38,26 @@ public enum ComputerSciencePuzzle {
     };
 
     public final Image sprite;
-    public final LogicGate solution;
+    public final LogicGate[] solution;
     public final LogicGate[] answers;
 
-    ComputerSciencePuzzle(String path, LogicGate solution, int amountOfAnswers) {
+    ComputerSciencePuzzle(String path, LogicGate[] solution, int amountOfAnswers) {
         this.sprite = Images.get(path);
         this.solution = solution;
         this.answers = LogicGate.getRandomArray(amountOfAnswers, solution);
 
-        int r = new Random().nextInt(amountOfAnswers);
+        List<Integer> usedIdx = new ArrayList<>();
+        for(LogicGate logicGate : solution) {
+            while(true) {
+                int r = new Random().nextInt(amountOfAnswers);
 
-        this.answers[r] = solution;
+                if(usedIdx.contains(r)) continue;
+
+                this.answers[r] = logicGate;
+                usedIdx.add(r);
+                break;
+            }
+        }
     }
 
     public static ComputerSciencePuzzle getPuzzle(int level) {

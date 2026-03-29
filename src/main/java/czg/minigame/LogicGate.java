@@ -4,6 +4,7 @@ import czg.scenes.minigame.ComputerScienceLevelScene;
 import czg.util.Images;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -39,10 +40,10 @@ public enum LogicGate {
      * Gibt einen Array von zufälligen Enum-Konstanten zurück.
      * Dabei kommt jeder Wert im Array nur ein Mal vor.
      * @param length Wie viele Elemente?
-     * @param excludedGate Dieses Element wird nicht im Ergebnis enthalten sein
+     * @param excludedGates Diese Elemente wird nicht im Ergebnis enthalten sein
      * @return Array mit Enum-Konstanten
      */
-    public static LogicGate[] getRandomArray(int length, LogicGate excludedGate) {
+    public static LogicGate[] getRandomArray(int length, LogicGate[] excludedGates) {
         LogicGate[] tmp = new LogicGate[length];
         LogicGate[] usedGates = new LogicGate[length];
 
@@ -54,7 +55,7 @@ public enum LogicGate {
 
                 rGate = getRandom();
 
-                if (rGate == excludedGate) {
+                if (Arrays.asList(excludedGates).contains(rGate)) {
                     valid = false;
                     continue;
                 }

@@ -6,6 +6,9 @@ import czg.minigame.LogicGate;
 import czg.objects.BaseObject;
 import czg.objects.ButtonObject;
 import czg.objects.Department;
+import czg.util.Images;
+
+import java.util.Arrays;
 
 /**
  * Level des Informatik-Minigames, in welchem Logikgatter in einem
@@ -14,6 +17,9 @@ import czg.objects.Department;
 public class ComputerScienceLevelScene extends LevelScene {
     public final int LEVEL;
     public final ComputerSciencePuzzle PUZZLE;
+
+    private final BaseObject[] ANSWER_FRAMES;
+    private final LogicGate[] ACTIVE_ANSWERS;
 
     /**
      * Neue Level-Szene erstellen
@@ -28,6 +34,14 @@ public class ComputerScienceLevelScene extends LevelScene {
         // Rätsel auswählen
         this.PUZZLE = ComputerSciencePuzzle.getPuzzle(LEVEL);
 
+        this.ANSWER_FRAMES = new BaseObject[]{
+            new BaseObject(Images.get("/assets/minigames/computer_science/answer_frame_0.png")),
+            new BaseObject(Images.get("/assets/minigames/computer_science/answer_frame_1.png")),
+            new BaseObject(Images.get("/assets/minigames/computer_science/answer_frame_2.png"))
+        };
+
+        this.ACTIVE_ANSWERS = new LogicGate[PUZZLE.solution.length];
+
         int availableHeight = (int) (MainWindow.HEIGHT * 0.7);
         int gateHeight = availableHeight / PUZZLE.answers.length;
 
@@ -38,8 +52,12 @@ public class ComputerScienceLevelScene extends LevelScene {
                 PUZZLE.answers[i].sprite,
                 (int) (MainWindow.WIDTH * 0.125),
                 (MainWindow.HEIGHT - availableHeight) / 2 + i * gateHeight,
-                () -> setAnswer(PUZZLE.answers[finalI])
-            ));
+                () -> setAnswer(
+                    PUZZLE.answers[finalI],
+                    (int) (MainWindow.WIDTH * 0.125),
+                    (MainWindow.HEIGHT - availableHeight) / 2 + finalI * gateHeight)
+                )
+            );
         }
 
         // Das eigentliche Rätsel wird durch ein Bild dargestellt
@@ -52,11 +70,34 @@ public class ComputerScienceLevelScene extends LevelScene {
         ));
     }
 
-    private void setAnswer(LogicGate gate) {
-        if (gate == PUZZLE.solution)
-            levelWon();
-        else
-            levelLost();
+    private void setAnswer(LogicGate gate, int x, int y) {
+        if(PUZZLE.solution.length == 1) {
+            if(gate == PUZZLE.solution[0])
+                levelWon();
+            else
+                levelLost();
+
+            return;
+        }
+
+        if(Arrays.asList(ACTIVE_ANSWERS).contains(gate))
+            for(int i = 0; i < ACTIVE_ANSWERS.length; i++) {
+            if(ACTIVE_ANSWERS[i] == gate) {
+                ACTIVE_ANSWERS[i] = null;
+                objects.remove(ANSWER_FRAMES[i]);
+                return;
+            }
+        }
+
+        for(int i = 0; i < ACTIVE_ANSWERS.length; i++) {
+            if(ACTIVE_ANSWERS[i] == null) {
+                ACTIVE_ANSWERS[i] = gate;
+                ANSWER_FRAMES[i].x = x;
+                ANSWER_FRAMES[i].y = y;
+                objects.add(ANSWER_FRAMES[i]);
+                return;
+            }
+        }
     }
 
     /**
