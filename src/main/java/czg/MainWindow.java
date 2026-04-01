@@ -84,6 +84,8 @@ public class MainWindow extends JFrame implements Runnable {
     public static void main(String[] args) {
         // OpenGL-Grafikschnittstelle und damit (hoffentlich) die Grafikkarte verwenden
         System.setProperty("sun.java2d.opengl","true");
+        // Anti-Aliasing-Einstellung für Text vom System übernehmen
+        System.setProperty("awt.useSystemAAFontSettings","on");
 
         // Fenster zeigen
         // In die Mitte des Bildschirms platzieren
