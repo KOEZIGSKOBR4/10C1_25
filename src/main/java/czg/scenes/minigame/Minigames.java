@@ -5,6 +5,7 @@
 package czg.scenes.minigame;
 
 import czg.objects.Department;
+import static czg.objects.Department.COMPUTER_SCIENCE;
 import czg.scenes.BaseScene;
 import czg.scenes.SceneStack;
 
@@ -36,7 +37,15 @@ public class Minigames {
                         new MathematicsLevelScene(1),
                         new MathematicsLevelScene(2)
                 );
-            } default -> throw new UnsupportedOperationException("Minigame für Fachschaft "+department+" noch nicht implementiert");
+            } case CHEMISTRY -> {
+                return new LevelSelectorScene(
+                    new ChemieLevelScene(0),
+                    new ChemieLevelScene(1),
+                    new ChemieLevelScene(2)
+                );
+            }
+            
+            default -> throw new UnsupportedOperationException("Minigame für Fachschaft "+department+" noch nicht implementiert");
         }
     }
 

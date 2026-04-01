@@ -5,8 +5,11 @@
 package czg.scenes;
 
 import czg.objects.BackdropObject;
+import czg.objects.ButtonObject;
+import czg.objects.Department;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
+import czg.scenes.minigame.Minigames;
 import czg.util.Images;
 
 /**
@@ -26,6 +29,8 @@ public class ChemieraumScene extends BaseScene{
         PlayerObject.INSTANCE.x = 170;
         PlayerObject.INSTANCE.y = 290;
         
+        objects.add(new ButtonObject(null,370, 210, 410, 150,
+                () -> SceneStack.INSTANCE.push(Minigames.generateMinigame(Department.CHEMISTRY))));
         }
 }
 

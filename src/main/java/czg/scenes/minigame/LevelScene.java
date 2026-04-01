@@ -72,15 +72,16 @@ public abstract class LevelScene extends BaseScene {
      * Zeigt die entsprechende {@link MinigameEndScene} und
      * fügt {@link #REWARD} zu {@link PlayerObject#inventar} hinzu.
      */
-    protected void levelWon() {
+    public void levelWon() {
         SceneStack.INSTANCE.push(new MinigameEndScene(true, LEVEL, REWARD));
-        PlayerObject.INSTANCE.inventar.add(REWARD);
+        if(! PlayerObject.INSTANCE.inventar.contains(REWARD))
+            PlayerObject.INSTANCE.inventar.add(REWARD);
     }
 
     /**
      * Das Level wurde verloren. Zeigt die entsprechende {@link MinigameEndScene}.
      */
-    protected void levelLost() {
+    public void levelLost() {
         SceneStack.INSTANCE.push(new MinigameEndScene(false, LEVEL, REWARD));
     }
 }

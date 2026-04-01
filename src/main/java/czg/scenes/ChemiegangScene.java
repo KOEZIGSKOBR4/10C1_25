@@ -6,9 +6,12 @@ package czg.scenes;
 
 import czg.MainWindow;
 import czg.objects.BackdropObject;
+import czg.objects.ButtonObject;
+import czg.objects.Department;
 import czg.objects.InvisibleDoorObject;
 import czg.objects.PfeilObject;
 import czg.objects.PlayerObject;
+import czg.scenes.minigame.Minigames;
 import czg.util.Images;
 
 /**

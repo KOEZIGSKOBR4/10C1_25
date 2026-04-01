@@ -1,7 +1,10 @@
 package czg.scenes.minigame;
 
 import czg.MainWindow;
-import czg.objects.*;
+import czg.objects.BackdropObject;
+import czg.objects.BaseObject;
+import czg.objects.ButtonObject;
+import czg.objects.ItemObject;
 import czg.scenes.BaseScene;
 import czg.scenes.SceneStack;
 import czg.util.Images;
@@ -40,7 +43,6 @@ public class MinigameEndScene extends BaseScene {
             rewardItem.y = (int)((MainWindow.HEIGHT - rewardContainer.height) * 0.9) + (rewardContainer.height-rewardItem.height) / 2;
 
             objects.add(rewardItem);
-            PlayerObject.INSTANCE.inventar.add(reward);
         } else {
             BaseObject banner = new BaseObject(Images.get("/assets/minigames/general/banner_lost.png"));
             banner.x = (MainWindow.WIDTH - banner.width) / 2;

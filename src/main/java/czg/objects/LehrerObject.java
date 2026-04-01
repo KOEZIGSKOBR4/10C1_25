@@ -50,13 +50,13 @@ public class LehrerObject extends BaseObject{
     public void angriff() {
         Random rand = new Random();
         int move = rand.nextInt(4);
-        int schaden;
+        int level;
         ItemObject item_lehrer;
         
         item_lehrer = lehrer_items.get(move);
-        schaden = item_lehrer.LEVEL;
+        level = item_lehrer.LEVEL;
         
-        PlayerObject.INSTANCE.verteidigung(schaden);
+        PlayerObject.INSTANCE.verteidigung(level);
     }
 
     @Override
