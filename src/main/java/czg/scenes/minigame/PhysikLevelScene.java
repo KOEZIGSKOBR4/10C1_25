@@ -21,7 +21,7 @@ super(Department.PHYSICS, level);
 // Hintergrundbild laden und als erstes Objekt hinzufügen
 objects.add(new BackdropObject(
 Images.get("/assets/minigames/physics/PhysikBackground.png")));
-// Spielobjekt hinzufügen – enthält die gesamte Spiellogik
+// Spielobjekt hinzufügen, enthältSpiellogik
 objects.add(new PhysikGameObject(level, this));
 }
 /**

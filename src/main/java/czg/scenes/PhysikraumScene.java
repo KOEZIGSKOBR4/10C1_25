@@ -4,9 +4,8 @@
  */
 package czg.scenes;
 
-import czg.objects.BackdropObject;
-import czg.objects.PfeilObject;
-import czg.objects.PlayerObject;
+import czg.objects.*;
+import czg.scenes.minigame.Minigames;
 import czg.util.Images;
 
 /**
@@ -25,8 +24,8 @@ public class PhysikraumScene extends BaseScene{
         this.objects.add(PlayerObject.INSTANCE);
         PlayerObject.INSTANCE.x = 210;
         PlayerObject.INSTANCE.y = 290;
-        
-       objects.add(new ButtonObject(null,370, 210, 410, 150,
-                () -> SceneStack.INSTANCE.push(Minigames.generateMinigame(Department.PHYSICS)))); 
+
+        objects.add(new ButtonObject(null,370, 210, 410, 150,
+                () -> SceneStack.INSTANCE.push(Minigames.generateMinigame(Department.PHYSICS))));
     }
 }

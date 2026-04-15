@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
-import java.awt.geom.Rectangle2D;
 
 /**
 * Das Physik-Minigame als BaseObject.
@@ -28,15 +27,15 @@ import java.awt.geom.Rectangle2D;
 public class PhysikGameObject extends BaseObject {
     
     //Spielfeldgröße
-    private static final int BREITE = 720;
-    private static final int HOEHE = 405;
+    private static final int BREITE = WIDTH;
+    private static final int HOEHE = HEIGHT;
     //Ball
-    private static final int BALL_GROESSE = 32;
+    private static final int BALL_GROESSE = 64;
     //Simulate-Button (unten mittig)
-    private static final int BUTTON_BREITE = 200;
-    private static final int BUTTON_HOEHE = 80;
+    private static final int BUTTON_BREITE = 320;
+    private static final int BUTTON_HOEHE = 160;
     private final int buttonX = (BREITE - BUTTON_BREITE) / 2;
-    private final int buttonY = HOEHE - BUTTON_HOEHE - 15;
+    private final int buttonY = HOEHE - BUTTON_HOEHE + 20;
     
     //Pfeilmaßstab (Pixel pro Einheit Spielerkraft)
     private static final int MASSSTAB = 30; //Gravitationsbeschleunigung in Pixel/Frame2
@@ -54,7 +53,7 @@ public class PhysikGameObject extends BaseObject {
     
     //Ball-Physik
     private double ballX, ballY; // aktuelle Position
-private double velX, velY; // aktuelle Geschwindigkeit
+    private double velX, velY; // aktuelle Geschwindigkeit
 
     // Spielerkraft (= Startgeschwindigkeit des Balls)
     private double spielerKraftX = 0;
@@ -68,8 +67,6 @@ private double velX, velY; // aktuelle Geschwindigkeit
     private int[] wand; // {x, y, breite, hoehe} oder null
     //Basisbeschleunigungen des Levels
     private double[][] basisBeschleunigungen;
-    //Ergebnis des letzten Schusses
-    private boolean letzterSchussTreffer = false;
     // Maus-Status (verhindert Mehrfachklicks pro Frame)
     private boolean warGedrueckt = false;
     //Bilder
@@ -97,17 +94,17 @@ private double velX, velY; // aktuelle Geschwindigkeit
     private void levelInitialisieren() {
         // Ball oben links starten
         ballX = 60;
-        ballY = 60;
+        ballY = 120;
         velX = 0;
         velY = 0;
         spielerKraftX = 0;
         spielerKraftY = 0;
         ziehtGerade = false;
         phase = PHASE_VORBEREITUNG;
-        letzterSchussTreffer = false;
         
         // Ziel: unten rechts
-        ziel = new double[]{ BREITE - 90, HOEHE - 90, 50, 40 };// Level-spezifische Konfiguration
+        ziel = new double[]{ BREITE - 145, HOEHE - 125, 140, 120 };
+        // Level-spezifische Konfiguration
         switch (level) {
                         case 0:
                             // Nur Schwerkraft nach unten, Spieler schießt nach rechts
@@ -126,10 +123,10 @@ private double velX, velY; // aktuelle Geschwindigkeit
                             basisBeschleunigungen = new double[][]{{0, GRAVITY}, {0.12, 0}};
                             kraftRichtung = "UP";
                             wand = new int[]{
-                            BREITE / 5,
-                            HOEHE / 5,
-                            20,
-                            (HOEHE * 2) / 5
+                                    BREITE / 4,
+                            HOEHE / 3,
+                            30,
+                                    133
                             };
                         break;
                         }
@@ -138,7 +135,7 @@ private double velX, velY; // aktuelle Geschwindigkeit
     // Bilder laden
     /**
     * Lädt alle Bilder aus dem assets-Ordner des Physik-Minigames.
-    * Ist ein Bild nicht vorhanden, wird ein Fallback gezeichnet.
+    * Ist ein Bild nicht vorhanden, wird Fallback gezeichnet
     */
     private void bilderLaden() {
         hintergrundBild = Images.get("/assets/minigames/physics/PhysikBackground.png");
@@ -153,11 +150,11 @@ private double velX, velY; // aktuelle Geschwindigkeit
     // Update – wird jeden Frame von der Engine aufgerufen
     @Override
     public void update(BaseScene scene) {
-        // Linke Maustaste: einmalig pro Klick auslösen
-        boolean gedrueckt = Input.INSTANCE.getMouseState(MouseEvent.BUTTON1)
-        == Input.KeyState.PRESSED;
-        boolean geklickt = gedrueckt && !warGedrueckt;
-        warGedrueckt = gedrueckt;
+        Input.KeyState mouseState = Input.INSTANCE.getMouseState(MouseEvent.BUTTON1);
+        boolean gedrueckt = mouseState == Input.KeyState.PRESSED
+                || mouseState == Input.KeyState.HELD;
+        boolean geklickt = mouseState == Input.KeyState.PRESSED;
+        warGedrueckt = mouseState == Input.KeyState.PRESSED || mouseState == Input.KeyState.HELD;
         Point maus = Input.INSTANCE.getMousePosition();
         if (maus == null) return;
         if (phase == PHASE_SIMULATION) {
@@ -169,8 +166,8 @@ private double velX, velY; // aktuelle Geschwindigkeit
                 int mx = (int) ballX + BALL_GROESSE / 2;
                 int my = (int) ballY + BALL_GROESSE / 2;
                 // Nur ziehen, wenn Mausbutton auf dem Ball gedrückt wurde
-                if (geklickt && new Rectangle((int) ballX, (int) ballY,
-                BALL_GROESSE, BALL_GROESSE).contains(maus)) {
+                if (!ziehtGerade && gedrueckt && new Rectangle((int) ballX, (int) ballY,
+                        BALL_GROESSE, BALL_GROESSE).contains(maus)) {
                     ziehtGerade = true;
                 }
                 if (ziehtGerade) {
@@ -193,13 +190,6 @@ private double velX, velY; // aktuelle Geschwindigkeit
             if (geklickt && new Rectangle(buttonX, buttonY,
             BUTTON_BREITE, BUTTON_HOEHE).contains(maus)) {
                 simulationStarten();
-            }
-        } else if (phase == PHASE_ERGEBNIS && geklickt) {
-            // Klick auf Ergebnisscreen → nächstes Level oder Neustart
-            if (letzterSchussTreffer) {
-                levelSzene.levelWon();
-            } else {
-                levelSzene.levelLost();
             }
         }
     }
@@ -255,10 +245,14 @@ private double velX, velY; // aktuelle Geschwindigkeit
     * Hält die Simulation an und zeigt das Ergebnis.
     * @param treffer true = Ziel getroffen, false = verfehlt
     */
-    
+
     private void simulationStoppen(boolean treffer) {
-        letzterSchussTreffer = treffer;
         phase = PHASE_ERGEBNIS;
+        if (treffer) {
+            levelSzene.levelWon();
+        } else {
+            levelSzene.levelLost();
+        }
     }
 
         // Zeichnen – wird jeden Frame von der Engine aufgerufen
@@ -305,8 +299,6 @@ private double velX, velY; // aktuelle Geschwindigkeit
         ballZeichnen(g2);
         // 8. Simulate-Button (nur Vorbereitungsphase)
         if (phase == PHASE_VORBEREITUNG) buttonZeichnen(g2);
-        // 9. Ergebnis-Overlay
-        if (phase == PHASE_ERGEBNIS) ergebnisZeichnen(g2);
     }
     
     /**
@@ -315,15 +307,18 @@ private double velX, velY; // aktuelle Geschwindigkeit
     private void zielZeichnen(Graphics2D g2) {
         int zx = (int) ziel[0], zy = (int) ziel[1];
         int zb = (int) ziel[2], zh = (int) ziel[3];
-        g2.setColor(new Color(100, 140, 110, 200));
+        g2.setColor(new Color(40, 100, 55, 245));
         g2.fillRect(zx, zy, zb, zh);
-        g2.setColor(new Color(70, 110, 80));
+        g2.setColor(new Color(20, 70, 35));
         g2.setStroke(new BasicStroke(2));
         g2.drawRect(zx, zy, zb, zh);
         g2.setStroke(new BasicStroke(1));
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Monospaced", Font.BOLD, 10));
-        g2.drawString("ZIEL", zx + 8, zy + zh / 2 + 4);
+        FontMetrics fm = g2.getFontMetrics();
+        int textX = zx + (zb - fm.stringWidth("ZIEL")) / 2;
+        int textY = zy + (zh - fm.getHeight()) / 2 + fm.getAscent();
+        g2.drawString("ZIEL", textX, textY);
     }
     
     /**
@@ -344,7 +339,7 @@ private double velX, velY; // aktuelle Geschwindigkeit
     
     /**
     * Zeichnet die Kraftpfeile:
-    * - Orange = Basisbeschleunigungen (Gravity, Drift)
+    * - Orange = Basisbeschleunigungen
     * - Blau = Spielerkraft (vom Ball wegzeigend)
     */
     
@@ -356,8 +351,8 @@ private double velX, velY; // aktuelle Geschwindigkeit
         g2.setStroke(new BasicStroke(3));
         g2.setColor(new Color(255, 140, 0));
         for (double[] k : basisBeschleunigungen) {
-            int ex = mx + (int) (k[0] * MASSSTAB * 15);
-            int ey = my + (int) (k[1] * MASSSTAB * 15);
+            int ex = mx + (int) (k[0] * MASSSTAB * 40);
+            int ey = my + (int) (k[1] * MASSSTAB * 40);
             pfeilZeichnen(g2, mx, my, ex, ey);
         }
         // Spielerkraft in Blau
@@ -415,28 +410,6 @@ private double velX, velY; // aktuelle Geschwindigkeit
         buttonX + BUTTON_BREITE / 2 - 45, buttonY + BUTTON_HOEHE / 2 + 5);
         }
     }
-    /**
-    * Zeichnet das Ergebnis-Overlay (TREFFER / VERFEHLT).
-    */
-    private void ergebnisZeichnen(Graphics2D g2) {
-        // Halbtransparenter Hintergrund
-        g2.setColor(new Color(0, 0, 0, 160));
-        g2.fillRoundRect(BREITE / 2 - 170, HOEHE / 2 - 55, 340, 110, 20, 20);
-        if (letzterSchussTreffer) {
-        g2.setColor(new Color(0, 255, 80));
-        g2.setFont(new Font("Monospaced", Font.BOLD, 30));g2.drawString("TREFFER!", BREITE / 2 - 95, HOEHE / 2 + 5);
-        } else {
-        g2.setColor(new Color(255, 60, 60));
-        g2.setFont(new Font("Monospaced", Font.BOLD, 30));
-        g2.drawString("VERFEHLT!", BREITE / 2 - 105, HOEHE / 2 + 5);
-        }
-        g2.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        g2.setColor(Color.WHITE);
-        g2.drawString(
-        "Klicke zum " + (letzterSchussTreffer ? "Weitermachen" : "Neustart"),
-        BREITE / 2 - 85, HOEHE / 2 + 35);
-    } 
-
     @Override
     public Rectangle2D getHitbox() {
     return null;
