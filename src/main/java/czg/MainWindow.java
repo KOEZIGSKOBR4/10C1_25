@@ -164,6 +164,8 @@ public class MainWindow extends JFrame implements Runnable {
                 // Grafik
                 SceneStack.INSTANCE.repaint();
 
+                // Zusätzliche Aktualisierung
+                // für die Eingabeverarbeitung
                 Input.INSTANCE.update();
 
                 // Durchlauf abgeschlossen, Zähler kann um 1 verringert werden

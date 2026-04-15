@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Eine Szene besteht aus einem Hintergrund und einer beliebigen Menge von
  * sich darauf bewegenden Objekten.
  */
-public class BaseScene {
+public abstract class BaseScene {
 
     /**
      * Liste der Objekte in diese Szene

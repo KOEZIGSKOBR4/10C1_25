@@ -1,9 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package czg.scenes;
 
 import czg.objects.*;
 import czg.scenes.minigame.Minigames;
 import czg.util.Images;
 
+/**
+ *
+ * @author guest-rwl69f
+ */
 public class PhysikraumScene extends BaseScene{
     public PhysikraumScene(){
         //Einfügen des Hintergrunds
@@ -16,8 +24,8 @@ public class PhysikraumScene extends BaseScene{
         this.objects.add(PlayerObject.INSTANCE);
         PlayerObject.INSTANCE.x = 210;
         PlayerObject.INSTANCE.y = 290;
-        
-       objects.add(new ButtonObject(null,370, 210, 410, 150,
+
+        objects.add(new ButtonObject(null,555, 148, 204, 162,
                 () -> SceneStack.INSTANCE.push(Minigames.generateMinigame(Department.PHYSICS))));
     }
 }

@@ -1,0 +1,107 @@
+Um die Komponenten des Spiels sinnvoll und geordnet umsetzen zu
+können, wird eine \textit{Spiel-Engine} benötigt, also ein
+Grundgerüst aus Code, welches das Einbinden von Grafik, Audio sowie
+das implementieren der Spiel-Logik vereinfacht sowie vereinheitlicht.
+
+Die Engine des CZGame sollte folgende Funktionen
+beinhalten:
+
+\begin{itemize}
+	\item Das Erstellen von \textit{Spiel-Objekten}, also
+	frei über den Bildschirm bewegliche Bilder oder Figuren,
+	welche optional noch beliebigen Code ausführen können.
+	\item Das Zusammenfassen von Spiel-Objekten in \textit{Szenen},
+	sodass die Objekte einfach gemeinsam verwaltet werden können.
+	\item Das Anzeigen mehrere Szenen übereinander, sodass z.B.
+	eine Szene, welche eine Textbox enthält über der Szene mit
+	der Spielfigur und dem Hintergrund eingeblendet werden kann.
+	\item Das eigentliche \glqq{}Zeichnen\grqq{} oder \textit{Rendern} der Spielgrafiken
+	sowie das geordnete Ausführen von Szenen- und Spiel-Objekt-spezifischem
+	Code in einem Festen Intervall von 60Hz.
+	\item Das Abspielen beliebiger Audio-Dateien (\textit{Sounds})
+	sowie die Steuerung von deren Wiedergabe.
+	\item Das Zusammenfassen verschiedener Sounds zu \textit{Sound-Gruppen},
+	um mehrere Sounds gemeinsam pausieren, starten oder stoppen zu können.
+	So beinhaltet jede Szene eine eigene Sound-Gruppe, sodass die in ihr
+	abgespielten Sounds beim Ausblenden bzw. Entfernen der Szene einfach
+	und einheitlich gestoppt werden können.
+\end{itemize}
+
+
+\subsection{Hauptschleife} \label{idee:engine:hauptschleife}
+
+Um die Grafik und Logik des Spiels mit einer Frequenz von 60Hz
+auszuführen, wird eine in der Spieleprogrammierung häufig
+genutzte Methode angewendet. Die Grundidee ist es, in einer
+Endlosschleife einen Zähler jeweils um die seit dem letzten
+Durchlauf der Schleife vergangene Zeit zu erhöhen. Erreicht der
+Zähler die Zeitmenge, nach welcher ein Durchlauf der Spiellogik
+ablaufen sollte, in diesem Fall also $\frac{1}{60}s$, wird dies
+getan und der der Zähler wieder um ebendiese Zeiteinheit verringert.
+
+Ein solcher Durchlauf der Spiellogik sowie das Rendern der Grafik
+wird als \textit{Frame} bezeichnet.
+
+
+\subsection{Klassen}
+
+Grundsätzlich sollte es für Spiel-Objekte und Szenen jeweils eine
+Basis-Klasse geben, die beim Umsetzen von Spielkomponenten von einer
+neuen Unterklasse erweitert wird, welche dann mindestens einen eigenen
+Konstruktur bereitstellt sowie optional Methoden der Elternklasse
+überschreibt, um eigene Logik zu implementieren.
+
+
+\subsection{Grafik und Eingabe} \label{idee:engine:grafik-eingabe}
+
+\begin{sloppypar}
+
+Zum Laden und Speichern von Bildern bietet Java die Methoden
+und Klassen \texttt{javax.imageio.ImageIO.read} sowie
+\texttt{java.awt.Image} bzw. \texttt{java.awt.image.BufferedImage}.
+
+Um Tastatur- und Mauseingaben zu verarbeiten sowie Grafik
+anzuzeigen, wird das \texttt{Java Swing Framework} verwendet.
+
+Mit der Klasse \texttt{javax.swing.JFrame} wird das Fenster
+erstellt in welchem das Spiel läuft. \texttt{Swing} bietet eine große
+Bandbreite an Komponenten für grafische Oberflächen, von denen
+jedoch hauptsächlich \texttt{javax.swing.JPanel} verwendet wird,
+ein generischer Behälter für andere Komponenten. Eine Instanz von
+diesem wird zum Fenster hinzugefügt. Durch das Überschreiben der
+\texttt{paintComponent}-Methode von \texttt{JPanel} kann eigener
+Rendering-Code hinzugefügt werden, im Fall des CZGame also
+das Zeichnen der Szenen und ihrer Objekte. Dieses kann durch
+Aufrufen der \texttt{repaint}-Methode dann manuell ausgelöst werden,
+um die Grafik eben mit einer Frequenz von 60Hz zu aktualisieren.
+
+Um Eingaben zu erhalten, werden die Interfaces \texttt{java.awt.event.KeyListener}
+sowie \texttt{java.awt.event.MouseListener} implementiert und mit
+der Methode \texttt{addKeyListener} bzw. \texttt{addMouseListener}
+beim Spielfenster registriert. Tastatur- und Mauseingaben werden
+so über Methoden wie \texttt{keyPressed} oder \texttt{mousePressed}
+der Interfaces mitgeteilt. Da die Aufrufe dieser Methoden selbstständig
+durch \texttt{Swing} erfolgen und somit nicht synchron mit dem
+Rest der Spiellogik laufen, werden diese Interfaces von einer einzelnen
+Klasse implementiert, welche dann die Zustände der Tasten mithilfe der
+auf parallelen Zugriff spezialisierten Datenstruktur
+\texttt{java.util.concurrent.ConcurrentHashMap} speichert sowie
+Zugriff darauf gewährt.
+\end{sloppypar}
+
+
+\subsection{Sound}
+
+\begin{sloppypar}
+Java bietet über die \texttt{Java Sound API} eine vorgefertigte Schnittstelle zum Laden und Abspielen von Audiodateien.
+\par Die am einfachsten zu verwendende Klasse dieser Schnittstelle ist
+\texttt{javax.sound.sampled.Clip}. Diese bietet Methoden wie \texttt{setMicrosecondPosition}, \texttt{start} und \texttt{stop}, mit
+welchen die Wiedergabe einfach gesteuert werden kann. Der entscheidende
+Nachteil der \texttt{Clip}-Klasse ist jedoch, dass sie die gesamten Audiodaten auf einmal in den Speicher lädt. Das ist bei kleinen, wenige Sekunden langen Audiodateien kein Problem, jedoch für Musikstücke, welche mehrere Minuten dauern, ungeeignet. 
+\par Um dieses Speicherproblem zu lösen, müssen die Audiodaten \textit{gestreamt},
+also in kleinen Stücken in den Speicher geladen, abgespielt und wieder
+verworfen werden. Es befindet sich also immer nur eine kleine Teilmenge der Gesamtaudiodaten im Speicher.
+\par Zur Umsetzung des Streamens stellt die Java-Standardbibliothek die Klassen \texttt{AudioInputStream} und \texttt{SourceDataLine} bereit. Erstere ermöglicht es, eine Audiodatei zu öffnen und zu
+dekodieren, also die enthaltenen Audiodaten zu lesen. Im zweiten
+Schritt müssen die gelesenen Daten an eine Instanz von \texttt{SourceDataLine} übergeben werden, welche diese dann abspielt. Dazu wird deren \textit{write}-Methode verwendet.
+\end{sloppypar}

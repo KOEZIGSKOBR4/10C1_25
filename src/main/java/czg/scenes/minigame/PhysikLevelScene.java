@@ -7,7 +7,7 @@ import czg.util.Images;
 
 /**
  * Die LevelScene für das Physik-Minigame.
- * <br><br>
+ * <p>
  * Wird von LevelSelectorScene gestartet, genau wie ChemieLevelScene.
  * Enthält nur den Hintergrund und das PhysikGameObject –
  * Buttons und Gewinn-/Verlier-Logik werden von LevelScene übernommen.
@@ -20,8 +20,9 @@ public class PhysikLevelScene extends LevelScene {
      */
     public PhysikLevelScene(int level) {
         super(Department.PHYSICS, level);
-
-        // Spielobjekt hinzufügen – enthält die gesamte Spiellogik
+        // Hintergrundbild laden und als erstes Objekt hinzufügen
+        objects.add(new BackdropObject(Images.get("/assets/minigames/physics/background.png")));
+        // Spielobjekt hinzufügen, enthältSpiellogik
         objects.add(new PhysikGameObject(level, this));
     }
 
