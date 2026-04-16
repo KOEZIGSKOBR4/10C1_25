@@ -11,7 +11,7 @@ Dokumentation mit dem gleichen Namen wie im Code bezeichnet.
 	\item \texttt{int PIXEL\_SCALE}: Da das Spiel im Pixel-Art-Stil
 	      umgesetzt wurde, sind die im Spiel enthaltenen Bilddateien sehr
 	      klein. Deshalb werden sie um diesen konstanten Faktor skaliert.
-	\item \texttt{int WIDTH, HEIGHT}: Die Höhe und Breite des Spielfensters
+	\item \texttt{int WIDTH, HEIGHT}: Die Höhe und Breite des Spielfensters	
 	      in Pixeln.
 	\item \texttt{int FPS}: Abkürzung für \textit{Frames per Second}.
 	      Wie oft Spiellogik und Rendern in einer Sekunde ausgeführt
@@ -302,7 +302,7 @@ ermöglicht werden musste, \glqq{}leere\grqq{} \texttt{BaseObject}s
 ohne weiteren Code zu erstellen.
 
 
-\subsection{Szenen}
+\subsection{Szenen} \label{programm:engine:szene}
 
 Eine Szene ist eine Gruppierung von Objekten. Die Umsetzung erfolgt
 über die abstrakte Klasse \texttt{czg.scenes.BaseScene}. Diese speichert
@@ -313,7 +313,14 @@ folgende Daten:
 	      aber auch \texttt{public}. Es können also von jeder Stelle beliebig
 	      Objekte hinzugefügt und entfernt werden.
 	\item Eine eigene Sound-Gruppe. Siehe \ref{programm:engine:sound:gruppe}.
-	\item Eine Liste von \textit{Tags}. Siehe \ref{programm:engine:szene:verdecken}.
+	\item Eine Liste von \textit{Tags}. Ein \textit{Tag}\footnote{\textit{Tag}: Englisch für \textit{Etikett} oder \textit{Stichwort}} ist eine beliebige Zeichenkette.
+	      Siehe \ref{programm:engine:szene:verdecken}.
+	\item Eine \textit{boolean}-Variable, die speichert ob die Szene von einer
+		  anderen verdeckt wird, also ob im Szenen-Stapel eine andere über ihr liegt.
+		  Siehe \ref{programm:engine:szene:stapel} und \ref{programm:engine:szene:verdecken}.
+	\item Die \textit{Verdeckungs-Einstellungen}, die angeben, was passieren soll,
+		  wenn die Szene von anderen Szenen, ggf. solche mit bestimmten Tags, verdeckt ist.
+		  Siehe \ref{programm:engine:szene:stapel} und \ref{programm:engine:szene:verdecken}.
 \end{itemize}
 
 Daneben besitzt \texttt{BaseScene} folgende wesentliche Methoden:
@@ -369,7 +376,13 @@ deklariert sind:
 	\item Eine weitere Liste, welche für jede Szene im Stapel
 	      die Vereinigungsmenge der Tags der darüber liegenden
 	      Szenen speichert und wie oft jeder Tag jeweils darüber
-	      liegt. Siehe \ref{programm:engine:szene:verdecken}.
+	      liegt. Dieser wird im Folgenden als \textit{Tag-Stapel}
+	      bezeichnet. Er besitzt den Typ \texttt{List<SequencedMap<String,Integer>{>}},
+	      speichert also analog zu jedem Eintrag in der Szenenliste
+	      eine nach Eintragungsreihenfolge geordnete Zuordnung
+	      von Tag zu Anzahl, also wie oft der Tag in den darüber
+	      liegenden Szenen vorkommt.
+	      und  Siehe auch \ref{programm:engine:szene:verdecken}.
 \end{itemize}
 
 Jede \texttt{BaseScene} speichert außerdem ihren Index in der
@@ -384,18 +397,48 @@ Um den Szenenstapel zu ändern, werden folgende als
 
 \begin{itemize}
 	\item \texttt{push(BaseScene)}: Fügt die gegebene Szene ganz oben auf
-	      dem Stapel, also am Ende der Liste ein.
+	      dem Stapel, also am Ende der Liste ein. Markiert die Szene, die
+	      bisher oben auf dem Stapel lag, als verdeckt. Siehe \ref{programm:engine:szene}.
 	\item \texttt{pop}: Entfernt die Szene, die ganz oben auf dem Stapel
-	      liegt, also jene, die zuletzt hinzugefügt wurde.
+	      liegt, also jene, die zuletzt hinzugefügt wurde. Markiert die nun
+	      im Stapel oben liegende Szene als nicht mehr verdeckt.
 	\item \texttt{insert(BaseScene, int)}: Fügt die gegebene Szene an dem
-	      gegebenen Index im Stapel ein.
+	      gegebenen Index im Stapel ein. Die neu eingefügte Szene wird immer
+	      als verdeckt markiert.
+	      Ist der als zweiter Parameter gegebene Index $\geq$ der Größe
+	      des Stapels, wird stattdessen an \texttt{push} delegiert.
 	\item \texttt{replace(BaseScene, BaseScene)}: Sucht die erste gegebene
 	      Szene im Stapel und ersetzt sie durch die zweite gegebene Szene.
-	\item \texttt{remove(BaseScene)}: Entfernt die gegebene Szene.
+	      Dabei wird die ersetzte Szene nicht als nicht mehr verdeckt markiert,
+	      da sie sowieso entfernt wird.
+	      Befindet sich die zu ersetzende Szene oben auf dem Stapel, wird
+	      stattdessen an \texttt{pop} und \texttt{push} delegiert.
+	\item \texttt{remove(BaseScene)}: Entfernt die gegebene Szene. Auch
+	      hier wird die Szene nicht mehr als nicht verdeckt markiert.
+		  Sollte die sich oben auf dem Stapel befinden, wird stattdessen an \texttt{pop}
+	      delegiert.
 	\item \texttt{clear}: Entfernt alle Szenen aus dem Stapel.
 \end{itemize}
 
 Beim Entfernen einer Szene wird deren \texttt{unload}-Methode aufgerufen.
+
+Außerdem aktualisieren die genannten Methoden auch jeweils den Tag-Stapel.
+Dazu wird die private Methode \texttt{SceneStack.propagateOverlyingTags(int, int)}
+verwendet. Deren erster Parameter heißt $fromIndex$, der zweite
+$counterDelta$. Die Methode ruft zunächst die Tags der Szene im Stapel
+am Index $fromIndex$ ab. Dann iteriert sie über die anderen Szenen im Stapel,
+begonnen bei $fromIndex - 1$ und endend bei $0$, jeweils inklusiv. Dabei
+wird dann jeweils über die abgerufene Tag-Menge iteriert und die jedem
+Tag zugeordnete Zahl beim entsprechenden Eintrag im Tag-Stapel um
+$counterDelta$ geändert. Tag-Stapel-Einträge, bei denen einem Tag
+eine Anzahl von $< 1$ zugeordnet ist, werden entfernt. Die \textit{Schlüsselmenge},
+abfragbar über \texttt{java.util.Map.keySet}, jedes Eintrags, also
+die Menge an Tags, denen eine Anzahl zugeordnet ist, ist dann die
+Vereinigungsmenge der Tags aller Szenen die im Stapel über einer
+anderen liegen.
+
+Die einzelnen Operation rufen die Methode dann mit den jeweils angemessenen
+Parametern auf, um den Tag-Stapel aktuell zu halten.
 
 
 \subsubsection{Grafik}
@@ -430,7 +473,7 @@ Auch diese delegiert an die bereits erwähnte
  \texttt{processScenes}-Methode.
 
 
-\subsubsection{Iteration und Verarbeitung der Szenen}
+\subsubsection{Iteration und Verarbeitung der Szenen} \label{programm:engine:szene:stapel:iteration}
 
 Die Methode \texttt{SceneStack.processScenes} erhält drei Parameter:
 
@@ -463,7 +506,7 @@ iteriert:
 	      mit der als ersten Parameter übergebenen Funktion die entsprechende
 	      Einstellung daraus extrahiert.
 	\item \begin{enumerate}
-		\item Ist Szene Verdeckt und die Einstellung auf \textit{aktiv} gestellt,
+		\item Ist die Szene Verdeckt und die Einstellung auf \textit{aktiv} gestellt,
 		      wird die Szene übersprungen und es wird mit der nächsten fortgefahren.
 		\item Andernfalls wird der als zweiter Parameter angegebene \texttt{Consumer}
 		      auf die Szene angewendet.
@@ -473,25 +516,361 @@ iteriert:
 
 \subsection{Verdecken von Szenen} \label{programm:engine:szene:verdecken}
 
+Wie bereits erwähnt, können Szenen \textit{Tags}, also eine Menge beliebiger
+Zeichenketten speichern. Daneben besitzt jede Szene auch einen Satz an
+\textit{Verdeckungs-Einstellungen}. Letztere werden mithilfe dreier Klassen
+im Paket \texttt{czg.scenes.cover\_settings} umgesetzt:
+
+\subsubsection{\texttt{Setting}}
+
+Dieses \texttt{enum} definiert die drei Konstanten
+\texttt{ON}, \texttt{OFF} und \texttt{KEEP}, sowie Methoden zum Ableiten
+einer Enum-Konstante aus einem \texttt{boolean} und der Umkehroperation,
+also dem Ableiten eines \texttt{boolean} aus einer der Konstanten.
+Dabei entspricht genau die Konstante \texttt{ON} dem Wert \texttt{true}.
+Umgekehrt resultiert der \texttt{boolean} \texttt{true} in der Konstante
+\texttt{ON}, \texttt{false} dagegen in \texttt{OFF}.
+
+
+\subsubsection{\texttt{Rules}}
+
+Diese \texttt{record}-Klasse speichert drei Werte, jeweils vom
+eben beschriebenen Typ \texttt{Setting}:
+\begin{enumerate}
+	\item \texttt{coverDisablesDrawing}: Ob das Verdecken der Szene den Aufruf
+	von deren \texttt{draw}-Methode während der Verarbeitung eines Frames
+	verhindern soll.
+	\item \texttt{coverPausesLogik}: Gleich der eben beschriebenen Eigenschaft,
+	mit dem Unterschied dass diese sich stattdessen auf den Aufruf von
+	\texttt{BaseScene.update} auswirkt.
+	\item \texttt{coverPausesAudio}: Wenn \texttt{ON}, werden die Sounds in der
+	Gruppe der Szene beim Verdecken dieser pausiert und fortgesetzt, wenn
+	die Szene nicht mehr verdeckt ist.
+\end{enumerate}
+
+Als einzige Methode definiert sie \texttt{combineWith(Rules)}. Diese
+kombiniert das Objekt, dessen Methode aufgerufen wurde, mit dem,
+welches als Parameter übergeben wurde und liefert ein neues
+\texttt{Rules}-Objekt, wobei die Enum-Konstanten aus \texttt{Setting}
+wie folgt kombiniert werden:
+
+\begin{align*}
+	ON + OFF = OFF\\
+	ON + KEEP = ON\\
+	\\
+	OFF + ON = ON\\
+	OFF + KEEP = OFF
+\end{align*}
+
+Dabei muss nicht die Kombination von \texttt{KEEP} mit einer der anderen
+Konstanten berücksichtigt werden, da diese Situation nie eintreten wird.
+Siehe \ref{programm:engine:szene:verdecken:CoverSettings}.
+
+
+\subsubsection{\texttt{CoverSettings}} \label{programm:engine:szene:verdecken:CoverSettings}
+
+Diese Klasse fasst die vorherigen beiden nun zusammen.
+Um eine neue Instanz dieser zu erstellen, stehen zwei Konstruktoren zur Verfügung,
+einer ohne Parameter und ein zweiter mit drei \texttt{boolean}-Parametern, deren
+Namen den in \texttt{Rules} gespeicherten Werten gleichen. Die im Konstruktor
+gesetzten Einstellungen sind die \textit{Standardeinstellungen}. Sie können also
+entweder explizit angegeben oder ausgelassen werden, in welchem Fall der andere
+Konstruktor mit jeweils \texttt{false} als Parameter-Wert aufgerufen wird.
+
+Nun können mit der \texttt{setRules(Rules, String...)}-Methode Regeln hinzugefügt werden.
+Der erste Parameter enthält die anzuwendenden Regeln, der zweite einen oder mehrere Tags,
+bei welchen diese Regeln zur Anwendung kommen. Dabei ist zu beachten, dass die Regeln
+angewendet werden, wenn mindestens eine Szene mit mindestens einem der gegebenen Tags
+über der Szene liegt, welcher der Regelsatz zugeordnet wird - die Regeln treten \textbf{nicht}
+erst in Kraft wenn, alle gegebenen Tags in über der Szene liegenden Szenen zu finden sind.
+
+Der Regelsatz wird einer Szene dann über ihren Konstruktor zugeordnet: 
 \texttt{BaseScene} bietet zwei Konstruktoren, einen ohne Parameter und einen
 mit den Verdeckungs-Einstellungen als einzigen Parameter. Ersterer ruft lediglich
-letzteren auf und übergibt ein \texttt{CoverSettings}-Objekt mit Standardeinstellungen.
-Siehe \ref{programm:engine:szene:verdecken}.
+letzteren auf und übergibt ein \texttt{CoverSettings}-Objekt mit den folgenden
+Standardeinstellungen:
 
-\begin{itemize}
-	\item Eine \textit{boolean}-Variable, die speichert ob die Szene von einer
-	anderen verdeckt wird, also ob im Szenen-Stapel eine andere über ihr liegt.
-	Siehe \ref{programm:engine:szene:stapel} und \ref{programm:engine:szene:verdecken}.
-	\item Die \textit{Verdeckungs-Einstellungen}, die angeben, was passieren soll,
-	wenn die Szene von anderen Szenen, ggf. solche mit bestimmten Tags, verdeckt ist.
-	Siehe \ref{programm:engine:szene:stapel} und \ref{programm:engine:szene:verdecken}.
-\end{itemize}
+\begin{enumerate}
+	\item \texttt{coverDisablesDrawing}: \texttt{ false}. Standardmäßig sind mehrere
+	      übereinanderliegende Szenen alle sichtbar.
+	\item \texttt{coverPausesLogic}: \texttt{ true}. Standardmäßig führt nur die
+	      oben liegende Szene ihre \texttt{update}-Methode aus.
+	\item \texttt{coverPausesAudio}: \texttt{ false}. Standardmäßig ist Ton von allen Szenen zu hören.
+\end{enumerate}
+
+Wird nun der effektive Regelsatz einer Szene im Stapel benötigt (siehe \ref{programm:engine:szene:stapel:iteration}), wird die Methode
+\texttt{CoverSettings.getEffectiveRules(SequencedSet<String>)} aufgerufen.
+Ausgehend von den Standardeinstellungen, die im Konstruktor angegeben wurden,
+wird nun über die gegebenen Tags iteriert, wenn möglich der für den Tag
+festgelegte Regelsatz abgerufen und kombiniert. Letztendlich wird dann also
+die Kombination der Standardeinstellungen sowie der Einstellungen aller
+gegebenen Tags, in der gegebenen Reihenfolge, zurückgegeben. Der Rückgabewert
+dieser Methode wird in einer \texttt{java.lang.LinkedHashMap<SequencedSet<String>,Rules>}
+gespeichert, sodass zukünftige Aufrufe schneller ablaufen können. Dabei kann
+dieser \textit{Cache} eine maximale Größe von $256$ Einträgen speichern. Wird
+diese Grenze überschritten, wird der älteste Eintrag wieder entfernt. Deshalb
+wurde auch diese spezifische Implementierung von \texttt{Map} gewählt:
+\texttt{LinkedHashMap} behält die Reihenfolge in welcher ihre Einträge hinzugefügt
+wurden bei. So kann dann der älteste Eintrag mit der in \texttt{java.util.SequencedMap}
+definierten Methode \texttt{pollFirstEntry} entfernt werden.
+
+
 
 \subsection{Sound}
 
-Die \texttt{Java Sound API} untersetützt standardmäßig nur das unkomprimierte \texttt{WAV}-Format. Die Audiodateien liegen allerdings 
-aus Gründen der effizienteren Speicherplatznutzung im komprimierten \texttt{Ogg/Vorbis}-Format vor. Um diese laden zu können
+Die \texttt{Java Sound API} unterstützt standardmäßig nur das unkomprimierte
+\texttt{WAV}-Format. Die Audiodateien liegen allerdings  aus Gründen der
+effizienteren Speicherplatznutzung im komprimierten \texttt{Ogg/Vorbis}-Format
+vor. Um diese laden zu können, wurde die Bibliothek \textit{FFSampledSP}\footnote{\url{https://github.com/hendriks73/ffsampledsp}}
+eingebunden. Diese verwendet das Multimedia-Framework \textit{ffmpeg}\footnote{\url{https://ffmpeg.org}},
+um die Verwendung einer großen Bandbreite von Formaten über die \texttt{Java Sound API}
+zu ermöglichen.
+
+Wie in der Lösungsidee erklärt, gibt es zwei verschiedene Ansätze für
+die Implementierung von Sound mithilfe der \texttt{Java Sound API}:
+Einmal über das Laden der gesamten Daten in den Speicher mit
+\texttt{javax.sound.sampled.Clip} sowie das Streamen der Datei
+über \texttt{javax.sound.sampled.AudioInputStream} und
+\texttt{javax.sound.sampled.SourceDataLine}.
+
+Zunächst wird allerdings eine gemeinsame Schnittstelle für die
+Arbeit mit Audio innerhalb der Engine definiert: \texttt{czg.sound.BaseSound}.
+Diese abstrakte Klasse definiert folgende Eigenschaften:
+
+\begin{itemize}
+	\item Die Sound-Gruppe, in welcher sich der Sound befindet. Siehe \ref{programm:engine:sound:gruppe}.
+	\item Einen als \texttt{protected}, also nur von Kindklassen oder
+	      vom selben Paket aus zugreifbaren \texttt{boolean}-Wert, welcher
+	      angibt, ob der Sound \textbf{endgültig} gestoppt wurde. Ist dies
+	      der Fall, kann er nicht mehr pausiert, gestartet und vor- sowie
+	      zurückgespult werden.
+	\item Einen ebenfalls als \texttt{protected} deklarierten Wert des
+	      in kürze erklärten Enum-Typs \texttt{EndOfFileBehaviour}, welcher
+	      angibt, was zu tun ist, wenn das Ende der abzuspielenden Audiodatei
+	      erreicht ist.
+\end{itemize}
+
+Folgende Methoden sind in \texttt{BaseSound} als \texttt{public} sowie
+\texttt{abstract} deklariert und müssen folglich von Kindklassen implementiert
+werden:
+
+\begin{itemize}
+	\item \texttt{getLine}: Diese Methode gibt eine Instanz des Interfaces
+	      \texttt{javax.sound.sampled.DataLine} zurück, welches sowohl
+	      von \texttt{Clip} als auch von \texttt{SourceDataLine} erweitert wird.
+	\item \texttt{getLengthMicroseconds}: Gibt die Länge des Sounds in Mikrosekunden zurück.
+	\item \texttt{getPositionMicroseconds}: Gibt die aktuelle Wiedergabeposition
+	      in Mikrosekunden ab dem Beginn der Audiodatei zurück.
+\end{itemize}
+
+Folgende, ebenfalls als \texttt{public} deklarierte Methoden gibt \texttt{BaseSound} bereits vor:
+
+\begin{itemize}
+	\item \texttt{stop}: Stoppt den Sound. Der entsprechende \texttt{boolean}-Wert
+	      innerhalb der Klasse wird gesetzt, \texttt{DataLine.close} wird über
+	      die Methode \texttt{BaseSound.getLine} aufgerufen und der Sound wird
+	      ggf. aus seiner Gruppe entfernt.
+	\item \texttt{isStopped}: Gibt an, ob der Sound mittels der entsprechenden
+	      Methode gestoppt wurde.
+	\item \texttt{setEndOfFileBehaviour(EndOfFileBehaviour)}: Setzt den Wert der
+	      entsprechenden Variable in der Klasse.
+	\item \texttt{getVolumeControl}, \texttt{getPanControl}, \texttt{getMuteControl}:
+	      Gibt die entsprechenden Instanzen von \texttt{javax.sound.sampled.FloatControl}
+	      bzw. \texttt{BooleanControl} mittels \texttt{DataLine.getControl} zurück.
+	      Diese Methoden dienen als Schnellzugriff auf verschiedene häufig verwendete
+	      Steuerungseinheiten von Sounds.
+\end{itemize}
+
+Weiterhin definiert die Klasse folgende essentielle Operationen bzw. Methoden für Sounds,
+welche folglich auch allesamt als \texttt{public} deklariert sind:
+
+\begin{itemize}
+	\item \texttt{setPlaying(boolean)} zum pausieren und starten des Sounds.
+	\item \texttt{isPlaying} zum Abfragen des Wiedergabezustands.
+	\item \texttt{seek(double)}: Zum Spulen zu einer beliebigen Position
+	      in der Audiodatei. Der übergebene Parameter ist ein Wert zwischen
+	      $0$ - Anfang des Sounds - und $1$ - Ende des Sounds.
+\end{itemize}
+
+Alle drei eben gelisteten Methoden sind in \texttt{BaseSound} bereits unter
+den oben gelisteten Namen implementiert. Dabei besteht die Implementierung
+jedoch nur aus einer Überprüfung mittels \texttt{isStopped}, ob der Sound
+bereits gestoppt wurde, in welchem Fall der Methodenaufruf mit einer Fehlermeldung
+beendet wird, sowie den Aufruf der tatsächlichen Implementierung.
+Letztere wird von Kindklassen durch das Implementieren der in \texttt{BaseSound}
+als \texttt{protected abstract} deklarierten Methoden \texttt{setPlayingActual(boolean)},
+\texttt{isPlayingActual} und \texttt{seekActual(double)} bereitgestellt.
+Somit sind die in \texttt{BaseSound} deklarierten Methoden \textit{Wrapper},
+welche eine Sicherheitsüberprüfung durchführen und dann an die eigentliche
+Implementierung delegieren. So müssen die Kindklassen diese Überprüfung
+nicht jeweils selbst noch einmal implementieren.
+
+
+\subsubsection{\texttt{EndOfFileBehaviour}}
+
+Die Enum-Klasse \texttt{EndOfFileBehaviour} definiert drei Konstanten:
+
+\begin{itemize}
+	\item \texttt{LOOP}: Der Sound wird wieder von vorne abgespielt.
+	\item \texttt{RESTART\_AND\_PAUSE}: Die Wiedergabeposition wird,
+	      analog zu \texttt{LOOP}, an den Anfang zurückgesetzt, jedoch
+	      wird der Sound pausiert.
+	\item \texttt{STOP}: \texttt{BaseSound.stop} wird aufgerufen.
+\end{itemize}
+
+Jeder der Enum-Werte speichert einen als \texttt{public final}
+deklarierten \texttt{java.util.function.Consumer<BaseSound>},
+an den das entsprechende \texttt{BaseSound}-Objekt übergeben
+wird, wenn es seine Datei fertig abgespielt hat.
+
+
+\subsubsection{\texttt{ClipSound}}
+
+Die erste Implementierung von \texttt{BaseSound}, \texttt{czg.sound.ClipSound},
+basiert auf dem in der Lösungsidee beschriebenen Interface
+\texttt{javax.sound.sampled.Clip}. Ihr Konstruktor nimmt folgende
+Parameter:
+
+\begin{enumerate}
+	\item Der Dateipfad der abzuspielenden Audiodatei.
+	\item Ein \texttt{boolean}-Wert, der angibt, ob der
+	      Sound sofort gestartet werden soll.
+	\item Eine Konstante aus \texttt{EndOfFileBehaviour}.
+\end{enumerate}
+
+Bei dessen Aufruf wird der Dateipfad gespeichert und über
+\texttt{javax.sound.sampled.AudioSystem.getClip} eine
+neue Instanz von \texttt{Clip} erhalten, welche ebenfalls
+in der Klasse gespeichert wird. Das eventuelle automatische
+Starten des Sounds wird über die in \texttt{BaseSound} vorgegebene Methode
+\texttt{setPlaying} erledigt
+
+Für das Setzen des \texttt{EndOfFileBehaviour}-Wertes
+stellt die Klasse eine eigene Implementierung bereit.
+Dies hat den Grund, dass \texttt{Clip} über die Methode
+\texttt{loop} Funktionalität zum Wiederholen der Audiodatei
+bereitstellt, welche von \texttt{ClipSound} ausgenutzt wird.
+
+Dafür wird zunächst über \texttt{Clip.addLineListener}
+die Methode \texttt{ClipSound.lineListener} registriert.
+Diese wird dann bei verschiedenen, mit dem \texttt{Clip}
+zusammenhängenden Ereignissen aufgerufen.
+
+Besagte Methode überprüft dann, ob es sich bei dem
+Ereignis um \texttt{javax.sound.sampled.LineEvent.Type.STOP}
+handelt, also um das Stoppen des \texttt{Clip}s, und
+ob die in \texttt{ClipSound} gespeicherte
+\texttt{EndOfFileBehaviour}-Konstante ungleich \texttt{null}
+ist. In diesem Fall wird dann \texttt{this} an den
+in der Enum-Konstante enthaltenen \texttt{Consumer<BaseSound>}
+übergeben.
+
+Die \texttt{setEndOfFileBehaviour}-Implementierung von
+\texttt{ClipSound} enthält eine Sonderklausel für die
+Konstante \texttt{EndOfFileBehaviour.LOOP}: In diesem
+Fall wird das endlose Wiederholen des Sounds mit einem
+Aufruf von \texttt{Clip.loop} eingeschaltet, die in der
+Klasse gespeicherte Enum-Konstante auf \texttt{null}
+gesetzt und die Methode ist beendet. Andernfalls wird
+das Wiederholen des \texttt{Clip}s explizit mit einem
+weiteren Aufruf von \texttt{Clip.loop} wieder deaktiviert
+und die Enum-Konstante wird normal gespeichert.
+
+So wird für \texttt{EndOfFileBehaviour.LOOP} die bereits
+von \texttt{Clip} vorgegebene Funktionalität zum wiederholen
+der Audiodatei verwendet. Andernfalls tritt die in
+\texttt{EndOfFileBehaviour} definierte Logik in Kraft.
+\\
+
+Die Implementierung von \texttt{BaseSound.setPlayingActual(boolean)}
+pausiert den Sound mittels \texttt{Clip.stop}.
+Ist stattdessen das Fortsetzen der Wiedergabe gewünscht, wird
+zunächst mittels \texttt{Clip.isOpen} geprüft,
+ob sich überhaupt schon Daten im \texttt{Clip} befinden.
+Ist dies nicht der Fall, werden diese über \texttt{Clip.open}
+geladen. In jedem Fall wird die Wiedergabe mit \texttt{Clip.start}
+fortgesetzt bzw. gestartet.
+\\
+
+Die Implementierung der Methode \texttt{getLine} gibt
+dann einfach den in der Klasse gespeicherten \texttt{Clip} zurück.
+Auch die restlichen Implementierungen der abstrakten
+Methoden von \texttt{BaseSound} sind ähnlich trivial:
+\texttt{isPlayingActual}, \texttt{seekActual},
+\texttt{getLengthMicroseconds} und \texttt{getPositionMicroseconds}
+bedienen sich der \texttt{Clip}-Methoden \texttt{isActive},
+\texttt{setFramePosition}, \texttt{getMicrosecondLength}
+sowie \texttt{getMicrosecondPosition}.
+
+
+\subsubsection{\texttt{StreamSound}}
+
 
 \subsection{Sound-Gruppe} \label{programm:engine:sound:gruppe}
+
+Eine \textit{Sound-Gruppe} fasst mehrere Sounds zusammen und
+ermöglicht es, diese gleichzeitig zu pausieren und fortzusetzen.
+
+Die Implementierung erfolgt über die Klasse \texttt{czg.sound.SoundGroup}.
+Diese speichert einmal alle sich in ihre befindenden Sounds
+in einer \texttt{java.util.HashMap<BaseSound, Boolean>}, in welcher
+jedem Sound sein Zustand vor dem Pausieren der Gruppe zugeordnet ist.
+Daneben Speichert \texttt{SoundGroup} noch in Form eines \texttt{boolean}-Wertes,
+ob die Gruppe gerade pausiert ist.
+
+Der Konstruktor der Klasse ist \texttt{public} und leer.
+Um die Gruppe zu befüllen bzw. wieder zu leeren, bietet
+die Klasse folgende Methoden:
+
+\begin{itemize}
+	\item \texttt{addSound(BaseSound)}: Falls sich der Sound bereits
+	      in einer Gruppe befindet, wird er aus dieser entfernt. Dann
+	      wird er in die bereits erwähnte \texttt{HashMap} gespeichert,
+	      wobei ihm der willkürlich gewählte Wert \texttt{true} zugewiesen
+	      wird. Dieser ist hier noch nicht wichtig, da er erst beim Pausieren
+	      der Gruppe auf etwas aussagekräftigen gesetzt wird.
+	\item \texttt{removeSound(BaseSound, bool)}: Stoppt den Sound, wenn
+	      über den zweiten Parameter angegeben. Andernfalls, wenn die
+	      Gruppe pausiert ist, wird der Sound in den Wiedergabezustand
+	      zurückversetzt den er vor dem Pausieren der Gruppe hatte.
+	      Schlussendlich wird er aus der \texttt{HashMap} entfernt und
+	      dem \texttt{BaseSound} wird \texttt{null} als seine Gruppe
+	      eingespeichert, um anzuzeigen, dass er sich in keiner befindet.
+	\item \texttt{removeAndStopAllSounds}: Erstellt eine Kopie der Schlüsselmenge
+	      der \texttt{HashMap}, iteriert über diese und ruft für jeden Wert
+	      die \texttt{removeSound}-Methode auf, wobei als erster Parameter
+	      das jeweilige \texttt{BaseSound}-Objekt und als zweiter \texttt{true}
+	      übergeben wird. Das Erstellen einer Kopie ist hier notwendig, um
+	      eine \texttt{ConcurrentModificationException} zu vermeiden, welche
+	      auftritt, wenn eine Liste oder eine Map geändert wird, während
+	      eine Iteration über sie im Gange ist.
+\end{itemize}
+
+Zur Wiedergabesteuerung der Gruppe stehen folgende drei Methoden bereit:
+
+\begin{itemize}
+	\item \texttt{pause}: Speichert den Wiedergabezustand aller Sounds in der
+	      Gruppe, welche über einen Aufruf von \texttt{BaseSound.isPlaying}
+	      erhalten werden können, in der \texttt{HashMap}. Dann werden alle
+	      Sounds mittels \texttt{BaseSound.setPlaying(false)} pausiert.
+	      Der entsprechende \texttt{boolean}-Wert in der \texttt{SoundGroup}-Klasse
+	      wird auf \texttt{true} gesetzt, um zu signalisieren, dass die Gruppe
+	      pausiert ist.
+	\item \texttt{resume}: Liest die mit \texttt{pause} eingetragenen Wiedergabezustände
+	      aus und wendet sie auf die Sounds in der Gruppe an. Der entsprechende
+	      \texttt{boolean}-Wert in der Klasse wird wieder auf \texttt{false}
+	      gesetzt.
+	\item \texttt{isPlaying}: List den eben erwähnten \texttt{boolean}-Wert aus.
+\end{itemize}
+
+Jede \texttt{BaseScene} besitzt eine Instanz von \texttt{SoundGroup}, deren
+\texttt{removeAndStopAllSounds}-Methode als Teil von \texttt{BaseScene.unload}
+aufgerufen wird.
+
+Daneben gibt es noch eine als \texttt{public static final} deklarierte Instanz
+\texttt{SoundGroup.GLOBAL\_SOUNDS}, welche nicht an eine Szene gebunden ist, also
+auch nicht automatisch gestoppt wird.
+
+\subsection{Übergang zwischen Teilen von Musikstücken}
 
 \end{sloppypar}
