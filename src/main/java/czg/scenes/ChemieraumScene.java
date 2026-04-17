@@ -20,8 +20,8 @@ public class ChemieraumScene extends BaseScene{
         this.objects.add(PlayerObject.INSTANCE);
         PlayerObject.INSTANCE.x = 170;
         PlayerObject.INSTANCE.y = 290;
-        
-        objects.add(new ButtonObject(null,370, 210, 410, 150,
+
+        objects.add(new ButtonObject(Images.get("/assets/minigames/general/button_menu.png"),
                 () -> SceneStack.INSTANCE.push(Minigames.generateMinigame(Department.CHEMISTRY))));
         }
 }

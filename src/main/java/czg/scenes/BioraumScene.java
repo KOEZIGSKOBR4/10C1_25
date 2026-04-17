@@ -1,8 +1,7 @@
 package czg.scenes;
 
-import czg.objects.BackdropObject;
-import czg.objects.PfeilObject;
-import czg.objects.PlayerObject;
+import czg.objects.*;
+import czg.scenes.minigame.Minigames;
 import czg.util.Images;
 
 /**
@@ -20,6 +19,8 @@ public class BioraumScene extends BaseScene{
         this.objects.add(PlayerObject.INSTANCE);
         PlayerObject.INSTANCE.x = 150;
         PlayerObject.INSTANCE.y = 290;
-        
+
+        objects.add(new ButtonObject(Images.get("/assets/minigames/general/button_menu.png"),
+                () -> SceneStack.INSTANCE.push(Minigames.generateMinigame(Department.BIOLOGY))));
     }
 }

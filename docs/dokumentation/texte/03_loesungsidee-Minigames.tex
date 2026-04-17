@@ -515,24 +515,31 @@ Die drei Level bauen konzeptionell aufeinander auf und steigern die Komplexität
 \textbf{Umsetzung} \\
 Die Umsetzung basiert auf einem einfachen Frame-by-Frame Physikmodell, das pro Frame Beschleunigungen auf die Geschwindigkeit und die Geschwindigkeit auf die Position addiert. Dieses Modell ist bewusst vereinfacht – es gibt keine Reibung, keine elastischen Kollisionen und keine Zeitunabhängigkeit – was für ein Minispiel aber vollkommen ausreicht. Trotz der Vereinfachungen ist die Physik nämlich logisch und nachvolziehbar.
 
-Eine Herausforderung bei der Entwicklung war die Drag-Steuerung: Der Input-State der Engine unterscheidet zwischen PRESSED (nur ein Frame) und HELD (dauerhaft gehalten), was initial dazu führte, dass der Kraftpfeil nicht gezogen werden konnte. Erst durch die explizite Kombination beider States konnte dieses Problem gelöst werden. Zudem musste die Koordination zwischen update() und draw() sorgfältig bedacht werden, da Phasenübergänge (z.B. Simulation → Ergebnis) sonst im selben Frame verarbeitet wurden bevor sie gezeichnet werden konnten.
+Eine Herausforderung bei der Entwicklung war die Drag-Steuerung: Der Input-State der Engine unterscheidet zwischen PRESSED (nur ein Frame) und HELD (dauerhaft gehalten), was initial dazu führte, dass der Kraftpfeil nicht gezogen werden konnte. Erst durch die explizite Kombination beider States konnte ich dieses Problem lösen. Zudem musste die Koordination zwischen update() und draw() sorgfältig bedacht werden, da Phasenübergänge (z.B. Simulation → Ergebnis) sonst im selben Frame verarbeitet wurden bevor sie gezeichnet werden konnten. Dies sorgt beispielsweise dafür, dass die Gewinn- (oder Verloren-)szene erst nach einem weiteren Mausklick gezeichnet wurde.
 
 \subsection{Chemie}
-Das Chemie-Minigame ist ein interaktives Sortierpuzzle, das strukturell dem in der Spieleentwicklung etablierten \glqq{}Water Sort\grqq{}-Prinzip folgt. Die Spielmechanik basiert auf dem Konzept des geordneten Stapels (Stack): Mehrere Reagenzgläser sind mit farbigen Blöcken unterschiedlicher Farbe befüllt, wobei die Reihenfolge der Blöcke zufällig generiert wird. Das Ziel des Spielers ist es, durch gezielte Umfülloperationen einen Zustand herzustellen, in dem jedes Reagenzglas ausschließlich Blöcke einer einzigen Farbe enthält.
+Das Chemie-Minigame ist ein interaktives Sortierpuzzle, das strukturell dem bekannten \glqq{}Water Sort\grqq{}-Prinzip folgt. Die Spielmechanik basiert auf dem Konzept des geordneten Stapels (Stack): Mehrere Reagenzgläser sind mit farbigen Blöcken unterschiedlicher Farbe befüllt, wobei die Reihenfolge der Blöcke zufällig generiert wird. Das Ziel des/der Spielers*in ist es, durch gezieltes Umfüllen jedes Reagenzglas mit ausschließlich Blöcken einer einzigen Farbe zu befüllen.
 
-Die Interaktion erfolgt ausschließlich durch Mausklicks: Der Spieler wählt zunächst ein Quellglas aus, woraufhin dieses visuell hervorgehoben wird, und wählt anschließend ein Zielglas. Eine Umfüllung wird nur dann durchgeführt, wenn die Regeln erfüllt sind — das Zielglas ist entweder leer oder der oberste Block hat dieselbe Farbe wie die zu verschiebenden Blöcke. Gleichzeitig läuft ein Countdown-Timer, der den Spieler unter Zeitdruck setzt. Dieses Design fördert strategisches Vorausdenken sowie die Fähigkeit, mehrere Züge im Voraus zu planen.
-Das Kernkonzept der Implementierung ist die Modellierung jedes Reagenzglases als Stack-Datenstruktur. Die innere Klasse Reagenzglas kapselt eine ArrayList<String>, auf der ausschließlich stack-typische Operationen erlaubt sind: Hinzufügen am Ende (blockHinzufuegen), Lesen des obersten Elements (oberstenBlockAnschauen) und Entfernen des obersten Elements (oberstenBlockEntfernen). Diese strikte Kapselung stellt sicher, dass die Spielregeln strukturell durch das Datenmodell erzwungen werden und nicht nur durch externe Überprüfungen.
+Die Interaktion erfolgt ausschließlich durch Mausklicks: Der Spieler wählt zunächst ein \glqq{}Quellglas\grqq{} aus, woraufhin dieses visuell hervorgehoben wird, und wählt anschließend ein Zielglas. Eine Umfüllung wird nur dann durchgeführt, wenn diese Regeln erfüllt sind:
+\begin{itemize}
+\item das Zielglas ist entweder leer
+\item oder der oberste Block hat dieselbe Farbe wie die zu verschiebenden Blöcke
+\end{itemize}
 
-Die Methode kannAblegen() der Klasse Reagenzglas fasst die Ablegelogik zentral zusammen: Ein Block darf nur dann platziert werden, wenn das Glas nicht voll ist und entweder leer ist oder der oberste Block dieselbe Farbe trägt. Diese Kapselung der Regellogik im Datenmodell folgt dem Prinzip der hohen Kohäsion und verhindert, dass Spielregeln an verschiedenen Stellen im Code dupliziert werden.
+Gleichzeitig läuft ein Countdown, der den/die Spieler*in unter Zeitdruck setzen soll.
+Das Kernkonzept der Implementierung ist die Modellierung jedes Reagenzglases als Stack-Datenstruktur. Die innere Klasse Reagenzglas kapselt eine ArrayList<String>, auf der ausschließlich stack-typische Operationen erlaubt sind: Hinzufügen am Ende (blockHinzufuegen), Lesen des obersten Elements (oberstenBlockAnschauen) und Entfernen des obersten Elements (oberstenBlockEntfernen).
+Diese strikte Kapselung stellt sicher, dass die Spielregeln strukturell durch das Datenmodell erzwungen werden und nicht nur durch externe Überprüfungen.
 
 
 \subsubsection{Level 1}
 
 Drei Farben (Blau, Grün, Pink) werden auf drei Reagenzgläser verteilt, dazu kommen zwei leere Puffergläser. Mit insgesamt 12 Blöcken und einem großzügigen Verhältnis von Puffer- zu Spielgläsern ist dieses Level bewusst zugänglich gehalten und dient primär dem Kennenlernen der Steuerung und der Spielregeln.
+
 \subsubsection{Level 2}
 Mit vier Farben (Blau, Grün, Pink, Lila) steigt die Anzahl der Blöcke auf 16. Der Zustandsraum möglicher Anordnungen wächst kombinatorisch, sodass triviale Lösungswege nicht mehr ausreichen. Die Puffergläser müssen strategisch eingesetzt werden, was ein höheres Maß an planerischem Denken voraussetzt.
+
 \subsubsection{Level 3}
-Alle fünf Farben (Blau, Grün, Pink, Lila, Gelb) sind aktiv. 20 Blöcke auf fünf Spielgläsern bei nur zwei Puffergläsern ergeben eine deutlich erhöhte Schwierigkeit. Das Zeitlimit von 30 Sekunden ist bei dieser Komplexität besonders herausfordernd, da die Lösung typischerweise eine längere Zugsequenz erfordert.
+Alle fünf Farben (Blau, Grün, Pink, Lila, Gelb) sind aktiv. 20 Blöcke auf fünf Spielgläsern bei nur zwei Puffergläsern ergeben eine deutlich erhöhte Schwierigkeit. Das Zeitlimit von 30 Sekunden ist hierbei besonders herausfordernd, da da insgesamt eine höhere Anzahl an Spielzügen nötig sind.
 
 \subsubsection{Beispielcode}
 \begin{lstlisting}[language=Java, caption={Umschütten: Blöcke von einem Glas ins andere verschieben}]
@@ -582,3 +589,111 @@ Die Progression von drei auf fünf Farben ist nicht linear, sondern exponentiell
 Die Verwendung einer ArrayList als zugrundeliegende Datenstruktur für den Stack ist aus Effizienzgesichtspunkten vertretbar, da die Kapazität mit MAX\_KAPAZITAET = 4 fest begrenzt ist und keine dynamischen Resize-Operationen anfallen. Die strikte Kapselung der Stack-Operationen innerhalb der inneren Klasse Reagenzglas erhöht die Wartbarkeit des Codes erheblich, da Regeländerungen — etwa eine geänderte Kapazität oder neue Ablege-Bedingungen — ausschließlich innerhalb dieser Klasse vorgenommen werden müssen.
 
 Eine technische Herausforderung stellte die pixelgenaue Positionierung der Blöcke innerhalb der Reagenzglas-Sprites dar. Da das Spiel mit einem festen Skalierungsfaktor (SCALE = 4) arbeitet und die Blockpositionen manuell über Pixel-Offsets (BLOCK\_X\_OFFSET, BLOCK\_BODEN\_Y) berechnet werden, ist die Darstellung eng an die konkrete Pixelart-Grafik gekoppelt. Dies stellt eine enge Kopplung zwischen Spiellogik und Asset-Design dar, die bei einer Weiterentwicklung — etwa dem Austausch der Grafiken — erneuten Anpassungsaufwand erfordern würde. Eine abstraktere Positionierungslogik, die Blockpositionen relativ zur Glasgeometrie berechnet, wäre hier langfristig robuster.
+
+\subsection{Biologie}
+Das Biologie-Minigame greift einen etablierten Teil der Alltags an unserem Gymnasium auf – das Pflanzentestat.
+Damit es den Character eines Minigames annimmt, wurde es vereinfacht. Anstelle von 12 oder 16 Pflanzen, gibt es jeweils nur 4. Außerdem werden die richtigen Bezeichnungen nur zugeordnet, anstelle das man/frau selbst die Bezeichnung eintippen muss. Dies vereinfacht das Minigame und verkürzt ebenfalls die Spieldauer.
+Damit jedoch das Raten (durch Ausprobieren verschiedener Zuordnungen) unterbunden werden kann, wird sofort nach dem alle Labels den Pflanzenbilder zugeordnet sind geprüft ob das Level gewonnen und verloren ist.
+
+Das Minigame nutzt jeweils einen Pool aus Pflanzenbildern (+Labeln) für jedes Level. Die Bilder der Pflanzen sind Bilder, die von WikimediaCommmons kommen und unter Creative-Commons-Lizenzen stehen. Durch die größe des Spielfensters, sind die Bilder verpixelt, dies sorgt dafür, dass das Minigame dem Artstyle des CZGame treu bleibt.
+Die Anzahl an Pflanzen unterscheidet sich von Level zu Level:
+\begin{itemize}
+\item[Level 1] 8 Pflanzen
+\item[Level 2] 10 Pflanzen
+\item[Level 3] 12 Pflanzen
+\end{itemize}
+Die sorgt dafür erneut für eine Steigerung der Schwierigkeit, da es pro Level nun mehr Pflanzen gibt, die man kennen muss.
+
+\subsubsection{Level 1}
+Das erste Level ist das Einfachste. Es gibt vier Pflanzen und vier Labels, diese müssen zugeordnet werden.
+\subsubsection{Level 2}
+Im zweiten Level kommt nur ein fünftes, falsches Label hinzu. Dies steigert die Schwierigkeit.
+\subsubsection{Level 3}
+Im dritten und letzten Level kommt ein sechstes, ebenfalls falsches Label hinzu.
+
+\subsubsection{Beispielcode}
+
+\begin{lstlisting}[language=Java, caption={Zuordnung der Pflanzenlisten zu jedem Level, so wie das Mischen der Pflanzen und Labels}]
+BiologyPlant[] pool;
+        if (LEVEL == 0) {
+            pool = BiologyData.LEVEL_1_PLANTS;
+        } else if (LEVEL == 1) {
+            pool = BiologyData.LEVEL_2_PLANTS;
+        } else {
+            pool = BiologyData.LEVEL_3_PLANTS;
+        }
+
+        List<BiologyPlant> shuffled = new ArrayList<>(Arrays.asList(pool));
+        Collections.shuffle(shuffled);
+        chosen = shuffled.subList(0, 4);
+        List<BiologyPlant> remaining = shuffled.subList(4, shuffled.size());
+
+        List<String> labels = new ArrayList<>();
+        for (BiologyPlant plant : chosen) {
+            labels.add(plant.name);
+        }
+        if (LEVEL == 1) {
+            labels.add(remaining.get(0).name);
+        } else if (LEVEL == 2) {
+            labels.add(remaining.get(0).name);
+            labels.add(remaining.get(1).name);
+        }
+        Collections.shuffle(labels);
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java, caption={Zuordnen der Labels zu den Bildern und Prüfen nach Korrektheit}]
+for (int i = 0; i < 4; i++) {
+                if (imagePlaceholders[i].isClicked()) {
+                    selectedLabel.x = imageX[i] * PIXEL_SCALE;
+                    selectedLabel.y = 71 * PIXEL_SCALE;
+                    selectedLabel.selected = false;
+                    selectedLabel = null;
+                    if (allPlaced()) {
+                        if (checkWin()) {
+                            levelWon();
+                        } else {
+                            levelLost();
+                        }
+                    }
+
+                }
+            }
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java, caption={CheckWin}]
+private boolean checkWin() {
+        for (int i = 0; i < 4; i++) {
+            boolean found = false;
+            for (BaseObject obj : objects) {
+                if (obj instanceof BiologyLabelObject label) {
+                    if (label.x == imageX[i] * PIXEL_SCALE) {
+                        if (!label.name.equals(chosen.get(i).name)) {
+                            return false;
+                        }
+                        found = true;
+                    }
+                }
+            }
+            if (!found) return false;
+        }
+        return true;
+    }
+\end{lstlisting}
+CheckWin prüft ob ein Label richtig oder falsch plaziert ist. Sind alle Labels plaziert (AllPlaced), wird geprüft ob alle richtig plaziert sind, dies entscheided über Gewinnen oder Verlieren.
+
+\subsubsection{Reflexion}
+\textbf{Pflanzenbilder}
+Anfänglich für das Biologie-Minigame war geplant eigens gepixelte Bilder der Pflanzen zu nutzen, dies stellte sich jedoch als sehr zeitaufwendig und nicht zielführend aus, da mehrere Pflanzen zu komplex zum pixeln waren und andere sich zu ähnlich sahen.
+Das Nutzen von Bildern von Wikimedia-Commons, hat einerseits viel Zeit gespart und das Minigame dahin gehend vereinfacht, dass die Pflanzen leichter zuerkennen sind. Durch das runterscalieren auf die gewünschte Größe wurden die Bilder jedoch erneut wieder verpixelt, was es insgesamt wieder schwerer macht bestimmte Pflanzen zu erkennen bzw. entscheiden.
+Insgesamr ist jedoch, meiner Meinung nach, das Nutzen der Fotographien die bessere Wahl, wenn es auch keine perfekte Lösung darstellt.
+Beim Umsetzen gab es dann jedocj nochmal ein Problem, welches sich bei den eigens gepixelten Pflanzen nicht ergeben hätte – die Bilder hatte unterschiedliche Seitzenverhältnisse und waren unterschiedlich groß. Dadurch gab es die Herausforderung sie runter zu skalieren auf die selbe Größe und dann so zuzuschneiden, dass sie alle die selben Seitenverhältnisse haben
+Zugegebener Maßen, hätte das Zuschneiden nicht sein müssen, jedoch war der vorher erstelle Hintergrund für das Minigame so ausgelegt, dass alle Bilder die gleichen Maßen haben. Rückblickend wäre die Änderung des Hintergrunds wahrscheinlich einfacher gewesen, jedoch sorgt die Einheitlichkeit auch für ein schönes Design und das Soiel wirkt nicht chaotisch.
+\textbf{Schwierigkeit der Level}
+Die unterschiedliche Schwierigkeit der Level wird einerseits durch die zusätzlichen falschen Label, als auch größerer Anzahl der Pflanzen im Pool geregelt. Jedoch war beim Planen des Minispiels auch die Frage nach \glqq{}leichten\grqq{} und glqq{}schweren\grqq{} Pflanzen. Dies haben Jonas und ich zusammen entschieden. Da wir nur zwei Personen sind ist die Auswahl ziemlich subjektiv.
+Durch eine Feedbackrunde der restlichen Gruppenmitglieder hätten man evtl. die Schwierigkeiten besser unterscheiden können, da mehrere Personen, die das monatlich mitschreiben Pflanzentestat, ihre Meinung zu leichten bzw. schweren Pflanzen abgeben hätten können.
+Jedoch hat dies die Zeit und auch der Fakt, dass die alle selbst viel beschäftigt waren, nicht zugelassen. In zukünftigen Projekten, ist Teamwork eine Sache, auf die man von Anfang an mehr Fokus legen kann.
+\textbf{Persönliche Hürden bei der Umsetzung}
+Ich hatte beim Umsetzen des Biologie Minigames ein paar Schwierigkeiten. Es war das letzte Minigame was ich programmiert hatte. Ich habe am Beginn unserer Bearbeitungszeit alle Hintergründe für die Minigames erstellt. Dabei habe ich nicht beachtet, dass die Platzierung bei diesem Minigame sehr wichtig ist. Deshalb hatte ich mir auch keine Positionen der Bild- und Labelrahmen notiert.
+Das sorgte dann dafür, dass ich während des codens eine lange Zeit mit der richtigen Platzierung beschäftigt war. Daher nehme ich mit, dass auch das persönliche \glqq{}Kommentieren\grqq{} der eigenen Arbeit sehr wichtig ist, damit man auch nach etwas längerer Zeit mit den eigens erarbeiteten Dingen weitermachen kann.
+\textbf{Persönliche Zusammenfassung}
+Insgesamt bin ich mit dem Biologie-Minigame sehr zufrieden. Mein Ziel das Pflanzentestat als Minispiel in das CZGame einfließen zu lassen, habe ich erfüllt, auch wenn ich es mir nicht immer einfach gemacht habe.
