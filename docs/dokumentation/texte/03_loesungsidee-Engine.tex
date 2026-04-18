@@ -48,7 +48,7 @@ wird als \textit{Frame} bezeichnet.
 Grundsätzlich sollte es für Spiel-Objekte und Szenen jeweils eine
 Basis-Klasse geben, die beim Umsetzen von Spielkomponenten von einer
 neuen Unterklasse erweitert wird, welche dann mindestens einen eigenen
-Konstruktur bereitstellt sowie optional Methoden der Elternklasse
+Konstruktor bereitstellt sowie optional Methoden der Elternklasse
 überschreibt, um eigene Logik zu implementieren.
 
 
@@ -73,7 +73,7 @@ diesem wird zum Fenster hinzugefügt. Durch das Überschreiben der
 Rendering-Code hinzugefügt werden, im Fall des CZGame also
 das Zeichnen der Szenen und ihrer Objekte. Dieses kann durch
 Aufrufen der \texttt{repaint}-Methode dann manuell ausgelöst werden,
-um die Grafik eben mit einer Frequenz von 60Hz zu aktualisieren.
+um so die Grafik mit einer Frequenz von 60Hz zu aktualisieren.
 
 Um Eingaben zu erhalten, werden die Interfaces \texttt{java.awt.event.KeyListener}
 sowie \texttt{java.awt.event.MouseListener} implementiert und mit

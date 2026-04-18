@@ -238,7 +238,7 @@ umgesetzt. Diese speichert folgende Eigenschaften:
 \begin{itemize}
 	\item X- und Y-Koordinaten, in Pixeln. Dabei ist $(0|0)$ die
 		  obere linke Ecke des Spielfensters, und die Koordinaten
-		  steigen nach unten bzw. nach rechts in positive Richtung an.
+		  steigen nach rechts bzw. nach unten in positive Richtung an.
 	\item Höhe sowie Breite des Objekts, in Pixeln
 	\item Ein Bild, welches an den Koordinaten und mit der Größe
 	      des Objekts gezeichnet werden soll. Dieses kann auch
@@ -294,7 +294,7 @@ Methoden:
 
 Sowohl \texttt{update} als auch \texttt{unload} waren ursprünglich als
 \texttt{abstract} markiert. Jedoch brachte dies den Nachteil, dass
-\texttt{BaseObject} somit ebenfalls abstrakt wurde und somit nicht
+\texttt{BaseObject} somit ebenfalls abstrakt wurde und nicht
 mehr direkt instanziiert werden konnte. Jedoch wurden an einigen
 Stellen im Code Objekte benötigt, welche keine weitere Funktion als
 das darstellen eines Bildes haben sollten, weshalb es also wieder
@@ -382,7 +382,7 @@ deklariert sind:
 	      eine nach Eintragungsreihenfolge geordnete Zuordnung
 	      von Tag zu Anzahl, also wie oft der Tag in den darüber
 	      liegenden Szenen vorkommt.
-	      und  Siehe auch \ref{programm:engine:szene:verdecken}.
+	      Siehe auch \ref{programm:engine:szene:verdecken}.
 \end{itemize}
 
 Jede \texttt{BaseScene} speichert außerdem ihren Index in der
@@ -427,7 +427,7 @@ Dazu wird die private Methode \texttt{SceneStack.propagateOverlyingTags(int, int
 verwendet. Deren erster Parameter heißt $fromIndex$, der zweite
 $counterDelta$. Die Methode ruft zunächst die Tags der Szene im Stapel
 am Index $fromIndex$ ab. Dann iteriert sie über die anderen Szenen im Stapel,
-begonnen bei $fromIndex - 1$ und endend bei $0$, jeweils inklusiv. Dabei
+begonnen bei $fromIndex - 1$ und endend bei $0$, beide inklusiv. Dabei
 wird dann jeweils über die abgerufene Tag-Menge iteriert und die jedem
 Tag zugeordnete Zahl beim entsprechenden Eintrag im Tag-Stapel um
 $counterDelta$ geändert. Tag-Stapel-Einträge, bei denen einem Tag
@@ -582,7 +582,7 @@ Der erste Parameter enthält die anzuwendenden Regeln, der zweite einen oder meh
 bei welchen diese Regeln zur Anwendung kommen. Dabei ist zu beachten, dass die Regeln
 angewendet werden, wenn mindestens eine Szene mit mindestens einem der gegebenen Tags
 über der Szene liegt, welcher der Regelsatz zugeordnet wird - die Regeln treten \textbf{nicht}
-erst in Kraft wenn, alle gegebenen Tags in über der Szene liegenden Szenen zu finden sind.
+erst in Kraft, wenn alle gegebenen Tags in über der Szene liegenden Szenen zu finden sind.
 
 Der Regelsatz wird einer Szene dann über ihren Konstruktor zugeordnet: 
 \texttt{BaseScene} bietet zwei Konstruktoren, einen ohne Parameter und einen
@@ -896,7 +896,7 @@ der Instanzen.
 Die restlichen Implementierungen der abstrakten, in \texttt{BaseSound}
 definierten Methoden \texttt{getLine}, \texttt{setPlayingActual},
 \texttt{isPlayingActual}, \texttt{seekActual}, \texttt{getLengthMicroseconds}
-und \texttt{getPositionMicroseconds} sind trivial.
+und \texttt{getPositionMicroseconds} sind trivial und deshalb hier nicht aufgeführt.
 
 \paragraph{Der Wiedergabethread} führt die private, statische Methode
 \texttt{StreamSound.playback} aus. Diese besteht aus einer Endlosschleife,
@@ -1049,7 +1049,7 @@ der Komposition folgendes Problem ergeben:
 Die Teile des Stückes lassen sich nicht linear
 hintereinander abspielen, da sie jeweils ausklingen,
 während der nächste Teil bereits spielt. Es müssen
-also mehrere Teile parallel Spielen.
+also mehrere Teile parallel spielen.
 
 Um dieses Problem zu Lösen, bietet die Engine ein Besonderes
 Objekt: \texttt{MusicLoopObject} aus dem Paket \texttt{czg.objects.music\_loop\_object}.
@@ -1095,7 +1095,6 @@ welche lediglich zwei Daten speichert:
 	      nächste Wiedergabesegment spielen soll.
 	\item Das nächste Segment in Form eines \texttt{BaseSound}.
 \end{enumerate}
-\\
 
 \texttt{addSegment} prüft nun zunächst, ob bereits ein Sound als
 aktuelles Segment gespeichert ist. Wenn nicht, übernimmt der
