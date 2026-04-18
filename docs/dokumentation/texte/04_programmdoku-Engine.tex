@@ -1140,4 +1140,55 @@ Schritte wiederholt:
 	      des Konstruktors der Klasse.
 \end{enumerate}
 
+
+\subsection{Hilfsklassen}
+
+Zuletzt enthält die Engine noch einige staatische Hilfsmethoden und
+Konstanten , welche auf entsprechende Klassen aufgeteilt sind.
+
+\subsubsection{\texttt{czg.util.Draw}}
+
+Diese Klasse enthält \texttt{java.awt.Font}-Objekte, um einheitlich zu
+verwendende Schriftarten bereitzustellen, sowie eine Methode, welche
+eine beliebige Zeichenkette mithilfe eines gegebenen Grafikkontexts unter
+Angabe des Mittelpunkts des Schriftzugs zeichnet.
+
+
+\subsubsection{\texttt{czg.util.Images}}
+
+Diese Klasse wird verwendet, um Bilder aus Dateien in den Speicher zu
+laden sowie diese zu drehen.
+
+\paragraph{Die \texttt{get(String)}-Methode} versucht, ein Bild von
+dem angegebenen Dateipfad zu laden. Gelingt dies nicht, gibt sie ein
+Platzhalterbild zurück. Ist letzteres im Spiel zu sehen, ist dies ein
+klares Signal, dass es einen Fehler beim Laden eines Bildes gab.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.15\linewidth]{bilder/fallback_textur.png}
+	\caption{Platzhalterbild}
+	\label{programm:engine:fallback-textur}
+\end{figure}
+
+\texttt{get} verwendet eine \texttt{HashMap}, in welcher bei ihrem
+Aufruf der Dateipfad dem geladenen Bild zugeordnet wird. So bleiben
+geladene Bilder im Speicher und müssen nicht oft erneut geladen werden.
+
+\paragraph{\texttt{rotateImage(Image, double)}} dreht das gegebene Bild
+um den gegebenen Winkel in mathematisch negative Richtung, also im
+Uhrzeigersinn. Dafür werden die Klassen \texttt{AffineTransform}
+sowie \texttt{AffineTransformOp} aus dem Paket \texttt{java.awt.geom}
+verwendet. Zusätzlich werden völlig transparente Teile des gedrehten
+Bildes von den Rändern her abgeschnitten.
+
+
+\subsection{czg.util.Sounds}
+
+Diese Klasse definiert ein \texttt{javax.sound.sampled.AudioFormat}, welches
+in der Engine zu verwenden ist, sowie eine \texttt{getInputStream(String)}-Methode,
+welche einen \texttt{AudioInputStream} für die gegebene Datei in dem eben genannten
+Format erstellt.
+
+
 \end{sloppypar}
