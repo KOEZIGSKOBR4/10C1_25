@@ -419,7 +419,7 @@ Das Spielfeld besteht aus dem Hintergrund, dem Ball oben Rechts, den Simulate-Bu
 \subsubsection{Level 1}
 Im ersten Level wirkt ausschließlich die Gewichtskraft (0, +0.15 pro Frame\textsuperscript{2}), diese sorgt dafür, dass der Ball nach unten fällt.
 Der/die Spieler*in kann den Kraftpfeil vom Ball nach rechts ziehen und verändert so den Fall des Balls. Er flugt nun in einem Bogen zum Ziel unten rechts.
-Das erstes Level vermittelte die grundlegende Überlagerung von Kräft, wenn es um Bewegungen geht. Die Gewichts (F\textsubscript{G}) würde auch im realen Leben auf den \glqq{}schwebenden\grqq{} Ball wirken, abhängig von Masse und Ortsfaktor. Deshalb ist im erstene Level (sowie auch in den folgenden Leveln) die Gewichtskraft immer eine Basiskraft.
+Das erstes Level vermittelte die grundlegende Überlagerung von Kräft, wenn es um Bewegungen geht. Die Gewichtskraft $F_G$ würde auch im realen Leben auf den \glqq{}schwebenden\grqq{} Ball wirken, abhängig von Masse und Ortsfaktor. Deshalb ist im erstene Level (sowie auch in den folgenden Leveln) die Gewichtskraft immer eine Basiskraft.
 
 \subsubsection{Level 2}
 Das zweite Level ergänzt die Gewichtskraft um einen leichten Drift nach links (-0.05, 0).
@@ -437,11 +437,10 @@ Dieses Level erfordert präzises räumliches Denken und ein Verständnis der kom
 Das Minigame des Fachbereich Physik passt, durch den Artstyle, perfekt zum Rest des CZGame. Die bunten Farben lassen es insgesamt spaßiger wirken, bei näherem Betrachten fällt der/dem Spielenden jedoch der Hintergrund ins Auge – dort werden verschiedene Formeln des Physik gelistet, es entsteht ein Klassenraum-Feeling. Dies greift den Spielort (unser Gymnasium) erneut auf.
 Die Spielmechanik des Physik Minigames befasst sich mit realem Unterricht, den wir als Schüler*innen im Fach Physik erlebt haben. Deshalb trägt dieses Minigame dazu bei, dass CZGame möglichst nah mit dem Schulalltag zu verbinden.
 
-\textbf{Schwierigkeitsabstufung der Level} \\
-
+\textbf{Schwierigkeitsabstufung der Level}\\
 Die drei Level bauen konzeptionell aufeinander auf und steigern die Komplexität gezielt. Level 1 ist bewusst einfach gehalten, wodurch das Grundprinzip des Spiels vermittelt wird. Level 2 führt eine zweite Kraft ein, die bereits ein Umdenken erfordert – der/die Spieler*in muss zwei Vektoren gleichzeitig im Kopf behalten. Level 3 kombiniert mehrere Kraft mit einem physischen Hindernis, was die Schwierigkeit deutlich erhöht: Der/die Spieler*in muss die Wand berücksichtigen. Diese Progression fühlt sich in der Praxis fair an, da jedes Level genau eine neue Mechnik einführt. Trotz der unterschiedlichen Schwierigkeiten verändert sich die Dauer der Level jeweils kaum, dies sorgt für keinen Motivationsverlust.
 Bei den schweren Leveln kann es jedoch passieren, dass der/die Spielende das Level mehrmals wiederholen muss um es zu gewinnen. Dadurch steigert sich insgesamt die Gewinnzeit.
-Zur Insgesamten Vereinfachungen, aber auch, dass es die MÖglichkeit gibt sich innerhalb eines Levels zu verbessern, habe ich im Laufe der Entwicklungszeit mich gegen das zufällige Generieren der Kräftewerte pro Level entschieden. Dies ermöglicht das mehrmalige Ausprobieren des Levels.
+Zur Insgesamten Vereinfachungen, aber auch, dass es die Möglichkeit gibt sich innerhalb eines Levels zu verbessern, habe ich im Laufe der Entwicklungszeit mich gegen das zufällige Generieren der Kräftewerte pro Level entschieden. Dies ermöglicht das mehrmalige Ausprobieren des Levels.
 
 \subsection{Chemie}
 Das Chemie-Minigame ist ein interaktives Sortierpuzzle, das strukturell dem bekannten \glqq{}Water Sort\grqq{}-Prinzip folgt. Die Spielmechanik basiert auf dem Konzept des geordneten Stapels (Stack): Mehrere Reagenzgläser sind mit farbigen Blöcken unterschiedlicher Farbe befüllt, wobei die Reihenfolge der Blöcke zufällig generiert wird.
@@ -455,11 +454,11 @@ Eine Umfüllung wird nur dann durchgeführt, wenn diese Regeln erfüllt sind:
 \end{itemize}
 
 Gleichzeitig läuft ein Countdown, der den/die Spieler*in unter Zeitdruck setzen soll.
-Das Kernkonzept der Implementierung ist die Modellierung jedes Reagenzglases als Stack-Datenstruktur. Die innere Klasse Reagenzglas kapselt eine ArrayList<String>, auf der ausschließlich stack-typische Operationen erlaubt sind:
+Das Kernkonzept der Implementierung ist die Modellierung jedes Reagenzglases als Stack-Datenstruktur. Die innere Klasse Reagenzglas kapselt eine \texttt{ArrayList<String>}, auf der ausschließlich stack-typische Operationen erlaubt sind:
 \begin{itemize}
 \item Hinzufügen am Ende
 \item Lesen des obersten Elements
-\item und Entfernen des obersten Elements
+\item Entfernen des obersten Elements
 \end{itemize}
 Diese strikte Kapselung stellt sicher, dass die Spielregeln strukturell durch das Datenmodell erzwungen werden und nicht nur durch externe Überprüfungen.
 
@@ -471,12 +470,12 @@ Drei Farben (Blau, Grün, Pink) werden auf drei Reagenzgläser verteilt, dazu ko
 Mit vier Farben (Blau, Grün, Pink, Lila) steigt die Anzahl der Blöcke auf 16 (Verhätlnis 2:4). Der Zustandsraum möglicher Anordnungen wächst kombinatorisch, sodass triviale Lösungswege nicht mehr ausreichen. Die Puffergläser müssen strategisch eingesetzt werden, was ein höheres Maß an planerischem Denken voraussetzt.
 
 \subsubsection{Level 3}
-In diesem Level sind alle fünf Farben (Blau, Grün, Pink, Lila, Gelb) aktiv. 20 Blöcke auf fünf Spielgläsern bei nur zwei Puffergläsern (2:5) ergeben eine deutlich erhöhte Schwierigkeit. Das Zeitlimit von 30 Sekunden ist hierbei besonders herausfordernd, da da insgesamt eine höhere Anzahl an Spielzügen nötig sind.
+In diesem Level sind alle fünf Farben (Blau, Grün, Pink, Lila, Gelb) aktiv. 20 Blöcke auf fünf Spielgläsern bei nur zwei Puffergläsern (2:5) ergeben eine deutlich erhöhte Schwierigkeit. Das Zeitlimit von 30 Sekunden ist hierbei besonders herausfordernd, da insgesamt eine höhere Anzahl an Spielzügen nötig sind.
 
 \subsubsection{Reflexion}
 Das Minigame Chemie ist das Minigame, welches am Weitesten weg von unserem Schulalltag bzw. Chemieunterricht ist. Es greift zwar Elemente des Unterrichts auf (Reagenzgläser, Abzug als Hintergrund), jedoch keinen Unterrichtsinhalt. Das Water-Sort-Spiel ist aber ein weitverbreitetes und bekanntes Computerspiel in unserer Generation. Die Spielmechanik ist also höchstwahrscheinlich schon jedem bekannt.
 Deshalb eignet sich es so gut für ein Minigame im CZGame, da es keiner großen Spielanleitung bedarf. Beim Programmieren hat sich dieses Spiel ebenfalls als ein schöner Einstieg bewiesen, da es in Online-Foren viele Tipps und Hinweise zur Erstellung der Spielmechanik gab.
-Ein Kritikpunkt bleibt jedoch, dass dieses Minispiel, weniger Bezug zu unserer Schule hat und keiner besonders kreativen Coding-Lösung bedarft hat.
+Ein Kritikpunkt bleibt jedoch, dass dieses Minispiel, weniger Bezug zu unserer Schule hat und keiner besonders kreativen programmiererischen bedarft hat.
 
 \textbf{Schwierigkeitsabstufung und Spielbalance} \\
 Die Progression von drei auf fünf Farben ist nicht linear, sondern exponentiell: Die Anzahl möglicher Ausgangszustände wächst mit jeder zusätzlichen Farbe kombinatorisch, da die zufällige Initialbefüllung das Mischen einer Liste jeden theoretisch erreichbaren Zustand erzeugen kann — einschließlich solcher, die eine sehr lange Lösungssequenz erfordern.
@@ -485,16 +484,16 @@ Eine mögliche Verbesserung wäre die Implementierung eines Lösbarkeits-Checks 
 
 \subsection{Biologie}
 Das Biologie-Minigame greift einen etablierten Teil des Unterrichts an unserem Gymnasium auf – das Pflanzentestat.
-Damit es den Charakter eines Minigames annimmt, wurde es vereinfacht. Anstelle von 12 oder 16 Pflanzen, gibt es jeweils nur 4. Außerdem werden die richtigen Bezeichnungen nur zugeordnet, anstelle das man/frau selbst die Bezeichnung eintippen muss. Dies vereinfacht das Minigame und verkürzt ebenfalls die Spieldauer.
-Damit jedoch das Raten (durch Ausprobieren verschiedener Zuordnungen) unterbunden werden kann, wird sofort nach dem alle Labels den Pflanzenbilder zugeordnet sind geprüft ob das Level gewonnen oder verloren ist. Und jedes Level wird ebenfalls neu generiert, es werden also nicht immer die vier selben Pflanzen angezeigt.
+Damit es den Charakter eines Minigames annimmt, wurde es vereinfacht. Anstelle von 12 oder 16 Pflanzen gibt es jeweils nur 4. Außerdem werden die richtigen Bezeichnungen nur zugeordnet, anstelle das man/frau selbst die Bezeichnung eintippen muss. Dies vereinfacht das Minigame und verkürzt ebenfalls die Spieldauer.
+Damit jedoch das Raten (durch Ausprobieren verschiedener Zuordnungen) unterbunden werden kann, wird sofort nachdem alle Labels den Pflanzenbilder zugeordnet sind geprüft ob das Level gewonnen oder verloren ist. Und jedes Level wird ebenfalls neu generiert, es werden also nicht immer die vier selben Pflanzen angezeigt.
 
 Das Minigame nutzt jeweils einen Pool aus Pflanzenbildern (+Labeln) für die Level. Die Bilder der Pflanzen sind Bilder, die von WikimediaCommmons stammen und unter Creative-Commons-Lizenzen stehen.
-Durch die Größe des Spielfensters, sind die Bilder verpixelt, dies sorgt dafür, dass das Minigame dem Artstyle des CZGame treu bleibt.
+Durch die Größe des Spielfensters sind die Bilder verpixelt, dies sorgt dafür, dass das Minigame dem Artstyle des CZGame treu bleibt.
 Die Anzahl an Pflanzen unterscheidet sich von Level zu Level:
 \begin{itemize}
-\item[Level 1] 8 Pflanzen
-\item[Level 2] 10 Pflanzen
-\item[Level 3] 12 Pflanzen
+\item Level 1: 8 Pflanzen
+\item Level 2: 10 Pflanzen
+\item Level 3: 12 Pflanzen
 \end{itemize}
 Das garantiert eine Steigerung der Schwierigkeit, da es pro Level nun mehr Pflanzen gibt, die man kennen muss.
 
@@ -508,14 +507,18 @@ Im dritten und letzten Level kommt ein sechstes, ebenfalls falsches Label hinzu.
 \subsubsection{Reflexion}
 \textbf{Pflanzenbilder}
 Anfänglich für das Biologie-Minigame war geplant eigens gepixelte Bilder der Pflanzen zu nutzen, dies stellte sich jedoch als sehr zeitaufwendig und nicht zielführend aus, da mehrere Pflanzen zu komplex zum pixeln waren und andere sich zu ähnlich sahen.
-Das Nutzen von Bildern von Wikimedia-Commons, hat einerseits viel Zeit gespart und das Minigame dahin gehend vereinfacht, dass die Pflanzen leichter zuerkennen sind. Durch das runterscalieren auf die gewünschte Größe wurden die Bilder jedoch erneut wieder verpixelt, was es insgesamt wieder schwerer macht bestimmte Pflanzen zu erkennen bzw. entscheiden.
-Insgesamr ist jedoch, meiner Meinung nach, das Nutzen der Fotographien die bessere Wahl, wenn es auch keine perfekte Lösung darstellt.
-Beim Umsetzen gab es dann jedocj nochmal ein Problem, welches sich bei den eigens gepixelten Pflanzen nicht ergeben hätte – die Bilder hatte unterschiedliche Seitzenverhältnisse und waren unterschiedlich groß. Dadurch gab es die Herausforderung sie runter zu skalieren auf die selbe Größe und dann so zuzuschneiden, dass sie alle die selben Seitenverhältnisse haben
-Zugegebener Maßen, hätte das Zuschneiden nicht sein müssen, jedoch war der vorher erstelle Hintergrund für das Minigame so ausgelegt, dass alle Bilder die gleichen Maßen haben. Rückblickend wäre die Änderung des Hintergrunds wahrscheinlich einfacher gewesen, jedoch sorgt die Einheitlichkeit auch für ein schönes Design und das Soiel wirkt nicht chaotisch.
+Das Nutzen von Bildern von Wikimedia-Commons hat einerseits viel Zeit gespart und das Minigame dahin gehend vereinfacht, dass die Pflanzen leichter zu erkennen sind. Durch das runterskalieren auf die gewünschte Größe wurden die Bilder jedoch erneut wieder verpixelt, was es insgesamt wieder schwerer macht, bestimmte Pflanzen zu erkennen bzw. zu unterscheiden.
+Insgesamt ist jedoch, meiner Meinung nach, das Nutzen der Fotographien die bessere Wahl, wenn es auch keine perfekte Lösung darstellt.
+Beim Umsetzen gab es dann jedoch nochmal ein Problem, welches sich bei den eigens gepixelten Pflanzen nicht ergeben hätte – die Bilder hatte unterschiedliche Seitenverhältnisse und waren unterschiedlich groß. Dadurch gab es die Herausforderung, sie runter zu skalieren auf die selbe Größe und dann so zuzuschneiden, dass sie alle die selben Seitenverhältnisse haben.
+Zugegebener Maßen hätte das Zuschneiden nicht sein müssen, jedoch war der vorher erstelle Hintergrund für das Minigame so ausgelegt, dass alle Bilder die gleichen Maße haben. Rückblickend wäre die Änderung des Hintergrunds wahrscheinlich einfacher gewesen, jedoch sorgt die Einheitlichkeit auch für ein schönes Design und das Spiel wirkt nicht chaotisch.
+
 \textbf{Schwierigkeit der Level}
-Die unterschiedliche Schwierigkeit der Level wird einerseits durch die zusätzlichen falschen Label, als auch größerer Anzahl der Pflanzen im Pool geregelt. Jedoch war beim Planen des Minispiels auch die Frage nach \glqq{}leichten\grqq{} und glqq{}schweren\grqq{} Pflanzen. Dies haben Jonas und ich zusammen entschieden. Da wir nur zwei Personen sind ist die Auswahl ziemlich subjektiv.
-Durch eine Feedbackrunde der restlichen Gruppenmitglieder hätten man evtl. die Schwierigkeiten besser unterscheiden können, da mehrere Personen, die das monatlich mitschreiben Pflanzentestat, ihre Meinung zu leichten bzw. schweren Pflanzen abgeben hätten können.
-Jedoch hat dies die Zeit und auch der Fakt, dass die alle selbst viel beschäftigt waren, nicht zugelassen. In zukünftigen Projekten, ist Teamwork eine Sache, auf die man von Anfang an mehr Fokus legen kann.
+
+Die unterschiedliche Schwierigkeit der Level wird einerseits durch die zusätzlichen falschen Label, als auch größerer Anzahl der Pflanzen im Pool geregelt. Jedoch kam beim Planen des Minispiels auch die Frage nach \glqq{}leichten\grqq{} und \glqq{}schweren\grqq{} Pflanzen auf. Dies haben Jonas und ich zusammen entschieden. Da wir nur zwei Personen sind, ist die Auswahl ziemlich subjektiv.
+Durch eine Feedbackrunde der restlichen Gruppenmitglieder hätten wir evtl. die Schwierigkeiten besser unterscheiden können, da mehrere Personen, die das Pflanzentestat monatlich mitschreiben, ihre Meinung zu leichten bzw. schweren Pflanzen abgeben hätten können.
+Jedoch haben dies die Zeit und auch die Tatsache, dass alle selbst viel beschäftigt waren, nicht zugelassen. In zukünftigen Projekten ist Teamwork eine Sache, auf die man von Anfang an mehr Fokus legen kann.
+
 \textbf{Persönliche Hürden bei der Umsetzung}
+
 Ich hatte beim Umsetzen des Biologie Minigames ein paar Schwierigkeiten. Es war das letzte Minigame was ich programmiert hatte. Ich habe am Beginn unserer Bearbeitungszeit alle Hintergründe für die Minigames erstellt. Dabei habe ich nicht beachtet, dass die Platzierung bei diesem Minigame sehr wichtig ist. Deshalb hatte ich mir auch keine Positionen der Bild- und Labelrahmen notiert.
 Das sorgte dann dafür, dass ich während des codens eine lange Zeit mit der richtigen Platzierung beschäftigt war. Daher nehme ich mit, dass auch das persönliche \glqq{}Kommentieren\grqq{} der eigenen Arbeit sehr wichtig ist, damit man auch nach etwas längerer Zeit mit den eigens erarbeiteten Dingen weitermachen kann.
