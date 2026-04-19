@@ -1,15 +1,13 @@
 
-Um Spiele, Lehrerinnen und Lehrer, sowie die Items in das Programm einzubinden, haben wir diese als Spiel-Objekte, also als Unterklassen von \texttt{BaseObject} implementiert, da sie so gut mit den in der Lösungsidee beschriebenen Eigenschaften versehen werden konnten. Dafür haben wir die Klassen \texttt{PlayerObject}, \texttt{LehrerObject} und \texttt{ItemType} umgesetzt.
+Um den Spieler, die Lehrerinnen und Lehrer, sowie die Items in das Programm einzubinden, haben wir diese als Spiel-Objekte, also als Unterklassen von \texttt{BaseObject} implementiert, da sie so gut mit den in der Lösungsidee beschriebenen Eigenschaften versehen werden konnten. Dafür haben wir die Klassen \texttt{PlayerObject}, \texttt{LehrerObject} und \texttt{ItemType} umgesetzt.
 
 \subsection{\texttt{PlayerObject}}
-Das \texttt{PlayerObject} erweitert das \texttt{BaseObject} und übernimmt so wichtige Eigenschaften. Diese beinhaltet Funktionalität zur Gestaltung der Figur, des Kampfes und des Inventares. Das Inventar hierbei ist eine Liste . Am beim gewinnen eines Minispiels wird, wie oben erwähnt, ein Item dem Array hinzugefügt.
+Das \texttt{PlayerObject} erweitert das \texttt{BaseObject} und übernimmt so wichtige Eigenschaften. Dieses beinhaltet die Funktionalität zur Gestaltung der Figur, des Kampfes und des Inventares. Hierbei ist das Inventar eine Liste. Beim gewinnen eines Minispiels wird, wie oben erwähnt, ein Item dem Array hinzugefügt.
 
 Die Klasse stellt außerdem eine Singleton-Instanz von sich bereit, die
 Spielfigur wird also genau einmal instantiiert.
 
-In ihrer \texttt{update}-Methode überprüft die Spielfigur mithilfe \texttt{BaseObject.isClicked}, ob sie angeklickt wurde. Ist dies der Fall,
-wird eine neue Instanz der in Kürze beschriebenen \texttt{InventarScene}
-auf den Szenenstapel gepushed.
+In ihrer \texttt{update}-Methode überprüft die Spielfigur mithilfe \texttt{BaseObject.isClicked}, ob sie angeklickt wurde. Ist dies der Fall, wird eine neue Instanz der in Kürze beschriebenen \texttt{InventarScene} auf den Szenenstapel gepushed.
 
 
 \subsubsection{InventarScene}
@@ -53,7 +51,7 @@ public void draw(Graphics2D g) {
 \end{lstlisting}
 
 \subsection{LehrerObject}
-Das LehrerObject ist ebenfalls eine Erweiterung des BaseObject und fügt die in der Lösungsidee besprochenen Eigenschaften von Schwierigkeit, Lebenspunkten, Fachschaft und ein Liste aus im Kampf zu verwendenen Items zu. Diese sind hier das Integer Level und hp (Healthpoints), der String Fachschaft und das Array Lehrer-Items. Diese werden dann zusammen mit den Parametern aus dem BaseObjekt im darauffolgenden Constructor initialisiert. Darauffolgend sind wieder die Funktionen für den Kampf.
+Das \texttt{LehrerObject} ist ebenfalls eine Erweiterung des \texttt{BaseObject} und fügt die in der Lösungsidee besprochenen Eigenschaften von Schwierigkeit, Lebenspunkten, Fachschaft und eine Liste aus im Kampf zu verwendenen Items zu. Diese sind hier das Integer Level und hp (Healthpoints), der String Fachschaft und das Array Lehrer-Items. Diese werden dann zusammen mit den Parametern aus dem BaseObjekt im darauffolgenden Constructor initialisiert. Darauffolgend sind wieder die Funktionen für den Kampf.
 \\
 \begin{lstlisting}
     public class LehrerObject extends BaseObject{
@@ -72,7 +70,7 @@ Das LehrerObject ist ebenfalls eine Erweiterung des BaseObject und fügt die in 
     }
 
     public void verteidigung(int level) {
-        // Es wird random ausgewählt, ob ein Item gewählt wird (und welches), oder ob der Lehrer nichts macht.
+        // Es wird zufällig ausgewählt, ob ein Item gewählt wird (und welches), oder ob der Lehrer nichts macht.
         Random rand = new Random();
         int move = rand.nextInt(5);
         int schaden;
@@ -160,8 +158,8 @@ Die Items sind in der Form von im Glossar erklärten Enums gespeichert. Jedes En
     }
 \end{lstlisting}
 
-Darauf folgt die Funktion, welche dem Spieler nach gewinnen eines Minispiels das Item zuweist.
-Dies geschieht über zwei ineinander integrierte bereits erklärte switch-case-Selektionen, welche zuerst die Fachschaft des Minigames überprüfen und dann ein Item mit der dem Schwierigkeitsgrad des Minigames entsprechenden Stärke dem Inventar zuweisen.
+Darauf folgt die Funktion, welche dem Spieler nach Abschließen eines Minispiels das Item zuweist.
+Dies geschieht über zwei ineinander integrierte, bereits erklärte switch-case-Selektionen, welche zunächst die Fachschaft des Minispiels überprüfen. Anschließend fügen sie ein Item mit der dem Schwierigkeitsgrad jenes Spiels entsprechenden Stärke dem Inventar zu.
 \\
 \begin{lstlisting}
       /**
@@ -228,7 +226,7 @@ Dies geschieht über zwei ineinander integrierte bereits erklärte switch-case-S
     }
 \end{lstlisting}
 
-Der lezte Teil benutz eine Folge if-else-Abfragen, um den Lehrern im Kampf ihr Items zuzuweisen. Diese fragen zuerst nach der Fachschaft des Lehrers/ der Lehrerin und stellen diesen dann einen Pool aus Items bereit, welche sie dann im Kampf verwenden können.
+Der lezte Teil benutzt eine Folge von if-else-Abfragen, um den Lehrern im Kampf ihr Items zuzuweisen. Diese fragen zuerst nach der Fachschaft des Lehrers/der Lehrerin und stellen diesen dann einen Pool aus Items bereit, welche sie dann im Kampf verwenden können.
 \\
 \begin{lstlisting}
      public static List<ItemType> getItems(int level, Department fachschaft) { // Items mit jeweiligen Leveln an Lehrer mit jeweiligen Leveln  verteilen
