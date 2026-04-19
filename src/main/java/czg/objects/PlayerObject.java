@@ -22,7 +22,7 @@ import static czg.MainWindow.PIXEL_SCALE;
 public class PlayerObject extends BaseObject{
 
     //Anlegen einer Reihung "Inventar", in welchem die Items, auf die der Spieler zugreifen kann, gespeichert werden
-    public final List<ItemObject> inventar = new ArrayList<>();
+    public final List<ItemType> inventar = new ArrayList<>();
 
     // Standardfarben
     public static final SaveFile defaultColors = new SaveFile(
@@ -99,8 +99,8 @@ public class PlayerObject extends BaseObject{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welches Item?");
         String ausgewaehlt = scanner.nextLine();
-        int level = ItemObject.valueOf(ausgewaehlt).LEVEL;
-        List<ItemObject> testitems = Arrays.asList(ItemObject.NEWTONSAPFEL, ItemObject.ATOM, ItemObject.CHROME, ItemObject.BSOD);
+        int level = ItemType.valueOf(ausgewaehlt).LEVEL;
+        List<ItemType> testitems = Arrays.asList(ItemType.NEWTONSAPFEL, ItemType.ATOM, ItemType.CHROME, ItemType.BSOD);
         LehrerObject lehrer = new LehrerObject(Images.get("/assets/characters/bre.png"), 10, 20, "Physik", 10, 2, testitems);
         lehrer.verteidigung(level);
     }
@@ -110,7 +110,7 @@ public class PlayerObject extends BaseObject{
         System.out.println("Du kriegst " + schaden + " Schaden");
         System.out.println("Welches Item?");
         String ausgewaehlt = scanner.nextLine();
-        int level = ItemObject.valueOf(ausgewaehlt).LEVEL;
+        int level = ItemType.valueOf(ausgewaehlt).LEVEL;
         
         schaden -= level;
         if (schaden < 0) {

@@ -68,7 +68,6 @@ public class BiologyLevelScene extends LevelScene {
             g2d.drawImage(original, 0, 0, scaledW, scaledH, null);
             g2d.dispose();
 
-            // ← NUR diese Version behalten, alte Zeilen löschen
             int cropX = Math.max(0, (scaledW - slotW) / 2);
             int cropY = Math.max(0, (scaledH - slotH) / 2);
             int cropW = Math.min(slotW, scaledW);
@@ -94,6 +93,18 @@ public class BiologyLevelScene extends LevelScene {
         }
 
     }
+
+    private BiologyLabelObject getLabelAtSlot(int slot) {
+        for (BaseObject obj : objects) {
+            if (obj instanceof BiologyLabelObject label) {
+                if (label.x == imageX[slot] * PIXEL_SCALE && label.y == 71 * PIXEL_SCALE) {
+                    return label;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public LevelScene reset() {
     return new BiologyLevelScene(LEVEL);
@@ -121,6 +132,18 @@ public class BiologyLevelScene extends LevelScene {
 
             for (int i = 0; i < 4; i++) {
                 if (imagePlaceholders[i].isClicked()) {
+                    BiologyLabelObject existing = getLabelAtSlot(i);
+                    if (existing != null) {
+                        int idx = 0;
+                        for (BaseObject obj : objects) {
+                            if (obj instanceof BiologyLabelObject lbl) {
+                                if (lbl == existing) break;
+                                idx++;
+                            }
+                        }
+                        existing.x = (10 + (idx % 3) * 55) * PIXEL_SCALE;
+                        existing.y = (105 + (idx / 3) * 16) * PIXEL_SCALE;
+                    }
                     selectedLabel.x = imageX[i] * PIXEL_SCALE;
                     selectedLabel.y = 71 * PIXEL_SCALE;
                     selectedLabel.selected = false;

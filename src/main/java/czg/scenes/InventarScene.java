@@ -1,11 +1,11 @@
 package czg.scenes;
 
-import czg.objects.BaseObject;
 import czg.objects.ButtonObject;
-import czg.objects.ItemObject;
+import czg.objects.ItemType;
 import czg.objects.PlayerObject;
 import czg.util.Draw;
 import czg.util.Images;
+import static czg.MainWindow.PIXEL_SCALE;
 
 import java.awt.*;
 
@@ -34,27 +34,7 @@ public class InventarScene extends BaseScene {
      */
     private static final int iPadding = (int)(WIDTH * 0.025);
 
-
-    private final String[] ITEM_NAMES;
-    
     public InventarScene() {
-        // Items
-        ITEM_NAMES = new String[PlayerObject.INSTANCE.inventar.size()];
-
-        int x = iLeft + iPadding;
-        for(int i = 0; i < PlayerObject.INSTANCE.inventar.size(); i++) {
-            ItemObject item = PlayerObject.INSTANCE.inventar.get(i);
-
-            // Sprite
-            BaseObject itemObject = new BaseObject(item.SPRITE, x, iTop + ((int) (HEIGHT * 0.05)));
-            objects.add(itemObject);
-
-            // Name speichern
-            ITEM_NAMES[i] = item.NAME;
-
-            x += itemObject.width + iPadding;
-        }
-
         // Button zum Schließen
         ButtonObject exit = new ButtonObject (
                 Images.get("/assets/minigames/general/button_exit.png"),
@@ -72,12 +52,24 @@ public class InventarScene extends BaseScene {
         g.setColor(new Color(0x9A6B9C));
         g.fillRect(iLeft, iTop, iWidth, iHeight);
 
-        // Text
+        // Für Text
         g.setColor(Color.WHITE);
         g.setFont(Draw.FONT_TITLE.deriveFont(20f));
-        for (int i = 0; i < objects.size()-1; i++) {
-            BaseObject itemObject = objects.get(i);
-            Draw.drawTextCentered(g, ITEM_NAMES[i], itemObject.x + itemObject.width / 2, itemObject.y + itemObject.height + 32);
+
+        // Items mit Beschriftung zeichnen
+        int x = iLeft + iPadding;
+        for (int i = 0; i < PlayerObject.INSTANCE.inventar.size(); i++) {
+            // Item abfragen
+            ItemType item = PlayerObject.INSTANCE.inventar.get(i);
+
+            // Sprite zeichnen
+            int y = iTop + ((int) (HEIGHT * 0.05));
+            g.drawImage(item.SPRITE, x, y, item.SPRITE.getWidth(null) * PIXEL_SCALE, item.SPRITE.getHeight(null) * PIXEL_SCALE, null);
+
+            // Text zeichnen
+            Draw.drawTextCentered(g, item.NAME, x + item.SPRITE.getWidth(null) * PIXEL_SCALE / 2, y + item.SPRITE.getHeight(null) * PIXEL_SCALE + 32);
+
+            x += item.SPRITE.getWidth(null) * PIXEL_SCALE + iPadding;
         }
 
         // Objekte

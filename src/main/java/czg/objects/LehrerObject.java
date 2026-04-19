@@ -1,7 +1,6 @@
 package czg.objects;
 
 import czg.scenes.BaseScene;
-import czg.objects.ItemObject;
 
 import java.awt.*;
 import java.util.List;
@@ -12,9 +11,9 @@ public class LehrerObject extends BaseObject{
     public final int LEVEL;
     public int hp;
     public final String FACHSCHAFT;
-    public final List<ItemObject> lehrer_items;
+    public final List<ItemType> lehrer_items;
 
-    public LehrerObject(Image sprite, int x, int y, String FACHSCHAFT, int hp, int LEVEL, List<ItemObject> lehrer_items) {
+    public LehrerObject(Image sprite, int x, int y, String FACHSCHAFT, int hp, int LEVEL, List<ItemType> lehrer_items) {
         super(sprite, x, y);
         this.LEVEL = LEVEL;
         this.hp = hp;
@@ -27,7 +26,7 @@ public class LehrerObject extends BaseObject{
         Random rand = new Random();
         int move = rand.nextInt(5);
         int schaden;
-        ItemObject item_lehrer;
+        ItemType item_lehrer;
 
         if (move == 0) {
             schaden = level;
@@ -50,7 +49,7 @@ public class LehrerObject extends BaseObject{
         Random rand = new Random();
         int move = rand.nextInt(4);
         int level;
-        ItemObject item_lehrer;
+        ItemType item_lehrer;
         
         item_lehrer = lehrer_items.get(move);
         level = item_lehrer.LEVEL;

@@ -19,12 +19,12 @@ public class BiologyLabelObject extends BaseObject {
     @Override
     public void draw(Graphics2D g) {
         if (selected) {
-            g.setColor(Color.BLUE);
+            g.setColor(Color.LIGHT_GRAY);
         } else {
             g.setColor(Color.WHITE);
         }
         g.fillRect(x, y, width, height);
         g.setColor(Color.BLACK);
-        g.drawString(name, x + 5, y + height / 2 );
+        g.drawString(name, x + 5, y + (height / 2)+3 );
     }
 }

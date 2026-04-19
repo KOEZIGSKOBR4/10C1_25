@@ -4,7 +4,7 @@ import czg.MainWindow;
 import czg.objects.BackdropObject;
 import czg.objects.BaseObject;
 import czg.objects.ButtonObject;
-import czg.objects.ItemObject;
+import czg.objects.ItemType;
 import czg.scenes.BaseScene;
 import czg.scenes.SceneStack;
 import czg.util.Images;
@@ -20,9 +20,9 @@ public class MinigameEndScene extends BaseScene {
      * End-Szene erstellen
      * @param won Ob das Minigame gewonnen wurde. Wenn {@code true}, wird die {@code reward} angezeigt
      * @param level Welches Level des Minigames gespielt wurde. Siehe {@code department} für Begründung.
-     * @param reward {@link ItemObject}, welches die Belohnung für ein gewonnenes Minigame darstellt
+     * @param reward {@link ItemType}, welches die Belohnung für ein gewonnenes Minigame darstellt
      */
-    public MinigameEndScene(boolean won, int level, ItemObject reward) {
+    public MinigameEndScene(boolean won, int level, ItemType reward) {
         objects.add(new BackdropObject(Images.get("/assets/minigames/general/background_overlay.png")));
 
         if(won) {
