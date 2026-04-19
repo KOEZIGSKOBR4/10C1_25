@@ -31,9 +31,9 @@ public class BiologyData {
                                                          new BiologyPlant(Images.get("/assets/minigames/biology/level3/Gundermann.jpg"), "Gundermann"),
                                                          new BiologyPlant(Images.get("/assets/minigames/biology/level3/Hirtentaeschel.JPG"), "Gewöhnliches Hirtentäschel"),
                                                          new BiologyPlant(Images.get("/assets/minigames/biology/level3/Hungerbluemchen.jpg"), "Hungerblümchen"),
-                                                         new BiologyPlant(Images.get("/assets/minigames/biology/level3/Kirschlorbeer.JPG"), "Kirschlorbeer"),
+                                                         new BiologyPlant(Images.get("/assets/minigames/biology/level3/Kirschlorbeer.jpg"), "Kirschlorbeer"),
                                                          new BiologyPlant(Images.get("/assets/minigames/biology/level3/RoterHartriegel.jpg"), "Roter Hartriegel"),
-                                                         new BiologyPlant(Images.get("/assets/minigames/biology/level3/Schopf-Lavendel.jpeg"), "Schopf-Lavendel"),
-                                                         new BiologyPlant(Images.get("/assets/minigames/biology/level3/Schwarzkiefer.JPG"), "Schwarzkiefer"),
+                                                         new BiologyPlant(Images.get("/assets/minigames/biology/level3/Schopf-Lavendel.jpg"), "Schopf-Lavendel"),
+                                                         new BiologyPlant(Images.get("/assets/minigames/biology/level3/Schwarzkiefer.jpg"), "Schwarzkiefer"),
                                                          new BiologyPlant(Images.get("/assets/minigames/biology/level3/Wiesensauerampfer.jpg"), "Wiesen-Sauerampfer")};
 }
