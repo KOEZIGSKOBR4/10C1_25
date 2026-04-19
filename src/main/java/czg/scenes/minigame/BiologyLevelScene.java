@@ -23,16 +23,20 @@ public class BiologyLevelScene extends LevelScene {
     int[] imageY = {17, 17, 17, 17};
     private List<BiologyPlant> chosen;
 
+
     public BiologyLevelScene(int level) {
         super(Department.BIOLOGY, level);
 
         BiologyPlant[] pool;
         if (LEVEL == 0) {
             pool = BiologyData.LEVEL_1_PLANTS;
+            level = 1;
         } else if (LEVEL == 1) {
             pool = BiologyData.LEVEL_2_PLANTS;
+            level = 2;
         } else {
             pool = BiologyData.LEVEL_3_PLANTS;
+            level = 3;
         }
 
         List<BiologyPlant> shuffled = new ArrayList<>(Arrays.asList(pool));
@@ -190,5 +194,16 @@ public class BiologyLevelScene extends LevelScene {
         }
         return true;
     }
-}
 
+@Override
+public void draw(Graphics2D g2) {
+    super.draw(g2);
+    g2.setColor(Color.WHITE);
+    g2.setFont(new Font("Monospaced", Font.BOLD, 16));
+    g2.drawString("Biologie Minigame Level " + (LEVEL+1), 100, 90*PIXEL_SCALE);
+
+    g2.setFont(new Font("Monospaced", Font.PLAIN, 11));
+    g2.setColor(new Color(200, 200, 255));
+    g2.drawString("Klicke ein Label an und dann auf ein Pflanzenbild um das Label zuzuordnen.", 100, 95*PIXEL_SCALE);
+}
+}
