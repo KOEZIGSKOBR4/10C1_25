@@ -23,9 +23,6 @@ public class MatheraumScene extends BaseScene{
         PlayerObject.INSTANCE.x = 270;
         PlayerObject.INSTANCE.y = 295;
 
-        // TEST
-        SoundGroup.GLOBAL_SOUNDS.pause();
-
         BaseSound intro = sounds.get().addSound(new StreamSound("/assets/sound/fight_intro.ogg", false, EndOfFileBehaviour.STOP));
         BaseSound loop1 = sounds.get().addSound(new StreamSound("/assets/sound/fight_loop.ogg", false, EndOfFileBehaviour.RESTART_AND_PAUSE));
         BaseSound loop2 = sounds.get().addSound(new StreamSound("/assets/sound/fight_loop.ogg", false, EndOfFileBehaviour.RESTART_AND_PAUSE));
@@ -37,11 +34,5 @@ public class MatheraumScene extends BaseScene{
                 .start();
 
         objects.add(music);
-    }
-
-    @Override
-    public void unload() {
-        super.unload();
-        SoundGroup.GLOBAL_SOUNDS.resume();
     }
 }

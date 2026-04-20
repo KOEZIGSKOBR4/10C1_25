@@ -2,10 +2,8 @@ package czg;
 
 import czg.scenes.SceneStack;
 import czg.scenes.intro.TitleScreenScene;
-import czg.sound.EndOfFileBehaviour;
-import czg.sound.SoundGroup;
-import czg.sound.StreamSound;
 import czg.util.Input;
+import czg.util.Sounds;
 import czg.util.character_creator.CharacterCreator;
 
 import javax.swing.*;
@@ -93,11 +91,6 @@ public class MainWindow extends JFrame implements Runnable {
         // Zeigen
         INSTANCE.setVisible(true);
 
-        // Musik
-        StreamSound music = new StreamSound("/assets/sound/hallway.ogg", true, EndOfFileBehaviour.LOOP);
-        music.getVolumeControl().setValue(-8f);
-        SoundGroup.GLOBAL_SOUNDS.addSound(music);
-
         //Startszene
         SceneStack.INSTANCE.push(new TitleScreenScene());
 
@@ -153,10 +146,7 @@ public class MainWindow extends JFrame implements Runnable {
                 if(Input.INSTANCE.getKeyState(KeyEvent.VK_P) == Input.KeyState.PRESSED)
                     CharacterCreator.INSTANCE.get().setVisible(true);
                 if(Input.INSTANCE.getKeyState(KeyEvent.VK_M) == Input.KeyState.PRESSED) {
-                    if (SoundGroup.GLOBAL_SOUNDS.isPlaying())
-                        SoundGroup.GLOBAL_SOUNDS.pause();
-                    else
-                        SoundGroup.GLOBAL_SOUNDS.resume();
+                    Sounds.HALLWAY_MUSIC.setPlaying(!Sounds.HALLWAY_MUSIC.isPlaying());
                 }
                 if(Input.INSTANCE.getKeyState(KeyEvent.VK_D) == Input.KeyState.PRESSED)
                     Input.debugDrawMode = (Input.debugDrawMode + 1)%3;

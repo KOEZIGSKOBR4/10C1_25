@@ -6,6 +6,7 @@ import czg.objects.PlayerObject;
 import czg.scenes.BaseScene;
 import czg.scenes.SceneStack;
 import czg.util.Images;
+import czg.util.Sounds;
 
 import static czg.MainWindow.*;
 
@@ -23,10 +24,13 @@ public class EntranceScene extends BaseScene {
             PlayerObject.INSTANCE.allowInventory = true;
             PlayerObject.INSTANCE.x = foyerPlayerX;
             PlayerObject.INSTANCE.y = foyerPlayerY;
+            Sounds.HALLWAY_MUSIC.getVolumeControl().setValue(-4f);
         }));
 
         PlayerObject.INSTANCE.allowInventory = false;
         objects.add(PlayerObject.INSTANCE);
+
+        Sounds.HALLWAY_MUSIC.getVolumeControl().setValue(-8f);
 
     }
 
