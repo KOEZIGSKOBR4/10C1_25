@@ -64,12 +64,28 @@ public class InventarScene extends BaseScene {
 
             // Sprite zeichnen
             int y = iTop + ((int) (HEIGHT * 0.05));
-            g.drawImage(item.SPRITE, x, y, item.SPRITE.getWidth(null) * PIXEL_SCALE, item.SPRITE.getHeight(null) * PIXEL_SCALE, null);
+            int width, height;
+            switch(item) {
+                case TEXT -> {
+                    width = 80;
+                    height = 61;
+                }
+                case PAPIER -> {
+                    width = 80;
+                    height = 96;
+                }
+                default -> {
+                    width = item.SPRITE.getWidth(null);
+                    height = item.SPRITE.getHeight(null);
+                }
+            }
+            g.drawImage(item.SPRITE, x, y, width * PIXEL_SCALE, height * PIXEL_SCALE, null);
 
             // Text zeichnen
-            Draw.drawTextCentered(g, item.NAME, x + item.SPRITE.getWidth(null) * PIXEL_SCALE / 2, y + item.SPRITE.getHeight(null) * PIXEL_SCALE + 32);
+            if(! (item == ItemType.TEXT || item == ItemType.PAPIER))
+                Draw.drawTextCentered(g, item.NAME, x + width * PIXEL_SCALE / 2, y + height * PIXEL_SCALE + 32);
 
-            x += item.SPRITE.getWidth(null) * PIXEL_SCALE + iPadding;
+            x += width * PIXEL_SCALE + iPadding;
         }
 
         // Objekte

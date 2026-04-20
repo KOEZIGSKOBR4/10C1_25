@@ -21,7 +21,7 @@ public enum ItemType {
     FELDSTECHER("Feldstecher", "/assets/items/feldstecher.png", 1),
     GLUEHBIRNE("Glühbirne", "/assets/items/glühbirne.png", 2),
     IKOSAEDER("Ikosaeder", "/assets/items/ikosaeder.png", 1),
-    KRAFTMESSER("Federkraftmesser", "/assets/items/kraftmesser.png", 0),
+    KRAFTMESSER("Feder\nkraftmesser", "/assets/items/kraftmesser.png", 0),
     LAUTSPRECHER("Lautsprecher", "/assets/items/lautsprecher.png", 0),
     LINEAL("Lineal", "/assets/items/lineal.png", 0),
     TEXT("FrauBreunig","/assets/items/wenn_sie_das_hier_wirklich.png", 1),

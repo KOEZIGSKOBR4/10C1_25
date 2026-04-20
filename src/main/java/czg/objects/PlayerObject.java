@@ -24,6 +24,9 @@ public class PlayerObject extends BaseObject{
     //Anlegen einer Reihung "Inventar", in welchem die Items, auf die der Spieler zugreifen kann, gespeichert werden
     public final List<ItemType> inventar = new ArrayList<>();
 
+    // Ob das Inventar geöffnet werden darf
+    public boolean allowInventory = true;
+
     // Standardfarben
     public static final SaveFile defaultColors = new SaveFile(
             new Color(57, 37, 35),  // Haare: Braun
@@ -156,7 +159,7 @@ public class PlayerObject extends BaseObject{
     @Override
     public void update(BaseScene scene) {
         // Inventar öffnen, wenn die Figur angeklickt wird
-        if(isClicked())
+        if(allowInventory && isClicked())
             SceneStack.INSTANCE.push(new InventarScene());
     }
     

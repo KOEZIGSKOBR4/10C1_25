@@ -1,52 +1,32 @@
 package czg.scenes.intro;
 
-import czg.objects.BackdropObject;
-import czg.objects.ButtonObject;
-import czg.objects.ItemType;
-import czg.objects.PlayerObject;
+import czg.objects.*;
 import czg.scenes.BaseScene;
 import czg.scenes.FoyerScene;
 import czg.scenes.SceneStack;
 import czg.util.Images;
 
 import static czg.MainWindow.PIXEL_SCALE;
+import static czg.MainWindow.WIDTH;
 
 
 public class ChoosingScene extends BaseScene {
     public ChoosingScene() {
         objects.add(new BackdropObject(Images.get("/assets/intro/choosingbackground.png")));
-        objects.add(new ButtonObject(Images.get("/assets/intro/computersciencebutton.png"), 50*PIXEL_SCALE, 10*PIXEL_SCALE, 160*PIXEL_SCALE, 66*PIXEL_SCALE, () -> {
-            PlayerObject.INSTANCE.inventar.add(ItemType.CD);
-            SceneStack.INSTANCE.pop();
-            SceneStack.INSTANCE.push(new FoyerScene());
-            SceneStack.INSTANCE.push(new EntranceScene());
-        }));
-        objects.add(new ButtonObject(Images.get("/assets/intro/chemistrybutton.png"), 50*PIXEL_SCALE, 30*PIXEL_SCALE, 160*PIXEL_SCALE, 66*PIXEL_SCALE, () -> {
-            PlayerObject.INSTANCE.inventar.add(ItemType.ATOM);
-            SceneStack.INSTANCE.pop();
-            SceneStack.INSTANCE.push(new FoyerScene());
-            SceneStack.INSTANCE.push(new EntranceScene());
-        }));
-        objects.add(new ButtonObject(Images.get("/assets/intro/biologybutton.png"), 50*PIXEL_SCALE, 50*PIXEL_SCALE, 160*PIXEL_SCALE, 66*PIXEL_SCALE, () -> {
-            PlayerObject.INSTANCE.inventar.add(ItemType.VIRUS);
-            SceneStack.INSTANCE.pop();
-            SceneStack.INSTANCE.push(new FoyerScene());
-            SceneStack.INSTANCE.push(new EntranceScene());
-        }));
-        objects.add(new ButtonObject(Images.get("/assets/intro/physicsbutton.png"), 50*PIXEL_SCALE, 70*PIXEL_SCALE, 160*PIXEL_SCALE, 66*PIXEL_SCALE, () -> {
-            PlayerObject.INSTANCE.inventar.add(ItemType.KRAFTMESSER);
-            SceneStack.INSTANCE.pop();
-            SceneStack.INSTANCE.push(new FoyerScene());
-            SceneStack.INSTANCE.push(new EntranceScene());
-        }));
-        objects.add(new ButtonObject(Images.get("/assets/intro/mathsbutton.png"), 50*PIXEL_SCALE, 90*PIXEL_SCALE, 160*PIXEL_SCALE, 66*PIXEL_SCALE, () -> {
-            PlayerObject.INSTANCE.inventar.add(ItemType.LINEAL);
-            SceneStack.INSTANCE.pop();
-            SceneStack.INSTANCE.push(new FoyerScene());
-            SceneStack.INSTANCE.push(new EntranceScene());
-        }));
 
+        int y = 30 * PIXEL_SCALE;
 
+        for(Department dep : Department.values()) {
+            ButtonObject button = new ButtonObject(Images.get("/assets/intro/"+dep.name().toLowerCase()+"_button.png"), 0, y, () -> {
+                PlayerObject.INSTANCE.inventar.add(ItemType.getMinigameReward(dep, 0));
+                SceneStack.INSTANCE.pop();
+            });
 
+            button.x = WIDTH / 2 - button.width / 2;
+            y += 6 * PIXEL_SCALE + button.height;
+
+            objects.add(button);
+        }
     }
+
 }
