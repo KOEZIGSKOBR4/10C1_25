@@ -23,7 +23,7 @@ public class LehrerObject extends BaseObject{
         this.lehrer_items = Arrays.asList(ItemType.NEWTONSAPFEL, ItemType.ATOM, ItemType.CHROME, ItemType.BSOD);
     }
 
-    public static int verteidigung(int level) {
+    public int verteidigung(int level) {
         // Es wird random ausgewählt, ob ein Item gewählt wird (und welches), oder ob der Lehrer nichts macht.
         Random rand = new Random();
         int move = rand.nextInt(5);
@@ -47,7 +47,7 @@ public class LehrerObject extends BaseObject{
 
     }
     
-    public static int angriff() {
+    public int angriff() {
         // Der Lehrer wählt random, welches der Items er zum Angreifen benutzt.
         Random rand = new Random();
         int move = rand.nextInt(4);
