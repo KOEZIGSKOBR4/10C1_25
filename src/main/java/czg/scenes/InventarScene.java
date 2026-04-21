@@ -125,6 +125,19 @@ public class InventarScene extends BaseScene {
             rows.add(currentRow);
     }
 
+    public void rebuild() {
+        if(INSTANCE == null)
+            throw new RuntimeException("WIE");
+
+        INSTANCE = null;
+        InventarScene newInv = new InventarScene();
+        if(! newInv.rows.isEmpty()) {
+            final int newRowInBounds = Math.max(0, Math.min(newInv.rows.size()-1, this.currentRow));
+            newInv.changeRow(newRowInBounds);
+        }
+        SceneStack.INSTANCE.replace(this, newInv);
+    }
+
     private void changeRow(int by) {
         if(rows.isEmpty())
             return;
