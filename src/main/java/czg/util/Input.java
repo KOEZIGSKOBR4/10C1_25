@@ -168,8 +168,8 @@ public class Input implements KeyListener, MouseListener, FocusListener {
      * Siehe {@link #keyButtonsToUpdateToHeld}, {@link #getKeyState(int)}
      */
     public void update() {
-        keyButtonsToUpdateToHeld.forEach(code -> keyStates.put(code, MainWindow.INSTANCE.TIME_AT_UPDATE_START - HELD_THRESHOLD));
-        mouseButtonsToUpdateToHeld.forEach(code -> mouseStates.put(code, MainWindow.INSTANCE.TIME_AT_UPDATE_START - HELD_THRESHOLD));
+        keyButtonsToUpdateToHeld.forEach(code -> keyStates.computeIfPresent(code, (k,v) -> MainWindow.INSTANCE.TIME_AT_UPDATE_START - HELD_THRESHOLD));
+        mouseButtonsToUpdateToHeld.forEach(code -> mouseStates.computeIfPresent(code, (k,v) -> MainWindow.INSTANCE.TIME_AT_UPDATE_START - HELD_THRESHOLD));
         keyButtonsToUpdateToHeld.clear();
         mouseButtonsToUpdateToHeld.clear();
 
