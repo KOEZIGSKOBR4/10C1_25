@@ -1,4 +1,6 @@
 package czg.scenes;
+import com.sun.tools.javac.Main;
+import czg.MainWindow;
 import czg.objects.*;
 import czg.objects.music_loop_object.MusicLoopObject;
 import czg.objects.music_loop_object.SegmentChangeMarker;
@@ -67,6 +69,16 @@ public class KampfScene extends BaseScene{
 
         if(timer > 0) {
             timer -= 1;
+        }
+
+        // Das unloaden funktioniert noch nicht
+        if(PlayerLeben <= 0) {
+            unload();
+        }
+
+        if(LehrerLeben <= 0) {
+            MainWindow.UebrigeLehrer -= 1;
+            unload();
         }
     }
 

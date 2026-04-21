@@ -89,6 +89,7 @@ public class LehrerObject extends BaseObject{
 
         if(KampfScene.lehrerVerteidigung) {
             KampfScene.Endschaden = verteidigung(KampfScene.Zwischenschaden);
+            KampfScene.LehrerLeben -= KampfScene.Endschaden;
             KampfScene.lehrerVerteidigung = false;
             KampfScene.lehrerTurn = true;
         }

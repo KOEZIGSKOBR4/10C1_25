@@ -169,6 +169,7 @@ public class PlayerObject extends BaseObject{
             if(KampfScene.PlayerVerteidigung) {
                 if(KampfScene.timer == 0) {
                     KampfScene.Endschaden = KampfScene.Zwischenschaden;
+                    KampfScene.PlayerLeben -= KampfScene.Endschaden;
                     KampfScene.PlayerVerteidigung = false;
                     KampfScene.PlayerTurn = true;
                     return;
@@ -178,6 +179,7 @@ public class PlayerObject extends BaseObject{
                     if(clicked != null) {
                         KampfScene.Endschaden = verteidigung(KampfScene.Zwischenschaden, clicked);
                         removeItem(clicked);
+                        KampfScene.PlayerLeben -= KampfScene.Endschaden;
                         KampfScene.PlayerVerteidigung = false;
                         KampfScene.PlayerTurn = true;
                         return;
