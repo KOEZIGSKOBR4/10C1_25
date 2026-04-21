@@ -2,6 +2,7 @@ package czg.scenes.intro;
 
 import czg.objects.*;
 import czg.scenes.BaseScene;
+import czg.scenes.FoyerScene;
 import czg.scenes.SceneStack;
 import czg.util.Images;
 
