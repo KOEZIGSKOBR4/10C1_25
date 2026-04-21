@@ -115,7 +115,7 @@ public enum MathematicsPuzzle {
         }
     }),
     /**
-     * Level 2: Wurfstern TODO: weitere Lösungen hinzufügen (oder verwerfen)
+     * Level 2: Wurfstern
      */
     P_11("/assets/minigames/mathematics/puzzle_2_2.png", 1, new double[][][] {
         {
@@ -129,24 +129,38 @@ public enum MathematicsPuzzle {
         }
     }),
     /**
-     * Level 2: TODO
+     * Level 2: Baum
      */
-    P_12("/assets/minigames/mathematics/puzzle_1_1.png", 1, new double[][][] {
+    P_12("/assets/minigames/mathematics/puzzle_2_3.png", 1, new double[][][] {
         {
-            {0.33, 0.4, 0.0},
-            {0.0, 0.0, 180.0},
-            {0.33, 0.0, 90.0},
-            {0.5, 0.0, 0.0},
-            {0.33, 0.4, 180.0},
-            {0.5, 0.2, 90.0},
-            {0.33, 0.6, 0.0}
+            {0.5, 0.0, 45.0},       // Großes Dreieck 1
+            {0.0, 0.0, 45.0},       // Großes Dreieck 2
+            {0.25, 0.5, -135.0},    // Mittleres Dreieck
+            {0.5, 0.5, 45.0},       // Kleines Dreieck 1
+            {0.75, 0.5, -45.0},     // Kleines Dreieck 2
+            {0.0, 0.49, 45.0},      // Parallelogramm
+            {0.38, 0.75, 45.0}      // Quadrat
         }
     }),
 
     /**
-     * Level 3: TODO
+     * Level 3: Läufer TODO
      */
-    P_20("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+    P_20("/assets/minigames/mathematics/puzzle_3_1.png", 7, new double[][][] {
+        {
+            {0.26, 0.26, 180.0},    // Großes Dreieck 1
+            {0.26, 0.56, -135.0},   // Großes Dreieck 2
+            {0.44, 0.0, 180.0},     // Mittleres Dreieck
+            {0.49, 0.05, 135.0},      // Kleines Dreieck 1
+            {0.62, 0.84, 90.0},      // Kleines Dreieck 2
+            {0.0, 0.57, -45.0},     // Parallelogramm
+            {0.44, 0.71, 0.0}       // Quadrat
+        }
+    }),
+    /**
+     * Level 3: Kamel TODO
+     */
+    P_21("/assets/minigames/mathematics/puzzle_3_2.png", 7, new double[][][] {
         {
             {0.33, 0.4, 0.0},
             {0.0, 0.0, 180.0},
@@ -158,23 +172,9 @@ public enum MathematicsPuzzle {
         }
     }),
     /**
-     * Level 3: TODO
+     * Level 3: Hai TODO
      */
-    P_21("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
-        {
-            {0.33, 0.4, 0.0},
-            {0.0, 0.0, 180.0},
-            {0.33, 0.0, 90.0},
-            {0.5, 0.0, 0.0},
-            {0.33, 0.4, 180.0},
-            {0.5, 0.2, 90.0},
-            {0.33, 0.6, 0.0}
-        }
-    }),
-    /**
-     * Level 3: TODO
-     */
-    P_22("/assets/minigames/mathematics/puzzle_1_1.png", 0, new double[][][] {
+    P_22("/assets/minigames/mathematics/puzzle_3_3.png", 7, new double[][][] {
         {
             {0.33, 0.4, 0.0},
             {0.0, 0.0, 180.0},
@@ -243,7 +243,7 @@ public enum MathematicsPuzzle {
         // Zufallszahl zwischen 0 (inklusiv) und 3 (exklusiv)
         int r = new Random().nextInt(3);
         // Entsprechenden Eintrag aus PUZZLES zurückgeben
-        return PUZZLES[level][r];
+        return PUZZLES[level][0];
     }
 
     /**
