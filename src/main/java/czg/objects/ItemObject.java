@@ -8,7 +8,7 @@ import static czg.MainWindow.PIXEL_SCALE;
 
 public class ItemObject extends BaseObject {
 
-    private final ItemType item;
+    public final ItemType item;
     private final int count;
 
     private static final Color[] LEVEL_COLORS = {

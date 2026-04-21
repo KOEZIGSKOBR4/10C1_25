@@ -33,6 +33,9 @@ public class InventarScene extends BaseScene {
     private static final int iPadding = (int)(WIDTH * 0.025);
 
 
+    private static InventarScene INSTANCE = null;
+
+
     private final ButtonObject arrowUp;
 
     private final ButtonObject arrowDown;
@@ -72,6 +75,11 @@ public class InventarScene extends BaseScene {
         generateRows();
         setArrowVisibility();
         changeRow(0);
+
+        if(INSTANCE != null) {
+            throw new RuntimeException("Zwei Inventare was da los");
+        }
+        INSTANCE = this;
     }
 
     private void generateRows() {
@@ -135,7 +143,6 @@ public class InventarScene extends BaseScene {
         setArrowVisibility();
     }
 
-
     private void setArrowVisibility() {
         if(rows.size() <= 1) {
             arrowUp.visible = false;
@@ -151,5 +158,24 @@ public class InventarScene extends BaseScene {
             arrowDown.visible = true;
         }
     }
-    
+
+    public static ItemType getClickedItem() {
+        if(INSTANCE == null)
+            return null;
+
+        if(INSTANCE.rows.isEmpty())
+            return null;
+
+        for(ItemObject item : INSTANCE.rows.get(INSTANCE.currentRow)) {
+            if(item.isClicked())
+                return item.item;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void unload() {
+        INSTANCE = null;
+    }
 }
