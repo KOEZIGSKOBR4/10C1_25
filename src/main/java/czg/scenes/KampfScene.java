@@ -66,10 +66,10 @@ public class KampfScene extends BaseScene{
         PlayerLeben = 10;
         currentItem = null;
 
-        LehrerObject Lehrer = new LehrerObject(700, 200, FACHSCHAFT);
+        LehrerObject Lehrer = new LehrerObject(700, 280, FACHSCHAFT);
         this.objects.add(Lehrer);
         this.objects.add(PlayerObject.INSTANCE);
-        PlayerObject.INSTANCE.x = 330;
+        PlayerObject.INSTANCE.x = 120;
         PlayerObject.INSTANCE.y = 295;
 
         Sounds.HALLWAY_MUSIC.setPlaying(false);
@@ -96,7 +96,6 @@ public class KampfScene extends BaseScene{
             timer -= 1;
         }
 
-        // Das unloaden funktioniert noch nicht
         if(PlayerLeben <= 0) {
             exit();
         } else if(LehrerLeben <= 0) {
@@ -122,7 +121,7 @@ public class KampfScene extends BaseScene{
     public void draw(Graphics2D g) {
         super.draw(g);
 
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.setFont(Draw.FONT_INFO.deriveFont(30f));
         g.drawString("timer="+timer, 10, HEIGHT - 90);
     }

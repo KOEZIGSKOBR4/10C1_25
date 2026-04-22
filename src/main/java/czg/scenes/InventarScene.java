@@ -66,7 +66,7 @@ public class InventarScene extends BaseScene {
             objects.add(exit);
             right = exit.x;
         } else {
-            right = iLeft + iWidth - iPadding * 2;
+            right = iLeft + iWidth - iPadding * 4;
         }
 
         // Reihe nach oben
