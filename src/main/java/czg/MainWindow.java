@@ -53,9 +53,6 @@ public class MainWindow extends JFrame implements Runnable {
      */
     public long TIME_AT_UPDATE_START;
 
-    public static int UebrigeLehrer = 5;
-    public static boolean[] UebrigeLehrerArray = {true, true, true, true, true};
-
 
     /**
      * Soll nicht von außerhalb instanziiert werden

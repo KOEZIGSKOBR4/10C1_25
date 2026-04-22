@@ -185,6 +185,7 @@ public class PlayerObject extends BaseObject{
                         KampfScene.PlayerLeben -= KampfScene.Endschaden;
                         KampfScene.PlayerVerteidigung = false;
                         KampfScene.PlayerTurn = true;
+                        KampfScene.timer = 0;
                         return;
                     }
                 }
@@ -201,5 +202,18 @@ public class PlayerObject extends BaseObject{
             }
         }
     }
-    
+
+    @Override
+    public void draw(Graphics2D g) {
+        super.draw(g);
+
+        g.setColor(Color.WHITE);
+        g.setFont(Draw.FONT_INFO);
+        if(KampfScene.imKampf) {
+            String text = KampfScene.PlayerTurn ? "TURN" : "VERTEIDIGUNG";
+            Draw.drawTextCentered(g, text, x + width / 2, y + height + 20, true);
+
+            Draw.drawTextCentered(g, "HP: "+KampfScene.PlayerLeben, x + width  / 2, y + height + 40, true);
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package czg.objects;
 
 import czg.util.Images;
-import czg.objects.Department;
 
 import java.awt.*;
 import java.util.List;
@@ -117,7 +116,7 @@ public enum ItemType {
         
     }
     
-    public static List<ItemType> getItems(int level, Department fachschaft) { // Items mit jeweiligen Leveln an Lehrer mit jeweiligen Leveln  verteilen
+    public static List<ItemType> getItems(Department fachschaft) { // Items mit jeweiligen Leveln an Lehrer mit jeweiligen Leveln  verteilen
         if (fachschaft == Department.COMPUTER_SCIENCE) {
             
             return List.of(  //die Items werden zurückgegeben
@@ -158,8 +157,8 @@ public enum ItemType {
                     ItemType.SCHUTZBRILLE, //level 1 (eigentlich level 2)
                     ItemType.WUNDERKERZE//level 2
             );
+        } else {
+            throw new RuntimeException("BRO java is actually doch nicht so tuff");
         }
-        
-        throw new IllegalArgumentException("Konnte nicht die Items für Fachschaft "+fachschaft+", Level "+level+" ermitteln!");
     }
 }

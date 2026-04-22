@@ -15,12 +15,7 @@ public class BioraumScene extends BaseScene{
         //Pfeilobjekt für den Wechsel in die Gangszene
         objects.add(new PfeilObject(this, BiogangScene::new, PfeilObject.UNTEN));
 
-        objects.add(new ButtonObject(LehrerObject.getImage(Department.BIOLOGY),
-                () -> {
-                    SceneStack.INSTANCE.push(new KampfScene(Department.COMPUTER_SCIENCE));
-                    SceneStack.INSTANCE.push(new InventarScene(false));
-                    PlayerObject.INSTANCE.allowInventory = false;
-                }));
+        LehrerObject.addButtonObject(this, Department.BIOLOGY);
 
         //Einfügen der Spieler-Figur
         this.objects.add(PlayerObject.INSTANCE);

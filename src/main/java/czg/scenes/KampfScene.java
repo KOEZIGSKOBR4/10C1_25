@@ -1,6 +1,5 @@
 package czg.scenes;
 
-import czg.MainWindow;
 import czg.objects.*;
 import czg.objects.music_loop_object.MusicLoopObject;
 import czg.objects.music_loop_object.SegmentChangeMarker;
@@ -14,6 +13,12 @@ import czg.util.Images;
 import czg.util.Sounds;
 
 import java.awt.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static czg.MainWindow.HEIGHT;
 
@@ -21,29 +26,45 @@ import static czg.MainWindow.HEIGHT;
  * @author Sophie
  */
 public class KampfScene extends BaseScene{
-    public static boolean lehrerTurn = false;
-    public static boolean lehrerVerteidigung = false;
-    public static boolean PlayerTurn = true;
-    public static boolean PlayerVerteidigung = false;
-    public static boolean imKampf = false;
-    public static int timer = 0;
-    public static int Zwischenschaden = 0;
-    public static int Endschaden = 0;
-    public static int LehrerLeben = 10;
-    public static int PlayerLeben = 10;
+
+    public static boolean lehrerTurn;
+    public static boolean lehrerVerteidigung;
+    public static boolean PlayerTurn;
+    public static boolean PlayerVerteidigung;
+    public static boolean imKampf;
+    public static int timer;
+    public static int Zwischenschaden;
+    public static int Endschaden;
+    public static int LehrerLeben;
+    public static int PlayerLeben;
     public static ItemType clicked;
     public static Department FACHSCHAFT;
+    public static Set<Department> uebrigeLehrer = Arrays.stream(Department.values()).collect(Collectors.toCollection(HashSet::new));
+
+    public static ItemObject currentItem;
+    public static KampfScene instance;
 
     public KampfScene(Department FACHSCHAFT){
         super();
-        this.FACHSCHAFT = FACHSCHAFT;
+        KampfScene.FACHSCHAFT = FACHSCHAFT;
 
         coverSettings.setRules(new Rules(Setting.KEEP, Setting.OFF, Setting.KEEP), "inventar");
 
         //Einfügen des Hintergrunds
         objects.add(new BackdropObject(Images.get("/assets/background/Kampfgang.png")));
 
+        instance = this;
         imKampf = true;
+        lehrerTurn = false;
+        lehrerVerteidigung = false;
+        PlayerTurn = true;
+        PlayerVerteidigung = false;
+        timer = 0;
+        Zwischenschaden = 0;
+        Endschaden = 0;
+        LehrerLeben = 10;
+        PlayerLeben = 10;
+        currentItem = null;
 
         LehrerObject Lehrer = new LehrerObject(700, 200, FACHSCHAFT);
         this.objects.add(Lehrer);
@@ -77,14 +98,25 @@ public class KampfScene extends BaseScene{
 
         // Das unloaden funktioniert noch nicht
         if(PlayerLeben <= 0) {
-            unload();
-        }
-
-        if(LehrerLeben <= 0) {
-            MainWindow.UebrigeLehrer -= 1;
-            unload();
+            exit();
+        } else if(LehrerLeben <= 0) {
+            uebrigeLehrer.remove(FACHSCHAFT);
+            exit();
         }
     }
+
+    private static void exit() {
+        SceneStack.INSTANCE.pop();
+        SceneStack.INSTANCE.pop();
+        Class<? extends BaseScene> raumClass = SceneStack.INSTANCE.getTop().getClass();
+        try {
+            Constructor<?> constr = raumClass.getConstructor();
+            SceneStack.INSTANCE.replace(SceneStack.INSTANCE.getTop(), (BaseScene) constr.newInstance());
+        } catch (NoSuchMethodException|InvocationTargetException|InstantiationException|IllegalAccessException e) {
+            throw new RuntimeException("wir sind so cooked");
+        }
+    }
+
 
     @Override
     public void draw(Graphics2D g) {
@@ -100,6 +132,10 @@ public class KampfScene extends BaseScene{
         super.unload();
         Sounds.HALLWAY_MUSIC.setPlaying(true);
         PlayerObject.INSTANCE.allowInventory = true;
+        KampfScene.imKampf = false;
+        KampfScene.PlayerLeben = 10;
+        KampfScene.LehrerLeben = 10;
+        instance = null;
     }
 }
 

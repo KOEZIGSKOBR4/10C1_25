@@ -2,23 +2,25 @@ package czg.objects;
 
 import czg.MainWindow;
 import czg.scenes.BaseScene;
+import czg.scenes.InventarScene;
 import czg.scenes.KampfScene;
+import czg.scenes.SceneStack;
+import czg.util.Draw;
 import czg.util.Images;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class LehrerObject extends BaseObject{
 
-    public final Department FACHSCHAFT;
-    public static List<ItemType> lehrer_items;
+    public final Department fachschaft;
+    public static List<ItemType> lehrerItems;
 
-    public LehrerObject(int x, int y, Department FACHSCHAFT) {
-        super(Images.get("/assets/characters/bre.png"), x, y);
-        this.FACHSCHAFT = FACHSCHAFT;
-        this.lehrer_items = Arrays.asList(ItemType.NEWTONSAPFEL, ItemType.ATOM, ItemType.CHROME, ItemType.BSOD);
+    public LehrerObject(int x, int y, Department fachschaft) {
+        super(getImage(fachschaft), x, y);
+        this.fachschaft = fachschaft;
+        lehrerItems = ItemType.getItems(fachschaft);
     }
 
     public int verteidigung(int level) {
@@ -33,7 +35,10 @@ public class LehrerObject extends BaseObject{
             schaden = level;
         }
         else {
-            item_lehrer = lehrer_items.get(move - 1);
+            item_lehrer = lehrerItems.get(move - 1);
+            KampfScene.instance.objects.remove(KampfScene.currentItem);
+            KampfScene.currentItem = new ItemObject(item_lehrer, 1, x - width, y + height / 2);
+            KampfScene.instance.objects.add(KampfScene.currentItem);
             schaden = level - item_lehrer.LEVEL;
             if (schaden <= 0) {
                 schaden = 0;
@@ -52,7 +57,7 @@ public class LehrerObject extends BaseObject{
         int level;
         ItemType item_lehrer;
         
-        item_lehrer = lehrer_items.get(move);
+        item_lehrer = lehrerItems.get(move);
         level = item_lehrer.LEVEL;
         
         return level;
@@ -83,6 +88,16 @@ public class LehrerObject extends BaseObject{
         throw new IllegalArgumentException("Konnte der Fachschaft "+fachschaft+" kein Foto zuordnen!");
     }
 
+    public static void addButtonObject(BaseScene scene, Department department) {
+        if(KampfScene.uebrigeLehrer.contains(department))
+            scene.objects.add(new ButtonObject(LehrerObject.getImage(department),
+                () -> {
+                    SceneStack.INSTANCE.push(new KampfScene(department));
+                    SceneStack.INSTANCE.push(new InventarScene(false));
+                    PlayerObject.INSTANCE.allowInventory = false;
+            }));
+    }
+
     @Override
     public void update(BaseScene scene) {
         super.update(scene);
@@ -93,7 +108,7 @@ public class LehrerObject extends BaseObject{
             KampfScene.lehrerVerteidigung = false;
             KampfScene.lehrerTurn = true;
         }
-        else {
+        if(KampfScene.lehrerTurn) {
             KampfScene.Zwischenschaden = angriff();
             KampfScene.timer = 10 * MainWindow.FPS;
             KampfScene.lehrerTurn = false;
@@ -103,5 +118,19 @@ public class LehrerObject extends BaseObject{
 
 
 
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        super.draw(g);
+
+        g.setColor(Color.WHITE);
+        g.setFont(Draw.FONT_INFO);
+        if(KampfScene.imKampf) {
+            String text = KampfScene.lehrerTurn ? "TURN" : "VERTEIDIGUNG";
+            Draw.drawTextCentered(g, text, x + width / 2, y + height + 20, true);
+
+            Draw.drawTextCentered(g, "HP: "+KampfScene.LehrerLeben, x + width  / 2, y + height + 40, true);
+        }
     }
 }
