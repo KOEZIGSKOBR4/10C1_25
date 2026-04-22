@@ -9,8 +9,13 @@ import czg.scenes.cover_settings.Setting;
 import czg.sound.BaseSound;
 import czg.sound.EndOfFileBehaviour;
 import czg.sound.StreamSound;
+import czg.util.Draw;
 import czg.util.Images;
 import czg.util.Sounds;
+
+import java.awt.*;
+
+import static czg.MainWindow.HEIGHT;
 
 /**
  * @author Sophie
@@ -79,6 +84,15 @@ public class KampfScene extends BaseScene{
             MainWindow.UebrigeLehrer -= 1;
             unload();
         }
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        super.draw(g);
+
+        g.setColor(Color.WHITE);
+        g.setFont(Draw.FONT_INFO.deriveFont(30f));
+        g.drawString("timer="+timer, 10, HEIGHT - 90);
     }
 
     @Override
