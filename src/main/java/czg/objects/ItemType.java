@@ -3,6 +3,7 @@ package czg.objects;
 import czg.util.Images;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public enum ItemType {
     ItemType(String name, String imagePath, int level) {
         this.NAME = name;
         this.LEVEL = level;
-        this.SPRITE = Images.get(imagePath);
+        this.SPRITE = Images.cropTransparency((BufferedImage) Images.get(imagePath));
     }
 
     /**
