@@ -61,7 +61,7 @@ public class ItemObject extends BaseObject {
                 right += diff;
             }
 
-            g.setColor(LEVEL_COLORS[item.LEVEL]);
+            g.setColor(item.LEVEL < LEVEL_COLORS.length ? LEVEL_COLORS[item.LEVEL] : Color.MAGENTA);
             Draw.drawTextCentered(g, "Lv "+(item.LEVEL+1), left, y + height + PIXEL_SCALE * 2, true);
 
             g.setColor(Color.WHITE);

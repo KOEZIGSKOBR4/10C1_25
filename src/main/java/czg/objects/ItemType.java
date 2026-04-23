@@ -42,7 +42,8 @@ public enum ItemType {
     WLAN("Wlan", "/assets/items/wlan.png", 1),
     WUNDERKERZE("Wunderkerze", "/assets/items/wunderkerze.png", 1),
     ZETTEL("Zettel", "/assets/items/zettel.png", 2),
-    ZIRKEL("Zirkel", "/assets/items/zirkel.png", 0);
+    ZIRKEL("Zirkel", "/assets/items/zirkel.png", 0),
+    DEBUG("Debug", "", 99);
         
     public final String NAME;
     public final Image SPRITE;
