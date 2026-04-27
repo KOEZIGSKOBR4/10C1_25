@@ -55,13 +55,259 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Euer Titel}
+	\frametitle{Das Chemie Minigame}
+\begin{minipage}[l]{0.40\textwidth}
+	\begin{itemize}
+		\item Konzept: Watersort Puzzle
+		\item Level: untersch. viele Farben und Gläser
+		\end{itemize}
+\end{minipage}
+\begin{minipage}[r]{0.55\textwidth}
+	\centering
+	\begin{figure}
+	\includegraphics[width=\textwidth]{../dokumentation/bilder/BeispielChemie.png}
+	\caption{Beispiel Chemie-Minigame}
+	\end{figure}
+\end{minipage}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Euer Titel}
+	\frametitle{Spielmechanik}
+      \begin{figure}
+        \centering
+        \begin{minipage}[l]{0.2\textwidth}
+          \centering
+          \includegraphics[width=\linewidth]{../präsi/bilder/ChemieLevelStart.png}
+          \caption{Levelstart}
+        \end{minipage}
+        \hfill
+        $\Rightarrow$
+        \hfill
+        \begin{minipage}[l]{0.2\textwidth}
+          \centering
+          \includegraphics[width=\linewidth]{../präsi/bilder/ChemieGlasAuswahl.png}
+          \caption{Glas auswählen}
+        \end{minipage}
+        \hfill
+        $\Rightarrow$
+        \hfill
+        \begin{minipage}[l]{0.2\textwidth}
+          \centering
+          \includegraphics[width=\linewidth]{../präsi/bilder/ChemieUmschuetten.png}
+            \caption{Umschütten}
+        \end{minipage}
+        \hfill
+        $\Rightarrow$
+        \hfill
+        \begin{minipage}[l]{0.2\textwidth}
+          \centering
+          \includegraphics[width=\linewidth]{../präsi/bilder/ChemieLevelEnde.png}
+          \caption{Level gewinnen/verlieren}
+        \end{minipage}
+      \end{figure}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Euer Titel}
+\frametitle{ChemieLevelScene}
+Eine Erweiterung der \texttt{LevelScene}, welche das \texttt{ChemieGameObject} zur \texttt{objects}-Liste hinzufügt.
+
+Sie beinhaltet:
+	\begin{itemize}
+		\item \texttt{reset()}
+		\item \texttt{ChemieLevelScene(int level)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Reagenzglas}
+	Eine Erweiterung von \texttt{BaseObject}, die ein einzelnes Reagenzglas darstellt.
+	Die Klasse beinhaltet:
+		\begin{itemize}
+			\item \texttt{MAX\_KAPAZITAET}, \texttt{GLAS\_BREITE}, \texttt{GLAS\_HOEHE}: Statische Konstanten
+			\item \texttt{blockBilder}: \texttt{Map<String, Image>}.
+			\item \texttt{blockHinzufuegen(String farbe)}
+			\item \texttt{oberstenBlockEntfernen()}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Reagenzglas}
+
+	\begin{itemize}
+		\item \texttt{oberstenBlockAnschauen()}
+		\item \texttt{istLeer()}, \texttt{istVoll()}
+		\item \texttt{istGeloest()}
+		\item \texttt{kannAblegen(String farbe)}
+		\item \texttt{setAusgewaehlt(boolean)}
+		\item \texttt{draw(Graphics2D g)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{ChemieGameObjects}
+	Eine Erweiterung von \texttt{BaseObject}, die das gesamte Chemie-Minigame verwaltet.
+
+	Sie beinhaltet:
+		\begin{itemize}
+			\item \texttt{blockBilder}: Eine \texttt{Map<String, Image>}, die Farbnamen auf die zugehörigen Block-Bilder abbildet und an alle \texttt{Reagenzglas}-Objekte weiterreicht
+			\item \texttt{glaeser}: Eine \texttt{List<Reagenzglas>}
+			\item \texttt{ausgewaehltesGlas}
+			\item \texttt{verbleibendeSekunden}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{ChemieGameObjects}
+	\begin{itemize}
+		\item \texttt{levelErstellen()}
+		\item \texttt{umschuetten(int von, int nach)}
+		\item \texttt{istGewonnen()}
+		\item \texttt{update(BaseScene)}
+		\item \texttt{draw(Graphics2D)}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Das Physik Minigame}
+	\begin{minipage}[l]{0.40\textwidth}
+		\begin{itemize}
+			\item Konzept: Überlagerung von Kräften
+			\item Level: untersch. viele Kräfte
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}[r]{0.55\textwidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\textwidth]{../dokumentation/bilder/BeispielPhysik.png}
+			\caption{Beispiel Physik-Minigame}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Spielmechanik}
+      \begin{figure}
+        \centering
+        \begin{minipage}[l]{0.25\textwidth}
+          \centering
+          \includegraphics[width=\linewidth]{../präsi/bilder/PhysikLevelStart.png}
+          \caption{Levelstart}
+        \end{minipage}
+        \hfill
+        $\Rightarrow$
+        \hfill
+        \begin{minipage}[l]{0.25\textwidth}
+          \centering
+          \includegraphics[width=\linewidth]{../präsi/bilder/PhysikSpielerkraft.png}
+          \caption{Glas auswählen}
+        \end{minipage}
+        \hfill
+        $\Rightarrow$
+        \hfill
+        \begin{minipage}[l]{0.25\textwidth}
+          \centering
+          \includegraphics[width=\linewidth]{../präsi/bilder/PhysikFlug.png}
+            \caption{Umschütten}
+        \end{minipage}
+      \end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{PhysikLevelScene}
+Eine Erweiterung der \texttt{LevelScene}, welche das \texttt{PhysikGameObject} zur \texttt{objects}-Liste hinzufügt.
+
+Sie beinhaltet:
+	\begin{itemize}
+		\item \texttt{reset()}
+		\item \texttt{PhysikLevelScene(int level)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{PhysikGameObject}
+Eine Erweiterung von \texttt{BaseObject}, die das gesamte Physik-Minigame verwaltet.
+Das Spiel läuft in drei Phasen ab: \texttt{PHASE\_VORBEREITUNG}, \texttt{PHASE\_SIMULATION}, \texttt{PHASE\_ERGEBNIS}
+
+Die Klasse beinhaltet:
+	\begin{itemize}
+		\item \texttt{simulateButton}
+		\item \texttt{basisBeschleunigungen}
+		\item \texttt{kraftRichtung}
+		\item \texttt{wand}
+		\item \texttt{ziel}
+		\item \texttt{levelInitialisieren()}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{PhysikGameObject}
+	\begin{itemize}
+		\item \texttt{simulationStarten()}
+		\item \texttt{ballBewegen()}
+		\item \texttt{simulationStoppen(boolean treffer)}
+		\item \texttt{update(BaseScene)}
+		\item \texttt{draw(Graphics2D)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Das Biologie Minigame}
+	\begin{minipage}[l]{0.40\textwidth}
+		\begin{itemize}
+			\item Konzept: Pflanzen- testat
+			\item Level: schwierigere Pflanzen und überschüssige Label
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}[r]{0.55\textwidth}
+		\centering
+		\begin{figure}
+			\includegraphics[width=\textwidth]{../dokumentation/bilder/BeispielBiologie.png}
+			\caption{Beispiel Biologie-Minigame}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}
+	\frametitle{BiologyLevelScene}
+	Eine Erweiterung von \texttt{BaseScene}, die das gesamte Biologie-Minigame verwaltet.
+
+	Die Klasse beinhaltet:
+		\begin{itemize}
+			\item \texttt{selectedLabel}
+			\item \texttt{imagePlaceholders}
+			\item \texttt{chosen}
+			\item \texttt{getLabelAtSlot(int slot)}
+			\item \texttt{reset()}
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{BiologyLevelScene}
+	\begin{itemize}
+		\item \texttt{update()}
+		\item \texttt{checkWin()}
+		\item \texttt{allPlaced()}
+		\item \texttt{draw(Graphics2D g2)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{BiologyLabelScene}
+Eine Erweiterung von \texttt{BaseObject}, die ein anklickbares, beschriftetes Label darstellt.
+
+Die Klasse beinhaltet:
+	\begin{itemize}
+		\item \texttt{name}
+		\item \texttt{selected}
+		\item \texttt{draw(Graphics2D g)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Weitere Klassen}
+	\begin{itemize}
+    \item Die Klasse \texttt{BiologyData}
+	\item Die Klasse \texttt{BiologyPlant}
+	\end{itemize}
 \end{frame}
