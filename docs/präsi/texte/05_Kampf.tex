@@ -35,7 +35,7 @@
 		\caption{Ausschnitt der Funktion getItems (Bildschirmfoto des Projektes)}
 		\label{fig:alf}
 	\end{figure}
-\end{frame
+\end{frame}
 
 \begin{frame}
 	Erst erklären warum Idee I nicht funktioniert.\\
@@ -71,11 +71,11 @@
 \begin{frame}
 	\begin{algorithm}[H]
 		\begin{algorithmic}[1]
-			\STATE Hintergrundbild
-			\STATE Variablen festsetzen
-			\STATE Lehrer $\gets$ new LehrerObject(FACHSCHAFT)
-			\STATE button zum Kampfabbruch
-			\STATE music $\gets$ Kampfmusik
+			\State Hintergrundbild
+			\State Variablen festsetzen
+			\State Lehrer $\gets$ new LehrerObject(FACHSCHAFT)
+			\State button zum Kampfabbruch
+			\State music $\gets$ Kampfmusik
 		\end{algorithmic}
 		\caption{KampfScene(FACHSCHAFT) pseudocode}
 		\label{alg:SceneKonstruction}
@@ -85,15 +85,15 @@
 \begin{frame}
 	\begin{algorithm}[H]
 		\begin{algorithmic}[1]
-			\IF {LehrerLeben $\leq$ 0}
-				\STATE Gewonnen
-				\STATE Dekrementiere UebrigeLehrer
-				\STATE Beende Kampf
-			\ENDIF
-			\IF {PlayerLeben $\leq$ 0 $\vee$ |PlayerItems| = 0}
-				\STATE Verloren
-				\STATE Beende Kampf
-			\ENDIF
+			\If {LehrerLeben $\leq$ 0}
+				\State Gewonnen
+				\State Dekrementiere UebrigeLehrer
+				\State Beende Kampf
+			\EndIf
+			\If {PlayerLeben $\leq$ 0 $\vee$ |PlayerItems| = 0}
+				\State Verloren
+				\State Beende Kampf
+			\EndIf
 		\end{algorithmic}
 		\caption{KampfScene.update() pseudocode}
 		\label{alg:SceneUpdate}
@@ -103,9 +103,9 @@
 \begin{frame}
 	\begin{algorithm}[H]
 		\begin{algorithmic}[1]
-			\IF {timer $\neq$ 0}
-			\STATE draw timer 
-			\ENDIF
+			\If {timer $\neq$ 0}
+			\State draw timer 
+			\EndIf
 		\end{algorithmic}
 		\caption{KampfScene.draw() pseudocode}
 		\label{alg:SceneDraw}
@@ -115,17 +115,17 @@
 \begin{frame}
 	\begin{algorithm}[H]
 		\begin{algorithmic}[1]
-			\IF {Turn = LehrerAngriff}
-				\STATE ZwischenSchaden $\gets$ LehrerAngriff()
-				\IF {ItemBenutzt} 
-					\STATE DisplayItem()
-				\ENDIF
-				\STATE timer $\gets$ 4 Sekunden
-				\STATE Turn $\gets$ PlayerVerteidigung
-			\ELSIF {Turn = LehrerVerteidigung}
-				\STATE LehrerLeben -= LehrerVerteidigung(Zwischenschaden)
-				\STATE Turn $\gets$ PlayerAngriff
-			\ENDIF
+			\If {Turn = LehrerAngriff}
+				\State ZwischenSchaden $\gets$ LehrerAngriff()
+				\If {ItemBenutzt} 
+					\State DisplayItem()
+				\EndIf
+				\State timer $\gets$ 4 Sekunden
+				\State Turn $\gets$ PlayerVerteidigung
+			\ElsIf {Turn = LehrerVerteidigung}
+				\State LehrerLeben -= LehrerVerteidigung(Zwischenschaden)
+				\State Turn $\gets$ PlayerAngriff
+			\EndIf
 		\end{algorithmic}
 		\caption{LehrerObject.update() pseudocode}
 		\label{alg:LehrerUpdate}
@@ -135,15 +135,15 @@
 \begin{frame}
 	\begin{algorithm}[H]
 		\begin{algorithmic}[1]
-			\IF {imKampf}
-			\IF {Turn = PlayerAngriff}
-			\STATE ZwischenSchaden $\gets$ PlayerAngriff(clickedItem)
-			\STATE Turn $\gets$ LehrerVerteidigung
-			\ELSIF {Turn = PlayerVerteidigung}
-			\STATE PlayerLeben -= PlayerVerteidigung(Zwischenschaden, clickedItem)
-			\STATE Turn $\gets$ LehrerAngriff
-			\ENDIF
-			\ENDIF
+			\If {imKampf}
+			\If {Turn = PlayerAngriff}
+			\State ZwischenSchaden $\gets$ PlayerAngriff(clickedItem)
+			\State Turn $\gets$ LehrerVerteidigung
+			\ElsIf {Turn = PlayerVerteidigung}
+			\State PlayerLeben -= PlayerVerteidigung(Zwischenschaden, clickedItem)
+			\State Turn $\gets$ LehrerAngriff
+			\EndIf
+			\EndIf
 		\end{algorithmic}
 		\caption{PlayerObject.update() pseudocode}
 		\label{alg:PlayerUpdate}
@@ -153,12 +153,12 @@
 \begin{frame}
 	\begin{algorithm}[H]
 		\begin{algorithmic}[1]
-			\IF {turn = Angriff}
-			\STATE draw \dq Angriff"
-			\ELSIF {turn = Verteidigung}
-			\STATE draw "Verteidigung"
-			\ENDIF
-			\STATE draw Leben
+			\If {turn = Angriff}
+			\State draw \dq Angriff"
+			\ElsIf {turn = Verteidigung}
+			\State draw "Verteidigung"
+			\EndIf
+			\State draw Leben
 		\end{algorithmic}
 		\caption{draw() pseudocode}
 		\label{alg:Draw}
